@@ -1,0 +1,57 @@
+
+menu_menu=Menu
+menu_home=Home
+menu_profile=Vita
+menu_person=Person
+menu_education=Education
+menu_employment=Experience
+menu_skills=Skills
+menu_projects=Projects
+menu_applications=Applications
+menu_games=Games
+menu_websites=Websites
+menu_imprint=Imprint
+menu_contact=Contact
+
+develope_finished=Development was finished in
+develope_ongoing=In development
+ongoing=ongoing
+forbidden_title=Access Denied
+forbidden_text=You are not allowed to access the requested resource.
+
+projects_download=Download Application
+
+profile_period=Period
+profile_location=Location
+profile_score=Score
+profile_website=Website
+profile_degree=Degree
+profile_duties=Duties:
+
+home_welcome=Welcome to my Website!
+home_welcome_text=Here you will find information about me, my projects and my skills.<br>Feel free to contact me for any questions or requests!
+home_current_projects=Current Projects
+home_other_projects=Other Projects
+home_categories=Categories
+home_since=Since
+home_project=Project
+home_more=more
+home_application=Application
+home_game=Game
+home_website=Website
+home_finished_in=Finished in
+
+
+contact_address=Address
+contact_country=Germany
+contact_phone=Phone
+contact_find=You can find me at
+
+skills_area=Area
+skills_technology=Technology
+skills_experience=Experience
+skills_years=year(s)
+skills_level_1=beginner
+skills_level_2=advanced
+skills_level_3=experienced
+

@@ -1,0 +1,54 @@
+menu_menu=Menü
+menu_home=Startseite
+menu_profile=Lebenslauf
+menu_person=Person
+menu_education=Ausbildung
+menu_employment=Berufserfahrung
+menu_skills=Qualifikationen
+menu_projects=Projekte
+menu_applications=Anwendungen
+menu_games=Spiele
+menu_websites=Webseiten
+menu_imprint=Impressum
+menu_contact=Kontakt
+    
+develope_finished=Entwicklung endete im
+develope_ongoing=In Entwicklung
+ongoing=bis heute
+forbidden_title=Zugriff verwehrt
+forbidden_text=Die angeforderte Resource steht Ihnen nicht zur Verfügung.
+    
+projects_download=Programm herunterladen
+    
+profile_period=Zeitraum
+profile_location=Einrichtung
+profile_score=Note
+profile_website=Webseite
+profile_degree=akademischer Grad
+profile_duties=Aufgaben und Pflichten:
+    
+home_welcome=Willkommen auf meiner Webseite!
+home_welcome_text=Neben meinem Portfolio finden sie hier einen Auszug aus meinem Lebenslauf.
+home_current_projects=Aktuelle Projekte
+home_other_projects=Weitere Projekte
+home_categories=Kategorien
+home_since=Seit
+home_project=Projekt
+home_more=mehr
+home_application=Anwendung
+home_game=Spiel
+home_website=Webseite
+home_finished_in=Fertiggestellt im
+    
+contact_address=Adresse
+contact_country=Deutschland
+contact_phone=Telefon
+contact_find=Weiterhin finden sie mich auf
+    
+skills_area=Bereich
+skills_technology=Technologie
+skills_experience=Erfahrung
+skills_years=Jahr(e)
+skills_level_1=wenig
+skills_level_2=gut
+skills_level_3=sehr gut
