@@ -8,7 +8,7 @@
 
 <html>
 <head>
-<title>@title - Julius Seltenheim</title>
+<title>@Application.messages(title) - Julius Seltenheim</title>
 <!-- <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">  -->
 <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/site.css")">
 <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
@@ -39,30 +39,30 @@
 			</h3>
 			<ul class="navigation">
 			    <li>
-			        <a href="@routes.Application.index(langKey)">Startseite</a>
+			        <a href="@routes.Application.index(langKey)">@Application.messages("menu_home")</a>
 			    </li>
 			    <li>
-			        <a href="/de/Profile">Lebenslauf</a>
+			        <a href="@routes.Application.profile(langKey)">@Application.messages("menu_profile")</a>
 			    </li>
 			    <li>
-			        <a href="/de/Profile/skills">Qualifikationen</a>
+			        <a href="@routes.Application.skills(langKey)">@Application.messages("menu_skills")</a>
 			    </li>
 			    <li>
-			        <a href="/de/Projects/Index">Projekte</a>
+			        <a href="@routes.ProjectsController.index(langKey)">@Application.messages("menu_projects")</a>
 			        <ul>
 			            <li>
-			                <a href="/de/Projects/index/type/Application">Anwendungen</a>
+			                <a href="/de/Projects/index/type/Application">@Application.messages("menu_applications")</a>
 			            </li>
 			            <li>
-			                <a href="/de/Projects/index/type/Game">Spiele</a>
+			                <a href="/de/Projects/index/type/Game">@Application.messages("menu_games")</a>
 			            </li>
 			            <li>
-			                <a href="/de/Projects/index/type/Website">Webseiten</a>
+			                <a href="/de/Projects/index/type/Website">@Application.messages("menu_websites")</a>
 			            </li>
 			        </ul>
 			    </li>
 			    <li>
-			        <a href="@routes.Application.contact(langKey)">Kontakt</a>
+			        <a href="@routes.Application.contact(langKey)">@Application.messages("menu_contact")</a>
 			    </li>
 			</ul>
 

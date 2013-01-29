@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -17,7 +19,7 @@ public class Project {
     
     protected String title;
     protected String description;
-    protected String technologies;
+    protected List<String> technologies;
     protected DateTime developmentStart;
     protected DateTime developmentEnd;
 
@@ -38,7 +40,7 @@ public class Project {
         super();
         this.title = title;
         this.description = description;
-        this.technologies = technologies;
+        this.technologies = Arrays.asList(technologies.split(";"));
         this.developmentStart = developmentStart;
         this.developmentEnd = developmentEnd;
         this.mainImage = mainImage;
@@ -70,11 +72,12 @@ public class Project {
         this.description = description;
     }
 
-    public String getTechnologies() {
+    public List<String> getTechnologies() {
+        Collections.sort(technologies);
         return technologies;
     }
 
-    public void setTechnologies(String technologies) {
+    public void setTechnologies(List<String> technologies) {
         this.technologies = technologies;
     }
 

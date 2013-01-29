@@ -1,0 +1,32 @@
+@(description: Html, skillGroups: List[models.SkillGroup]) 
+
+@import controllers.Application 
+
+@defining(Application.getSessionLang()) { langKey => @main("menu_profile") {
+<div>
+	@description
+	<table class="profile">
+		<tr>
+			<th>@Application.messages("skills_area")</th>
+			<th style="width: 300px;">@Application.messages("skills_technology")
+			</th>
+			<th style="text-align: right; width: 100px;">@Application.messages("skills_experience")
+			</th>
+		</tr>
+
+		@for(skillGroup <- skillGroups) {
+		<tr>
+			<td>@skillGroup.getName()</td>
+			<td>@for(skill <- skillGroup.getSkills()) { 
+				@skill.getName()<br> 
+				}
+			</td>
+			<td style="text-align: right; padding-bottom: 10px;">
+			@for(skill <- skillGroup.getSkills()) { 
+				@skill.getKnowledge()<br> }
+			</td>
+		</tr>
+		}
+	</table>
+</div>
+} }

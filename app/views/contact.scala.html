@@ -1,5 +1,40 @@
 @()
 
+@import controllers.Application
+
 @main("menu_contact") {
-    
+
+<div>
+    <h2>Julius Seltenheim</h2>
+    <table>
+        <tr>
+            <td style="width: 110px;"> @Application.messages("contact_address")</td>
+            <td>
+                Junker-J&ouml;rg-Stra&szlig;e 22a<br>
+                10318 Berlin<br>
+                 @Application.messages("contact_country")
+            </td>
+        </tr>
+        <tr>
+            <td> @Application.messages("contact_phone")</td>
+            <td>(+49) 30 70124420</td>
+        </tr>
+        <tr>
+            <td>E-Mail</td>
+            <td>mail (at) julius-seltenheim.com</td>
+        </tr>
+        <tr>
+            <td>Skype</td>
+            <td>juliusse13</td>
+        </tr>
+        <tr>
+            <td> @Application.messages("contact_find")</td>
+            <td>
+                <a id="black" href="https://www.xing.com/profile/Julius_Seltenheim" target="_blank">XING</a><br>
+                <a id="black" href="http://www.linkedin.com/profile/view?id=100988836&locale=en_US&trk=tab_pro" target="_blank">LinkedIn</a>
+            </td>
+        </tr>
+        
+    </table>
+</div>
 }

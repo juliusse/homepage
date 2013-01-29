@@ -1,0 +1,61 @@
+@(projects: List[models.Project]) 
+
+@import controllers.Application 
+
+@defining(Application.getSessionLang()) { langKey => 
+
+@main("menu_projects") {
+
+@for(project <- projects) {
+	<div class="project">
+    	<a id="@project.getId()"></a>
+            <div id="title">
+                <h2> @project.getTitle() </h2>
+                
+                @if(project.getDevelopmentEnd() != null) {
+                    @Application.messages("develope_finished") @project.getDevelopmentEnd().toString("MMM yyyy",Application.getCurrentLocale())
+                } else {
+                    @Application.messages("develope_ongoing")
+                }
+                
+            </div>
+            @if(false) {
+	            <div id="buttons"> 
+	                    <a href="/en/Project/id/edit">
+	                        Edit
+	                    </a>
+	                    &nbsp; 
+	                    <a href="/en/Project/id/delete">
+	                        Delete
+	                    </a>
+	            </div>
+            }
+
+            <div id="image">
+                <img src="#"/>
+            </div>
+            <div id="description">
+         		@project.getDescription() 
+            </div>
+
+
+         @if(project.getDownloadLink() != "") {
+
+                <div id="download">
+                    <img src="/images/site/download.png" /><a href=" @project.getDownloadLink() "> @Application.messages("projects_download") </a>
+                </div>
+		} 
+            <div id="tech">
+                
+                                     
+                    <p>
+                    @for(tech <- project.getTechnologies()) {
+                        <img src="/images/site/check.png"/> @tech
+                    } 
+                    </p>
+          		
+            </div>
+        </div>
+}
+
+} }

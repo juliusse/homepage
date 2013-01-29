@@ -1,0 +1,73 @@
+@(employments: List[models.Employment], educations: List[models.Education])
+
+@import controllers.Application
+
+@defining(Application.getSessionLang()) { langKey =>
+
+
+
+@main("menu_profile") {
+<div>
+    <h2> @Application.messages("menu_employment")</h2>
+        <table class="profile">
+        <tr class="c0">
+            <th class="period"> @Application.messages("profile_period") </th>
+            <th> </th>
+        </tr>
+        
+        @for(employment <- employments) {
+        <tr class="c0">
+                <td class="period"> 
+                	@employment.getFrom().toString("MMM yyyy",Application.getCurrentLocale()) - 
+                	@if(employment.getTo() != null) {@employment.getTo().toString("MMM yyyy",Application.getCurrentLocale())} else {@Application.messages("ongoing")} 
+               	</td>
+                <td>
+                    <p><span class="place">@employment.getPlace() - @employment.getTitle()</span><br>
+                        <span class="link"><a target="_blank" style="color: #000;" href="@employment.getWebsite()"> @employment.getWebsite() </a></span>
+                    </p>
+                    <p>
+                         @Application.messages("profile_duties") 
+                    <ul>
+                        @for(task <- employment.getTasks()) {
+                        <li>@task</li>
+                        }
+                    </ul>
+                    </p>
+                </td>
+            </tr>
+        }       
+    </table>
+    <p style="height: 50px;"> </p>
+    <h2> @Application.messages("menu_education")</h2>
+    <table class="profile education">
+        <tr class="c0">
+            <th class="period"> @Application.messages("profile_period")</th>
+            <th class="place"> @Application.messages("profile_location")</th>
+            <th class="degree"> @Application.messages("profile_degree")</th>
+        </tr>
+
+
+        @for(education <- educations) {
+        <tr class="c $line++ ">
+                <td class="period"> 
+                	@education.getFrom() - @education.getTo()
+                </td>
+                <td>
+                    <span class="place"> @education.getPlace() </span><br>
+                    <span class="link"><a target="_blank" style="color: #000;" href=" @education.getWebsite() "> @education.getWebsite() </a></span>
+                </td>
+                <td>
+                    <span class="degree"> @education.getDegree() </span><br>
+                    <span> @Application.messages("profile_score"): @education.getScore() </span><br>
+                    <span> @education.getDegreeNote() </span>
+                </td>
+            </tr>
+        }
+        
+    </table>
+    <p style="height: 50px;">
+        
+    </p>
+</div>
+}
+}
