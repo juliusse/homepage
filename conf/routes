@@ -10,6 +10,8 @@ GET		/:langKey/skills			controllers.Application.skills(langKey:String)
 GET		/:langKey/contact			controllers.Application.contact(langKey:String)
 GET		/:langKey/projects			controllers.ProjectsController.index(langKey:String)
 GET		/:langKey/projects/:projectType	controllers.ProjectsController.index2(langKey:String,projectType:String)
+GET		/:langKey/Login				controllers.Application.login(langKey)
+POST	/:langKey/Login				controllers.Application.login(langKey)
 GET     /							controllers.Application.autoSelectLanguage()
 
 

@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 
 import play.db.ebean.Model;
 
-@Entity
+
 public class Employment extends Model {
 
     @Id

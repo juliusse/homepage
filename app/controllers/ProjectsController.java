@@ -23,4 +23,8 @@ public class ProjectsController extends Controller {
     public static Result index2(String langKey,String type) {
         return TODO;
     }
+    
+    public static Result addProject() {
+        return TODO;
+    }
 }

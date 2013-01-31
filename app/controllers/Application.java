@@ -1,5 +1,10 @@
 package controllers;
 
+import static controllers.Secured.SESSION_KEY_EMAIL;
+import static controllers.Secured.SESSION_KEY_USERID;
+import static controllers.Secured.SESSION_KEY_USERNAME;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -9,10 +14,17 @@ import models.Employment;
 import models.Project;
 import models.Skill;
 import models.SkillGroup;
+import models.User;
+import models.forms.CredentialsFormData;
+import models.forms.RegisterFormData;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.joda.time.DateTime;
 
+import play.Logger;
 import play.api.templates.Html;
+import play.data.Form;
 import play.i18n.Lang;
 import play.i18n.Messages;
 import play.mvc.Controller;
@@ -21,6 +33,9 @@ import views.html.contact;
 import views.html.index;
 
 public class Application extends Controller {
+
+    private static final Form<RegisterFormData> registerForm = form(RegisterFormData.class);
+    private static final Form<CredentialsFormData> credentialsForm = form(CredentialsFormData.class);
 
     public final static String SESSION_LANGKEY = "langkey";
 
@@ -164,7 +179,7 @@ public class Application extends Controller {
                             "</p>";
 
             List<Skill> skills;
-            
+
             skills = new ArrayList<Skill>();
             skills.add(new Skill("C#", 0.75));
             skills.add(new Skill("PHP", 0.75));
@@ -267,5 +282,75 @@ public class Application extends Controller {
 
     public static String toLower(String string) {
         return string.toLowerCase();
+    }
+
+    public static Result register() {
+        //        final Form<RegisterFormData> filledForm = registerForm.bindFromRequest();
+        //
+        //        Result result;
+        //        if (filledForm.hasErrors()) {
+        //            result = badRequest(index.render(filledForm, credentialsForm));
+        //        } else {
+        //            final RegisterFormData register = filledForm.get();
+        //            User userWithSameMail = User.findByEmail(register.getEmail());
+        //
+        //            if (userWithSameMail != null) {
+        //                filledForm.reject("email", "Email already exists.");
+        //                result = badRequest(index.render(filledForm, credentialsForm));
+        //            } else {
+        //                User user = UsersController.createAndSaveUser(register.getEmail(), register.getPassword());
+        //                session(SESSION_KEY_USERID, "" + user.getId());
+        //                session(SESSION_KEY_EMAIL, user.getEmail());
+        //                session(SESSION_KEY_USERNAME, user.getUsername());
+        //                result = redirect(routes.UsersController.home());
+        //            }
+        //        }
+        //        return result;
+        return TODO;
+    }
+
+    public static Result login(String langKey) throws JsonGenerationException, JsonMappingException, IOException {
+        final Form<CredentialsFormData> filledForm = credentialsForm.bindFromRequest();
+
+        Logger.debug(filledForm.toString());
+
+
+        Result result;
+        if (UsersController.getLoggedInUser() != null){
+            result = redirect(routes.Application.index(langKey));
+
+        } else if (filledForm.hasErrors()) {
+            result = badRequest(views.html.login.render());
+
+        } else {
+            final CredentialsFormData credentials = filledForm.get();
+            User user = authenticate(credentials.getUsername(), credentials.getPassword());
+            final boolean authenticationSuccessful = user != null;
+            if (authenticationSuccessful) {
+                session(SESSION_KEY_USERID, ""+user.getId());
+                session(SESSION_KEY_EMAIL, user.getEmail());
+                session(SESSION_KEY_USERNAME, user.getUsername());
+
+                result = redirect(routes.Application.index(langKey));
+            } else {
+                filledForm.reject("The credentials doesn't match any user.");
+                Logger.debug(credentials.getUsername() + " is unauthorized");
+                result = unauthorized(views.html.login.render());
+            }
+        }
+        return result;
+    }
+
+    public static User authenticate(String emailOrUsername, String password) {
+        User user = User.findByEmail(emailOrUsername);
+        if(user == null) {
+            user = User.findByUsername(emailOrUsername);
+        }
+
+        User result = null;
+        if (user != null && user.getPassword().equals(password)) {
+            result = user;
+        }
+        return result;
     }
 }

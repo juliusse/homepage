@@ -2,10 +2,12 @@ package models;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import play.db.ebean.Model;
+import scalax.io.KnownName;
 
-@Entity
+
 public class Skill extends Model{
 
     @Id
@@ -13,16 +15,26 @@ public class Skill extends Model{
     
     private String name;
     private double knowledge;
+    @ManyToOne
+    private SkillGroup skillGroup;
     
     public Skill() {
         
     }
-
-    public Skill(String name, double knowledge) {
+    
+    public Skill(String name, double knowledge, SkillGroup skillGroup) {
         super();
         this.name = name;
         this.knowledge = knowledge;
+        this.skillGroup = skillGroup;
     }
+    
+    public Skill(String name, double knowledge) {
+        this(name,knowledge,null);
+    }
+
+
+
 
     public Long getId() {
         return id;
@@ -47,5 +59,14 @@ public class Skill extends Model{
     public void setKnowledge(double knowledge) {
         this.knowledge = knowledge;
     }
-        
+
+    public SkillGroup getSkillGroup() {
+        return skillGroup;
+    }
+
+    public void setSkillGroup(SkillGroup skillGroup) {
+        this.skillGroup = skillGroup;
+    }
+     
+    
 }

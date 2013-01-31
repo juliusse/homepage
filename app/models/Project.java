@@ -11,7 +11,7 @@ import javax.persistence.ManyToMany;
 
 import org.joda.time.DateTime;
 
-@Entity
+
 public class Project {
     
     @Id
