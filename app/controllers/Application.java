@@ -34,8 +34,8 @@ import views.html.index;
 
 public class Application extends Controller {
 
-    private static final Form<RegisterFormData> registerForm = form(RegisterFormData.class);
-    private static final Form<CredentialsFormData> credentialsForm = form(CredentialsFormData.class);
+    private static final Form<RegisterFormData> registerForm = Form.form(RegisterFormData.class);
+    private static final Form<CredentialsFormData> credentialsForm = Form.form(CredentialsFormData.class);
 
     public final static String SESSION_LANGKEY = "langkey";
 
@@ -249,7 +249,7 @@ public class Application extends Controller {
             skillGroups.add(new SkillGroup("Frameworks", skills));
         }
 
-        return ok(views.html.skills.render(new Html(description),skillGroups));
+        return ok(views.html.skills.render(Html.apply(description),skillGroups));
     }
 
     public static Result autoSelectLanguage() {

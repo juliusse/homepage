@@ -15,7 +15,8 @@
 <link rel="apple-touch-icon" sizes="114x114" href="@routes.Assets.at("images/favicon.png")">
 </head>
 <body>
-
+<script type="text/javascript" src='@routes.Assets.at("js/jquery.min.js")'></script>
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/script.js")'></script>
 	<div class="wrapper">
 		<div class="header">
 			<div class="banner">
@@ -49,7 +50,12 @@
 			    </li>
 			    <li>
 			        <a href="@routes.ProjectsController.index(langKey)">@Application.messages("menu_projects")</a>
-			        <ul>
+			        <ul class="invisible">
+			        	@if(UsersController.getLoggedInUser() != null) {
+			        	<li>
+			                <a href="@routes.ProjectsController.renderAdd(langKey)">@Application.messages("menu_add_project")</a>
+			            </li>
+			            }
 			            <li>
 			                <a href="/de/Projects/index/type/Application">@Application.messages("menu_applications")</a>
 			            </li>
@@ -87,7 +93,6 @@
 		</a>
 	</div>
 	</div>
-
 </body>
 </html>
 

@@ -10,7 +10,7 @@
 	<div class="project">
     	<a id="@project.getId()"></a>
             <div id="title">
-                <h2> @project.getTitle() </h2>
+                <h2> @project.getTitleAsHtml() </h2>
                 
                 @if(project.getDevelopmentEnd() != null) {
                     @Application.messages("develope_finished") @project.getDevelopmentEnd().toString("MMM yyyy",Application.getCurrentLocale())
@@ -32,17 +32,17 @@
             }
 
             <div id="image">
-                <img src="#"/>
+                <img src="@routes.ProjectsController.image(project.getId())"/>
             </div>
             <div id="description">
-         		@project.getDescription() 
+         		@project.getDescriptionAsHtml() 
             </div>
 
 
          @if(project.getDownloadLink() != "") {
 
                 <div id="download">
-                    <img src="/images/site/download.png" /><a href=" @project.getDownloadLink() "> @Application.messages("projects_download") </a>
+                    <img src="@routes.Assets.at("images/site/download.png")" /><a href=" @project.getDownloadLink() "> @Application.messages("projects_download") </a>
                 </div>
 		} 
             <div id="tech">
@@ -50,7 +50,7 @@
                                      
                     <p>
                     @for(tech <- project.getTechnologies()) {
-                        <img src="/images/site/check.png"/> @tech
+                        <img src="@routes.Assets.at("images/site/check.png")"/> @tech
                     } 
                     </p>
           		

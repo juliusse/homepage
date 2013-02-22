@@ -2,6 +2,9 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# async api
+POST	/rest/project/add			controllers.ProjectsController.addProject()
+
 # Home page
 
 GET		/:langKey/home				controllers.Application.index(langKey:String)
@@ -9,10 +12,15 @@ GET		/:langKey/profile			controllers.Application.profile(langKey:String)
 GET		/:langKey/skills			controllers.Application.skills(langKey:String)
 GET		/:langKey/contact			controllers.Application.contact(langKey:String)
 GET		/:langKey/projects			controllers.ProjectsController.index(langKey:String)
+GET		/:langKey/project/add		controllers.ProjectsController.renderAdd(langKey:String)
+GET		/project/:projectId/image	controllers.ProjectsController.image(projectId: Long)
+
 GET		/:langKey/projects/:projectType	controllers.ProjectsController.index2(langKey:String,projectType:String)
 GET		/:langKey/Login				controllers.Application.login(langKey)
 POST	/:langKey/Login				controllers.Application.login(langKey)
 GET     /							controllers.Application.autoSelectLanguage()
+
+
 
 
 # Map static resources from the /public folder to the /assets URL path

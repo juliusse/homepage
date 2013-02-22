@@ -72,19 +72,6 @@ td, th {
 }
 
 /* style form */
-form dt {
-    width: 100px;
-    display: block;
-    float: left;
-    clear: left;
-}
-form dd {
-    margin-left: 0;
-    float: left;
-}
-form #submitbutton {
-    margin-left: 100px;
-}
 
 div.menu{
     float: left;
@@ -300,7 +287,7 @@ ul.navigation li.active ul {
     display: block;
 }
 
-ul.navigation li ul {
+.invisible {
     display: none;
 }
 
