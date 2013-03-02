@@ -1,5 +1,6 @@
 package models;
 
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import service.database.CouchDBDatabaseService;
@@ -11,6 +12,9 @@ public abstract class ModelBase {
     
     @JsonProperty("_rev")
     private String revision;
+    
+    @JsonProperty("_attachments")
+    private JsonNode attachments;
     
     private String type;
 
@@ -38,7 +42,26 @@ public abstract class ModelBase {
         this.type = type;
     }
     
-    public void save() {
-        CouchDBDatabaseService.saveDocument(this);
+    
+    public JsonNode getAttachments() {
+        return attachments;
     }
+
+    public void setAttachments(JsonNode attachments) {
+        this.attachments = attachments;
+    }
+
+    public void save() {
+        if(id == null) {
+            this.id = type+"_"+System.currentTimeMillis();
+            CouchDBDatabaseService.createDocument(this);
+        } else {
+            CouchDBDatabaseService.updateDocument(this);
+        }
+        
+        JsonNode node = CouchDBDatabaseService.getById(JsonNode.class, this.id);
+        this.revision = node.get("_rev").asText();
+    }
+    
+    
 }

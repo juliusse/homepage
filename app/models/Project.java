@@ -1,13 +1,14 @@
 package models;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Serializable;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +18,6 @@ import javax.imageio.ImageIO;
 import models.forms.ProjectFormData;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -27,27 +27,27 @@ import play.Logger;
 import play.api.templates.Html;
 import play.mvc.Controller;
 import service.database.CouchDBDatabaseService;
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
 import controllers.Application;
 
-public class Project extends ModelBase implements Serializable {
+public class Project extends ModelBase {
     public enum ProjectType {Application, Website, Game};
 
     protected String titleDe;
     protected String titleEn;
     protected String descriptionDe;
     protected String descriptionEn;
+    
+    protected Boolean displayOnStartPage;
 
     protected List<String> technologies;
     protected DateTime developmentStart;
     protected DateTime developmentEnd;
 
     //base64 string
-    protected String mainImage;
+    protected File mainImage;
 
     //base64 file
-    protected String file;
+    protected File file;
 
 
     protected List<ProjectType> typeOf;
@@ -64,9 +64,24 @@ public class Project extends ModelBase implements Serializable {
     public static Project findById(String id) {
         return CouchDBDatabaseService.getById(Project.class, id);
     }
+    
+    public static List<Project> findForStartpage() {
+        return CouchDBDatabaseService.getProjectsForStartPage();
+    }
 
+    @Override
+    public void save() {
+        super.save();
+        CouchDBDatabaseService.saveAttachmentForDocument(this, getMainImage(), "mainImage", "image/jpeg");
+    }
+    
     public static Project createFromRequest(ProjectFormData data) throws IOException {
-        Project project = new Project();
+        Project project = null;
+        if(data.getId().isEmpty()) {
+            project = new Project();
+        } else {
+            project = Project.findById(data.getId());
+        }
         project.setTitleDe(data.getTitle_de());
         project.setTitleEn(data.getTitle_en());
         project.setDescriptionDe(data.getDescription_de());
@@ -89,6 +104,11 @@ public class Project extends ModelBase implements Serializable {
         Collections.sort(tecList);
         project.setTechnologies(tecList);
 
+        //display on front page
+        if(data.getDisplayOnFrontpage() != null) {
+            project.setDisplayOnStartPage(true);
+        }
+        
         List<ProjectType> types = new ArrayList<ProjectType>();
         if(data.getIsApplication() != null) {
             types.add(ProjectType.Application);
@@ -106,9 +126,10 @@ public class Project extends ModelBase implements Serializable {
         if(image.getWidth() > 250) {
             image = scaleImageKeepRelations(image, 250);
         }
-        File f = File.createTempFile(project.getTitle(), "jpg");
+        File f = File.createTempFile("mainImage", "jpg");
         ImageIO.write(image, "jpg", f);
-        project.setMainImage(imageToBase64String(f));
+        //project.setMainImage(imageToBase64String(f));
+        project.setMainImage(f);
 
         //TODO application file
         project.save();
@@ -247,75 +268,107 @@ public class Project extends ModelBase implements Serializable {
         this.typeOf = typeOf;
     }
 
-    public String getMainImage() {
-        //if(mainImage.isEmpty()) return null;
-
-        return this.mainImage;
+    
+    
+//    public String getMainImage() {
+//        //if(mainImage.isEmpty()) return null;
+//
+//        return this.mainImage;
+////        try {
+////            BASE64Decoder decoder = new BASE64Decoder();
+////            return decoder.decodeBuffer(this.mainImage);
+////        } catch (Exception e) {
+////            Logger.error("could not save image",e);
+////            return null;
+////        }
+//    }
+    
+//    @JsonIgnore
+//    public File getMainImageFile() {
+//        if(mainImage.isEmpty()) return null;
+//
 //        try {
 //            BASE64Decoder decoder = new BASE64Decoder();
-//            return decoder.decodeBuffer(this.mainImage);
+//            byte[] bytes = decoder.decodeBuffer(this.mainImage);
+//            File file = File.createTempFile(this.getId(), ".jpg");
+//            FileUtils.writeByteArrayToFile(file, bytes);
+//            return file;
 //        } catch (Exception e) {
 //            Logger.error("could not save image",e);
 //            return null;
 //        }
-    }
-    
+//    }
+
+//    public void setMainImage(String mainImage) {
+//        this.mainImage = new String(mainImage);
+//    }
+
     @JsonIgnore
-    public File getMainImageFile() {
-        if(mainImage.isEmpty()) return null;
-
+    public File getMainImage() {
         try {
-            BASE64Decoder decoder = new BASE64Decoder();
-            byte[] bytes = decoder.decodeBuffer(this.mainImage);
-            File file = File.createTempFile(this.getId(), ".jpg");
-            FileUtils.writeByteArrayToFile(file, bytes);
-            return file;
-        } catch (Exception e) {
-            Logger.error("could not save image",e);
-            return null;
+        if(this.mainImage == null) {
+            Logger.info("Image not present. Loading from db.");
+            File file = new File(System.getProperty("java.io.tmpdir")+this.getId()+".jpg");
+            file.deleteOnExit();
+            InputStream in = CouchDBDatabaseService.getAttachmentForDocument(this,"mainImage");
+            FileUtils.copyInputStreamToFile(in, file);
+            mainImage = file;
+            Logger.debug(mainImage.getPath()+";" +mainImage.length());
         }
-    }
-
-    public void setMainImage(String mainImage) {
-        this.mainImage = new String(mainImage);
-    }
-
-    private static String imageToBase64String(File image) {
-        try {
-            BASE64Encoder encoder = new BASE64Encoder();
-            FileInputStream in = new FileInputStream(image);
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            encoder.encode(in, out);
-            return new String(out.toByteArray(),"UTF-8");
         } catch (Exception e) {
-            Logger.error("could not save image",e);
-            return null;
+            Logger.error("error while parsing main image",e);
         }
+        
+        return mainImage;
+    }
+    @JsonIgnore
+    public void setMainImage(File mainImage) {
+        this.mainImage = mainImage;
     }
 
-    public String getFile() {
+//    private static String imageToBase64String(File image) {
+//        try {
+//            BASE64Encoder encoder = new BASE64Encoder();
+//            FileInputStream in = new FileInputStream(image);
+//            ByteArrayOutputStream out = new ByteArrayOutputStream();
+//            encoder.encode(in, out);
+//            return new String(out.toByteArray(),"UTF-8");
+//        } catch (Exception e) {
+//            Logger.error("could not save image",e);
+//            return null;
+//        }
+//    }
+
+    public File getFile() {
         return file;
     }
 
-    public void setFile(String file) {
+    public void setFile(File file) {
         this.file = file;
+    }
+
+    public Boolean getDisplayOnStartPage() {
+        return displayOnStartPage;
+    }
+
+    public void setDisplayOnStartPage(Boolean displayOnStartPage) {
+        this.displayOnStartPage = displayOnStartPage;
     }
 
     private  static BufferedImage scaleImageKeepRelations(BufferedImage img,int newWidth) {
 
+        //return img;
         int oriWidth = img.getWidth();
         int oriHeight = img.getHeight();
 
         double scale = newWidth / (float) oriWidth;
         int newHeight = (int)(oriHeight * scale);
 
-        BufferedImage fImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        Image scaledImg = img.getScaledInstance(newWidth,newHeight,Image.SCALE_SMOOTH);
+        BufferedImage fImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
 
-        AffineTransform at = new AffineTransform();
-        at.scale(newWidth / (double)oriWidth, newHeight / (double)oriHeight);
-
-        AffineTransformOp op = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-        op.filter(img, fImage);
+        Graphics g = fImage.createGraphics();
+        g.drawImage(scaledImg, 0, 0, new Color(0,0,0), null);
 
         return fImage;
     }

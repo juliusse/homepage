@@ -1,13 +1,18 @@
 package service.database;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.ModelBase;
 import models.Project;
 import models.User;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.ektorp.AttachmentInputStream;
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
@@ -67,12 +72,34 @@ public class CouchDBDatabaseService {
         return getListOfDocument(Project.class, query);
     }
     
+    public static List<Project> getProjectsForStartPage() {
+        ViewQuery query = new ViewQuery().designDocId("_design/v1/").viewName("projects").key("startpage");
+        return getListOfDocument(Project.class, query);
+    }
+    
     public static <A> A getById(Class<A> clazz, String id) {
         return getDbConnection().get(clazz, id);
     }
     
-    public static void saveDocument(Object o) {
+    public static void createDocument(Object o) {
         getDbConnection().create(o);
+    }
+    
+    public static void updateDocument(Object o) {
+        getDbConnection().update(o);
+    }
+    
+    public static void saveAttachmentForDocument(ModelBase model, File attachment, String attachmentName, String fileType) {
+        try {
+        AttachmentInputStream in = new AttachmentInputStream(attachmentName, new FileInputStream(attachment), fileType);
+        getDbConnection().createAttachment(model.getId(), model.getRevision(), in);
+        } catch(Exception e) {
+            Logger.error("Error saving attachement",e);
+        }
+    }
+    
+    public static InputStream getAttachmentForDocument(ModelBase model, String attachmentName) {
+        return getDbConnection().getAttachment(model.getId(), attachmentName);
     }
     
     private static <A> List<A> getListOfDocument(Class<A> clazz, ViewQuery query) {

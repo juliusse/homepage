@@ -13,7 +13,8 @@ import ch.qos.logback.core.joran.spi.DefaultClass;
 import play.data.validation.Constraints.Required;
 
 public class ProjectFormData {
-    
+
+    private String id;
     @Required
     private String title_de;
     @Required
@@ -22,47 +23,45 @@ public class ProjectFormData {
     private String title_en;
     @Required
     private String description_en;
-    
+
     @Required
     private String devStart;
-    
-    
+
     private String devEnd;
-    
+
     @Required
     private String technologiesString;
-    
+
     private File image;
-    
+
     private File upload;
-    
-    
-    
+
+    private Boolean displayOnFrontpage;
+
     private Boolean isApplication;
-    
+
     private Boolean isWeb;
-    
+
     private Boolean isGame;
-    
+
     public ProjectFormData() {
-        
+
     }
 
-    public ProjectFormData(String title_de, String description_de, String title_en, String description_en, String devStart, String devEnd, String technologiesString, File image, File upload,
-            Boolean isApplication, Boolean isWeb, Boolean isGame) {
-        super();
-        this.title_de = title_de;
-        this.description_de = description_de;
-        this.title_en = title_en;
-        this.description_en = description_en;
-        this.devStart = devStart;
-        this.devEnd = devEnd;
-        this.technologiesString = technologiesString;
-        this.image = image;
-        this.upload = upload;
-        this.isApplication = isApplication;
-        this.isWeb = isWeb;
-        this.isGame = isGame;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Boolean getDisplayOnFrontpage() {
+        return displayOnFrontpage;
+    }
+
+    public void setDisplayOnFrontpage(Boolean displayOnFrontpage) {
+        this.displayOnFrontpage = displayOnFrontpage;
     }
 
     public String getTitle_de() {

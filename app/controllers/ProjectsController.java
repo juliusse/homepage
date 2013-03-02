@@ -34,7 +34,7 @@ public class ProjectsController extends Controller {
             return badRequest();
         }
         
-        response().setContentType("image/jpg");
+        //response().setContentType("image/jpg");
         return ok(proj.getMainImage());
     }
     

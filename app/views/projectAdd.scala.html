@@ -5,33 +5,15 @@
 @import helper.twitterBootstrap._
 @implicitField = @{ FieldConstructor(views.html.forms.horizontalFieldConstructor.f) }
 
-@defining(Application.getSessionLang()) { langKey => @main("Login") {
+@defining(Application.getSessionLang()) { langKey => 
+
+@main("Add Project") {
+
+	@views.html.forms.projectForm(projectForm)
 
 
 
-@helper.form(action = routes.ProjectsController.addProject(), args = 'id -> "project-form",'enctype -> "multipart/form-data") {
-    @helper.inputText(projectForm("title_de"), '_label -> "Titel (de)")
-    @helper.textarea(projectForm("description_de"), '_label -> "Beschreibung (de)")
-    @helper.inputText(projectForm("title_en"), '_label -> "Titel (en)")
-    @helper.textarea(projectForm("description_en"), '_label -> "Beschreibung (en)")
-    @helper.inputText(projectForm("devStart"), '_label -> "Development Start")
-    @helper.inputText(projectForm("devEnd"), '_label -> "Development Ende")
-    @helper.inputText(projectForm("technologiesString"), '_label -> "Technologien")
-    @helper.checkbox(projectForm("isApplication"), '_label -> "Applikation")
-    @helper.checkbox(projectForm("isWeb"), '_label -> "Webseite")
-    @helper.checkbox(projectForm("isGame"), '_label -> "Spiel")
-    @helper.inputFile(projectForm("image"), '_label -> "Bild")
-    @helper.inputFile(projectForm("upload"), '_label -> "App")
-    
-    
 
-    @projectForm.globalErrors.map { error =>
-        <div class="alert alert-error"><p>@error.message</p></div>
-    }
+} 
 
-    <button type="submit">Submit</button>
 }
-
-
-
-} }

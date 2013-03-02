@@ -29,7 +29,7 @@
                 @project.getDevelopmentStart().toString("MMM yyyy")
                 </td>
                 <td>
-                    <span class="place"> @project->getTitle() </span>
+                    <span class="place"> @project.getTitle() </span>
                     <span id="hint">[<a href="@routes.ProjectsController.index(langKey)#@project.getId()"> @Application.messages("home_more") </a>]</span><br>
                      @Application.messages("home_categories"): 
                     
@@ -57,7 +57,7 @@
                 @project.getDevelopmentEnd().toString("MMM yyyy")
                 </td>
                 <td>
-                    <span class="place"> @project->getTitle() </span>
+                    <span class="place"> @project.getTitle() </span>
                     <span id="hint">[<a href="@routes.ProjectsController.index(langKey)#@project.getId()"> @Application.messages("home_more") </a>]</span><br>
                      @Application.messages("home_categories"): 
                     
