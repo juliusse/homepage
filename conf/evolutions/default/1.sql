@@ -23,14 +23,6 @@ create table project_type (
   constraint pk_project_type primary key (id))
 ;
 
-create table users (
-  id                        bigint not null,
-  username                  varchar(255),
-  email                     varchar(255),
-  password                  varchar(255),
-  constraint pk_users primary key (id))
-;
-
 
 create table project_project_type (
   project_id                     bigint not null,
@@ -40,8 +32,6 @@ create table project_project_type (
 create sequence project_seq;
 
 create sequence project_type_seq;
-
-create sequence users_seq;
 
 
 
@@ -60,13 +50,9 @@ drop table if exists project_project_type;
 
 drop table if exists project_type;
 
-drop table if exists users;
-
 SET REFERENTIAL_INTEGRITY TRUE;
 
 drop sequence if exists project_seq;
 
 drop sequence if exists project_type_seq;
-
-drop sequence if exists users_seq;
 

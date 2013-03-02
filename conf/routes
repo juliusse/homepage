@@ -13,7 +13,7 @@ GET		/:langKey/skills			controllers.Application.skills(langKey:String)
 GET		/:langKey/contact			controllers.Application.contact(langKey:String)
 GET		/:langKey/projects			controllers.ProjectsController.index(langKey:String)
 GET		/:langKey/project/add		controllers.ProjectsController.renderAdd(langKey:String)
-GET		/project/:projectId/image	controllers.ProjectsController.image(projectId: Long)
+GET		/project/:projectId/image	controllers.ProjectsController.image(projectId: String)
 
 GET		/:langKey/projects/:projectType	controllers.ProjectsController.index2(langKey:String,projectType:String)
 GET		/:langKey/Login				controllers.Application.login(langKey)

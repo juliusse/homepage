@@ -1,7 +1,7 @@
 package controllers;
 
+import static controllers.Secured.SESSION_KEY_USERNAME;
 import static controllers.Secured.SESSION_KEY_EMAIL;
-import static controllers.Secured.SESSION_KEY_USERID;
 import static java.lang.Long.parseLong;
 import models.User;
 import play.Logger;
@@ -19,17 +19,16 @@ public class UsersController extends Controller {
     }
 
     public static User getLoggedInUser() {
-        String userId = session(SESSION_KEY_USERID);
-        if(userId != null) {
-            long id = parseLong(userId);
-            return User.findById(id);
+        String username = session(SESSION_KEY_USERNAME);
+        if(username != null) {
+            return User.findByUsername(username);
         } else
             return null;
     }
 
     /**
      * creates a user and all default settings
-     *
+     * NOT WORKING
      * @param email
      * @param password
      * @return
@@ -49,7 +48,7 @@ public class UsersController extends Controller {
             userWithUsername = User.findByUsername(nameToUse);
         } while (userWithUsername != null);
         User user = new User(nameToUse, email, password);
-        user.save();
+        //user.save();
 
         return user;
     }

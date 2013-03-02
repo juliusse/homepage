@@ -1,26 +1,10 @@
 package controllers;
 
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-import javax.servlet.annotation.MultipartConfig;
-
 import models.Project;
-import models.ProjectType;
 import models.forms.ProjectFormData;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
@@ -44,12 +28,13 @@ public class ProjectsController extends Controller {
         return TODO;
     }
     
-    public static Result image(Long projectId) {
+    public static Result image(String projectId) {
         Project proj = Project.findById(projectId);
         if(proj == null) {
             return badRequest();
         }
         
+        response().setContentType("image/jpg");
         return ok(proj.getMainImage());
     }
     

@@ -1,7 +1,6 @@
 package controllers;
 
 import static controllers.Secured.SESSION_KEY_EMAIL;
-import static controllers.Secured.SESSION_KEY_USERID;
 import static controllers.Secured.SESSION_KEY_USERNAME;
 
 import java.io.IOException;
@@ -16,7 +15,6 @@ import models.Skill;
 import models.SkillGroup;
 import models.User;
 import models.forms.CredentialsFormData;
-import models.forms.RegisterFormData;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -34,7 +32,7 @@ import views.html.index;
 
 public class Application extends Controller {
 
-    private static final Form<RegisterFormData> registerForm = Form.form(RegisterFormData.class);
+    //private static final Form<RegisterFormData> registerForm = Form.form(RegisterFormData.class);
     private static final Form<CredentialsFormData> credentialsForm = Form.form(CredentialsFormData.class);
 
     public final static String SESSION_LANGKEY = "langkey";
@@ -312,7 +310,7 @@ public class Application extends Controller {
     public static Result login(String langKey) throws JsonGenerationException, JsonMappingException, IOException {
         final Form<CredentialsFormData> filledForm = credentialsForm.bindFromRequest();
 
-        Logger.debug(filledForm.toString());
+        //Logger.debug(filledForm.toString());
 
 
         Result result;
@@ -327,7 +325,6 @@ public class Application extends Controller {
             User user = authenticate(credentials.getUsername(), credentials.getPassword());
             final boolean authenticationSuccessful = user != null;
             if (authenticationSuccessful) {
-                session(SESSION_KEY_USERID, ""+user.getId());
                 session(SESSION_KEY_EMAIL, user.getEmail());
                 session(SESSION_KEY_USERNAME, user.getUsername());
 
@@ -341,16 +338,8 @@ public class Application extends Controller {
         return result;
     }
 
-    public static User authenticate(String emailOrUsername, String password) {
-        User user = User.findByEmail(emailOrUsername);
-        if(user == null) {
-            user = User.findByUsername(emailOrUsername);
-        }
-
-        User result = null;
-        if (user != null && user.getPassword().equals(password)) {
-            result = user;
-        }
-        return result;
+    public static User authenticate(String username, String password) {
+        User user = User.findByNameAndPassword(username, password);
+        return user;
     }
 }

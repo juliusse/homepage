@@ -11,7 +11,8 @@ object ApplicationBuild extends Build {
       // Add your project dependencies here,
       javaCore, javaJdbc, javaEbean,
       "joda-time" % "joda-time" % "2.1",
-      "commons-io" % "commons-io" % "1.3.2"
+      "commons-io" % "commons-io" % "1.3.2",
+      "org.ektorp" % "org.ektorp" % "1.3.0"
             
     )
 

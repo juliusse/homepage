@@ -3,89 +3,66 @@ package models;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 
 import models.forms.ProjectFormData;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import play.Logger;
 import play.api.templates.Html;
-import play.db.ebean.Model;
 import play.mvc.Controller;
+import service.database.CouchDBDatabaseService;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 import controllers.Application;
 
-@Entity
-public class Project extends Model {
-    private static final Model.Finder<Long,Project> find = new Model.Finder<Long,Project>(Long.class, Project.class);
-    @Id
-    protected Long id;
+public class Project extends ModelBase implements Serializable {
+    public enum ProjectType {Application, Website, Game};
 
     protected String titleDe;
     protected String titleEn;
     protected String descriptionDe;
     protected String descriptionEn;
-    //    protected HashMap<String,String> titleLangMap;
-    //    protected HashMap<String,String> descriptionLangMap;
-    protected String technologies;
+
+    protected List<String> technologies;
     protected DateTime developmentStart;
     protected DateTime developmentEnd;
 
-    //@Lob
-    @Column(columnDefinition="bytea")
-    protected byte[] mainImage;
+    //base64 string
+    protected String mainImage;
 
-    protected String downloadLink;
+    //base64 file
+    protected String file;
 
-    @ManyToMany
+
     protected List<ProjectType> typeOf;
 
     public Project() {
-        //        titleLangMap = new HashMap<String, String>();
-        //        descriptionLangMap = new HashMap<String, String>();
         typeOf = new ArrayList<ProjectType>();
-    }
-
-    public Project(String deTitle, String deDescription, String enTitle, String enDescription, List<String> technologies, DateTime developmentStart, DateTime developmentEnd, byte[] mainImage, String downloadLink, List<ProjectType> typeOf) {
-        this();
-        //        titleLangMap.put("de", deTitle);
-        //        titleLangMap.put("en", enTitle);
-        //        descriptionLangMap.put("de", deDescription);
-        //        descriptionLangMap.put("en", enDescription);
-        this.titleDe = deTitle;
-        this.titleEn = enTitle;
-        this.descriptionDe = deDescription;
-        this.descriptionEn = enDescription;
-        this.setTechnologies(technologies);
-        this.developmentStart = developmentStart;
-        this.developmentEnd = developmentEnd;
-        this.mainImage = mainImage;
-        this.downloadLink = downloadLink;
-        this.typeOf = typeOf;
-    }
-
-    public static Project findById(Long id) {
-        return find.byId(id);
+        setType("project");
     }
 
     public static List<Project> findAll() {
-        return find.all();
+        return CouchDBDatabaseService.getAllProjects();
+    }
+
+    public static Project findById(String id) {
+        return CouchDBDatabaseService.getById(Project.class, id);
     }
 
     public static Project createFromRequest(ProjectFormData data) throws IOException {
@@ -114,13 +91,13 @@ public class Project extends Model {
 
         List<ProjectType> types = new ArrayList<ProjectType>();
         if(data.getIsApplication() != null) {
-            types.add(ProjectType.application());
+            types.add(ProjectType.Application);
         }
         if(data.getIsWeb() != null) {
-            types.add(ProjectType.web());
+            types.add(ProjectType.Website);
         }
-        if(data.getIsApplication() != null) {
-            types.add(ProjectType.game());
+        if(data.getIsGame() != null) {
+            types.add(ProjectType.Game);
         }
 
         project.setTypeOf(types);
@@ -131,7 +108,7 @@ public class Project extends Model {
         }
         File f = File.createTempFile(project.getTitle(), "jpg");
         ImageIO.write(image, "jpg", f);
-        project.setMainImage(f);
+        project.setMainImage(imageToBase64String(f));
 
         //TODO application file
         project.save();
@@ -139,18 +116,12 @@ public class Project extends Model {
         return project;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     /**
      * 
      * @return title for current language, default is english
      */
+    @JsonIgnore
     public String getTitle() {
         String lang = Application.getSessionLang();
         if(lang.equals("de")) {
@@ -163,6 +134,7 @@ public class Project extends Model {
         }
     }
 
+    @JsonIgnore
     public Html getTitleAsHtml() {
 
         return Html.apply(getTitle());
@@ -218,6 +190,7 @@ public class Project extends Model {
      * 
      * @return description for current language, default is english
      */
+    @JsonIgnore
     public String getDescription() {
         String lang = Application.getSessionLang();
         if(lang.equals("de")) {
@@ -227,6 +200,7 @@ public class Project extends Model {
         }
     }
 
+    @JsonIgnore
     public Html getDescriptionAsHtml() {
         return Html.apply(getDescription());
 
@@ -241,18 +215,12 @@ public class Project extends Model {
     //    }
 
     public List<String> getTechnologies() {
-        
-        return Arrays.asList(technologies.split(";"));
+
+        return technologies;
     }
 
     public void setTechnologies(List<String> technologies) {
-        String tecString = "";
-        for(int i = 0; i < technologies.size(); i++) {
-            tecString += technologies.get(i);
-            if(i + 1 < technologies.size())
-                tecString+=";";
-        }
-        this.technologies = tecString;
+        this.technologies = technologies;
     }
 
     public DateTime getDevelopmentStart() {
@@ -271,39 +239,66 @@ public class Project extends Model {
         this.developmentEnd = developmentEnd;
     }
 
-    public File getMainImage() {
-        try {
-            File f = File.createTempFile(this.getTitle(), "jpg");
-            FileUtils.writeByteArrayToFile(f, this.mainImage);
-            return f;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public void setMainImage(File image) {
-        try {
-            this.mainImage = FileUtils.readFileToByteArray(image);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String getDownloadLink() {
-        return downloadLink;
-    }
-
-    public void setDownloadLink(String downloadLink) {
-        this.downloadLink = downloadLink;
-    }
-
     public List<ProjectType> getTypeOf() {
         return typeOf;
     }
 
     public void setTypeOf(List<ProjectType> typeOf) {
         this.typeOf = typeOf;
+    }
+
+    public String getMainImage() {
+        //if(mainImage.isEmpty()) return null;
+
+        return this.mainImage;
+//        try {
+//            BASE64Decoder decoder = new BASE64Decoder();
+//            return decoder.decodeBuffer(this.mainImage);
+//        } catch (Exception e) {
+//            Logger.error("could not save image",e);
+//            return null;
+//        }
+    }
+    
+    @JsonIgnore
+    public File getMainImageFile() {
+        if(mainImage.isEmpty()) return null;
+
+        try {
+            BASE64Decoder decoder = new BASE64Decoder();
+            byte[] bytes = decoder.decodeBuffer(this.mainImage);
+            File file = File.createTempFile(this.getId(), ".jpg");
+            FileUtils.writeByteArrayToFile(file, bytes);
+            return file;
+        } catch (Exception e) {
+            Logger.error("could not save image",e);
+            return null;
+        }
+    }
+
+    public void setMainImage(String mainImage) {
+        this.mainImage = new String(mainImage);
+    }
+
+    private static String imageToBase64String(File image) {
+        try {
+            BASE64Encoder encoder = new BASE64Encoder();
+            FileInputStream in = new FileInputStream(image);
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            encoder.encode(in, out);
+            return new String(out.toByteArray(),"UTF-8");
+        } catch (Exception e) {
+            Logger.error("could not save image",e);
+            return null;
+        }
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
     }
 
     private  static BufferedImage scaleImageKeepRelations(BufferedImage img,int newWidth) {

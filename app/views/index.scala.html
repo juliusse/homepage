@@ -34,7 +34,7 @@
                      @Application.messages("home_categories"): 
                     
                     @for(projectType <- project.getTypeOf()) {
-                    	@Application.messages("home_" + Application.toLower(projectType.getName())),
+                    	@Application.messages("home_" + Application.toLower(projectType.toString())),
                     }
                     
                 </td>
@@ -62,7 +62,7 @@
                      @Application.messages("home_categories"): 
                     
                     @for(projectType <- project.getTypeOf()) {
-                    	@Application.messages("home_" + Application.toLower(projectType.getName())),
+                    	@Application.messages("home_" + Application.toLower(projectType.toString())),
                     }
                     
                 </td>
