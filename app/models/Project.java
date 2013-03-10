@@ -333,7 +333,7 @@ public class Project extends ModelBase {
         try {
             if(this.mainImage == null) {
                 Logger.info("Image not present. Loading from db.");
-                File file = new File(System.getProperty("java.io.tmpdir")+this.getId()+".jpg");
+                File file = new File(System.getProperty("java.io.tmpdir")+"/"+this.getId()+".jpg");
                 file.deleteOnExit();
                 InputStream in = CouchDBDatabaseService.getAttachmentForDocument(this,"mainImage");
                 FileUtils.copyInputStreamToFile(in, file);
