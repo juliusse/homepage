@@ -26,7 +26,7 @@
         @for(project <- currentProjects) {
         <tr class="c1">
                 <td>
-                @project.getDevelopmentStart().toString("MMM yyyy")
+                @project.getDevelopmentStart().toString("MMM yyyy",Application.getCurrentLocale())
                 </td>
                 <td>
                     <span class="place"> @project.getTitle() </span>
@@ -54,7 +54,7 @@
         @for(project <- specialProjects) {
                 <tr class="c1">
                 <td>
-                @project.getDevelopmentEnd().toString("MMM yyyy")
+                @project.getDevelopmentEnd().toString("MMM yyyy",Application.getCurrentLocale())
                 </td>
                 <td>
                     <span class="place"> @project.getTitle() </span>

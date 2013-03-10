@@ -8,9 +8,9 @@
 	<table class="profile">
 		<tr>
 			<th>@Application.messages("skills_area")</th>
-			<th style="width: 300px;">@Application.messages("skills_technology")
+			<th style="width: 200px;">@Application.messages("skills_technology")
 			</th>
-			<th style="text-align: right; width: 100px;">@Application.messages("skills_experience")
+			<th style="text-align: right; width: 140px;">@Application.messages("skills_experience")
 			</th>
 		</tr>
 
@@ -23,7 +23,22 @@
 			</td>
 			<td style="text-align: right; padding-bottom: 10px;">
 			@for(skill <- skillGroup.getSkills()) { 
-				@skill.getKnowledge()<br> }
+				@if(skill.getKnowledge() >= 0) {
+				@defining(skill.getKnowledge() * 10) { knowledge =>
+				@*@skill.getKnowledge(); @knowledge*@
+				@for(index <- 1 to 10) {
+					
+					@if(knowledge + 0.5 >= index) {
+						<img style="height: 10px" src="@routes.Assets.at("images/star_full.png")" alt="star">
+					} else {@if(knowledge+1.5 >= index) {
+						<img style="height: 10px" src="@routes.Assets.at("images/star_half.png")" alt="star">
+					} else {
+						<img style="height: 10px" src="@routes.Assets.at("images/star_empty.png")" alt="star">
+					}}
+				}
+				}
+				}
+				<br> }
 			</td>
 		</tr>
 		}

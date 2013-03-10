@@ -8,7 +8,7 @@
 @defining(Application.getSessionLang()) { langKey => 
 
 
-@helper.form(action = routes.ProjectsController.addProject(), args = 'id -> "project-form",'enctype -> "multipart/form-data") {
+@helper.form(action = routes.ProjectsController.changeProject(), args = 'id -> "project-form",'enctype -> "multipart/form-data") {
 	<input type="hidden" value="@projectForm("id").value" name="id">
     @helper.inputText(projectForm("title_de"), '_label -> "Titel (de)")
     @helper.textarea(projectForm("description_de"), '_label -> "Beschreibung (de)")

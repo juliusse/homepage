@@ -166,86 +166,72 @@ public class Application extends Controller {
     public static Result skills(String langKey) {
         setSessionLang(langKey);
 
-        String description = "";
-        List<SkillGroup> skillGroups = new ArrayList<SkillGroup>();
-        if(langKey.equals("de")) {
-            description = 
+        final List<SkillGroup> skillGroups = new ArrayList<SkillGroup>();
+        final boolean isDe = langKey.equals("de");
+
+        final String description = isDe ?
+                "<p>"+
+                "Hier finden sie einen Auszug aus der Liste meiner technischen Qualifikationen.<br>"+
+                "Auf Soft Skills gehe ich an dieser Stelle nicht ein.<br>"+
+                "Jedoch stehe ich gerne für ein Gespräch bereit, in dem sie sich ein Bild von meiner Persönlichkeit machen können."+
+                "</p>" :
                     "<p>"+
-                            "Hier finden sie einen Auszug aus der Liste meiner technischen Qualifikationen.<br>"+
-                            "Auf Soft Skills gehe ich an dieser Stelle nicht ein.<br>"+
-                            "Jedoch stehe ich gerne für ein Gespräch bereit, in dem sie sich ein Bild von meiner Persönlichkeit machen können."+
-                            "</p>";
+                    "This page contains an excerpt of my technical qualifications.<br>"+
+                    "Feel free to contact me to get an image of my personality."+
+                    "</p>";
 
-            List<Skill> skills;
 
-            skills = new ArrayList<Skill>();
-            skills.add(new Skill("C#", 0.75));
-            skills.add(new Skill("PHP", 0.75));
-            skills.add(new Skill("Java", 0.8));
-            skills.add(new Skill("C/C++", 0.15));
-            skillGroups.add(new SkillGroup("Programmiersprachen", skills));
+        List<Skill> skills;
 
-            skills = new ArrayList<Skill>();
-            skills.add(new Skill("Visual Studio", 0.65));
-            skills.add(new Skill("Eclipse", 0.7));
-            skills.add(new Skill("NetBeans", 0.6));
-            skillGroups.add(new SkillGroup("IDEs", skills));
+        skills = new ArrayList<Skill>();
+        skills.add(new Skill("C#", 0.75));
+        skills.add(new Skill("PHP", 0.75));
+        skills.add(new Skill("Java", 0.8));
+        skills.add(new Skill("C/C++", 0.15));
+        skills.add(new Skill("Javascript", 0.65));
+        skills.add(new Skill("CoffeScript", 0.30));
+        skillGroups.add(new SkillGroup(isDe ? "Programmiersprachen" : "Programming Languages", skills));
 
-            skills = new ArrayList<Skill>();
-            skills.add(new Skill("HTML, CSS", 0.7));
-            skills.add(new Skill("Javascript / jQuery", 0.65));
-            skills.add(new Skill("Zend Framework 1/2", 0.5));
-            skills.add(new Skill("Web Services", 0.75));
-            skillGroups.add(new SkillGroup("Webtechnologien", skills));
+        skills = new ArrayList<Skill>();
+        skills.add(new Skill("Visual Studio", 0.65));
+        skills.add(new Skill("Eclipse", 0.7));
+        skills.add(new Skill("NetBeans", 0.6));
+        skillGroups.add(new SkillGroup("IDEs", skills));
+        
+        skills = new ArrayList<Skill>();
+        skills.add(new Skill("Windows", 1));
+        skills.add(new Skill("Mac OS X 10.x", 0.3));
+        skills.add(new Skill("Linux", 0.4));
+        skillGroups.add(new SkillGroup(isDe ? "Betriebssysteme" : "Operation Systems", skills));
 
-            skills = new ArrayList<Skill>();
-            skills.add(new Skill("MySQL", 0.7));
-            skills.add(new Skill("MSSQL", 0.4));
-            skillGroups.add(new SkillGroup("DBMS", skills));
+        skills = new ArrayList<Skill>();
+        skills.add(new Skill(isDe ? "Relationelle Datenbanken entwerfen" : "Database Engineering", 0.75));
+        skills.add(new Skill("MySQL", 0.7));
+        skills.add(new Skill("MSSQL", 0.4));
+        skillGroups.add(new SkillGroup(isDe? "Netzwerke & Datenbanken" : "Networking & Databases", skills));
 
-            skills = new ArrayList<Skill>();
-            skills.add(new Skill("XNA", 0.55));
-            skills.add(new Skill("Processing", 0.90));
-            skillGroups.add(new SkillGroup("Frameworks", skills));
+        skills = new ArrayList<Skill>();
+        skills.add(new Skill("Play! Framework 2", 0.75));
+        skills.add(new Skill("Akka", 0.75));
+        skills.add(new Skill("Zend Framework 1", 0.3));
+        skills.add(new Skill("Zend Framework 2", 0.4));
+        skills.add(new Skill("Twitter Bootstrap", 0.6));
+        skills.add(new Skill("jQuery", 0.6));
+        skills.add(new Skill("XNA 4", 0.55));
+        skills.add(new Skill("Processing", 0.90));
+        skillGroups.add(new SkillGroup(isDe ? "Frameworks & Bibliotheken" : "Frameworks & Libraries", skills));
+        
+        skills = new ArrayList<Skill>();
+        skills.add(new Skill("SVN", 0.85));
+        skills.add(new Skill("Git", 0.70));
+        skillGroups.add(new SkillGroup(isDe ? "Versionierungstools" : "Source Code Management", skills));
+        
+        skills = new ArrayList<Skill>();
+        skills.add(new Skill("Maven", -1));
+        skills.add(new Skill("Ivy", -1));
+        skills.add(new Skill("Sbt", -1));
+        skillGroups.add(new SkillGroup("Dependency Management & Build tools", skills));
 
-        } else {
-            description = 
-                    "<p>"+
-                            "This page contains an excerpt of my technical qualifications.<br>"+
-                            "Feel free to contact me to get an image of my personality."+
-                            "</p>";
-            List<Skill> skills;
-
-            skills = new ArrayList<Skill>();
-            skills.add(new Skill("C#", 0.75));
-            skills.add(new Skill("PHP", 0.75));
-            skills.add(new Skill("Java", 0.8));
-            skills.add(new Skill("C/C++", 0.15));
-            skillGroups.add(new SkillGroup("Programming Languages", skills));
-
-            skills = new ArrayList<Skill>();
-            skills.add(new Skill("Visual Studio", 0.65));
-            skills.add(new Skill("Eclipse", 0.7));
-            skills.add(new Skill("NetBeans", 0.6));
-            skillGroups.add(new SkillGroup("IDEs", skills));
-
-            skills = new ArrayList<Skill>();
-            skills.add(new Skill("HTML, CSS", 0.7));
-            skills.add(new Skill("Javascript / jQuery", 0.65));
-            skills.add(new Skill("Zend Framework 1/2", 0.5));
-            skills.add(new Skill("Web Services", 0.75));
-            skillGroups.add(new SkillGroup("Web Technologies", skills));
-
-            skills = new ArrayList<Skill>();
-            skills.add(new Skill("MySQL", 0.7));
-            skills.add(new Skill("MSSQL", 0.4));
-            skillGroups.add(new SkillGroup("DBMS", skills));
-
-            skills = new ArrayList<Skill>();
-            skills.add(new Skill("XNA", 0.55));
-            skills.add(new Skill("Processing", 0.90));
-            skillGroups.add(new SkillGroup("Frameworks", skills));
-        }
 
         return ok(views.html.skills.render(Html.apply(description),skillGroups));
     }
@@ -274,8 +260,8 @@ public class Application extends Controller {
         return  "/"+langKey+request().uri().substring(3);
     }
 
-    public static String messages(String key) {
-        return Messages.get(Lang.forCode(getSessionLang()), key);
+    public static Html messages(String key) {
+        return Html.apply(Messages.get(Lang.forCode(getSessionLang()), key));
     }
 
     public static String toLower(String string) {

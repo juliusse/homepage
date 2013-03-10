@@ -1,16 +1,12 @@
 package models.forms;
 
 import java.io.File;
-import java.util.List;
-import java.util.Map;
 
-import javax.xml.ws.BindingType;
-
-import org.joda.time.DateTime;
-
-import ch.qos.logback.core.joran.spi.DefaultClass;
-
+import models.Project;
+import models.Project.ProjectType;
 import play.data.validation.Constraints.Required;
+
+import com.google.common.base.Joiner;
 
 public class ProjectFormData {
 
@@ -46,6 +42,23 @@ public class ProjectFormData {
 
     public ProjectFormData() {
 
+    }
+    
+    public ProjectFormData(Project project) {
+        this.description_de = project.getDescriptionDe();
+        this.description_en = project.getDescriptionEn();
+        this.title_de = project.getTitleDe();
+        this.title_en = project.getTitleEn();
+        this.devEnd = project.getDevelopmentEndString();
+        this.devStart = project.getDevelopmentStartString();
+        this.displayOnFrontpage = project.getDisplayOnStartPage();
+        this.id = project.getId();
+        this.image = project.getMainImage();
+        this.isApplication = project.getTypeOf().contains(ProjectType.Application);
+        this.isWeb = project.getTypeOf().contains(ProjectType.Website);
+        this.isGame = project.getTypeOf().contains(ProjectType.Game);
+        this.technologiesString = Joiner.on(";").join(project.getTechnologies());
+        this.upload = project.getFile();
     }
 
     public String getId() {

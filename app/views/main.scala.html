@@ -57,13 +57,13 @@
 			            </li>
 			            }
 			            <li>
-			                <a href="/de/Projects/index/type/Application">@Application.messages("menu_applications")</a>
+			                <a href="@routes.ProjectsController.index2(langKey,"Application")">@Application.messages("menu_applications")</a>
 			            </li>
 			            <li>
-			                <a href="/de/Projects/index/type/Game">@Application.messages("menu_games")</a>
+			                <a href="@routes.ProjectsController.index2(langKey,"Game")">@Application.messages("menu_games")</a>
 			            </li>
 			            <li>
-			                <a href="/de/Projects/index/type/Website">@Application.messages("menu_websites")</a>
+			                <a href="@routes.ProjectsController.index2(langKey,"Website")">@Application.messages("menu_websites")</a>
 			            </li>
 			        </ul>
 			    </li>
@@ -87,7 +87,7 @@
 		</div>
 	</div>
 	<div class="footer">
-		&copy; Julius Seltenheim 2012 | 
+		&copy; Julius Seltenheim 2013 | 
 		<a href='@routes.Application.contact(Application.getSessionLang())'>  
 			@Application.messages("menu_contact") 
 		</a>

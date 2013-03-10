@@ -32,11 +32,13 @@ import controllers.Application;
 public class Project extends ModelBase {
     public enum ProjectType {Application, Website, Game};
 
+    private static DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM");
+
     protected String titleDe;
     protected String titleEn;
     protected String descriptionDe;
     protected String descriptionEn;
-    
+
     protected Boolean displayOnStartPage;
 
     protected List<String> technologies;
@@ -64,9 +66,13 @@ public class Project extends ModelBase {
     public static Project findById(String id) {
         return CouchDBDatabaseService.getById(Project.class, id);
     }
-    
+
     public static List<Project> findForStartpage() {
         return CouchDBDatabaseService.getProjectsForStartPage();
+    }
+    
+    public static List<Project> findByType(ProjectType type) {
+        return CouchDBDatabaseService.getProjectsOfType(type.toString());
     }
 
     @Override
@@ -74,7 +80,7 @@ public class Project extends ModelBase {
         super.save();
         CouchDBDatabaseService.saveAttachmentForDocument(this, getMainImage(), "mainImage", "image/jpeg");
     }
-    
+
     public static Project createFromRequest(ProjectFormData data) throws IOException {
         Project project = null;
         if(data.getId().isEmpty()) {
@@ -87,12 +93,11 @@ public class Project extends ModelBase {
         project.setDescriptionDe(data.getDescription_de());
         project.setDescriptionEn(data.getDescription_en());
 
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd.MM.yyyy");
-        DateTime fromDate = formatter.parseDateTime(data.getDevStart());
-        project.setDevelopmentStart(fromDate);
+        DateTime fromDate = dateTimeFormatter.parseDateTime(data.getDevStart());
+        project.setDevelopmentStart(fromDate.plusWeeks(1));
 
         if(data.getDevEnd() != null) {
-            project.setDevelopmentEnd(formatter.parseDateTime(data.getDevEnd()));
+            project.setDevelopmentEnd(dateTimeFormatter.parseDateTime(data.getDevEnd()).plusWeeks(1));
         }
 
         //technologies
@@ -108,7 +113,7 @@ public class Project extends ModelBase {
         if(data.getDisplayOnFrontpage() != null) {
             project.setDisplayOnStartPage(true);
         }
-        
+
         List<ProjectType> types = new ArrayList<ProjectType>();
         if(data.getIsApplication() != null) {
             types.add(ProjectType.Application);
@@ -122,14 +127,17 @@ public class Project extends ModelBase {
 
         project.setTypeOf(types);
         File imageFile = Controller.request().body().asMultipartFormData().getFile("image").getFile();
+
         BufferedImage image =  ImageIO.read(imageFile);
-        if(image.getWidth() > 250) {
-            image = scaleImageKeepRelations(image, 250);
+        if(image != null) {
+            if(image.getWidth() > 250) {
+                image = scaleImageKeepRelations(image, 250);
+            }
+            File f = File.createTempFile("mainImage", "png");
+            ImageIO.write(image, "png", f);
+            //project.setMainImage(imageToBase64String(f));
+            project.setMainImage(f);
         }
-        File f = File.createTempFile("mainImage", "jpg");
-        ImageIO.write(image, "jpg", f);
-        //project.setMainImage(imageToBase64String(f));
-        project.setMainImage(f);
 
         //TODO application file
         project.save();
@@ -158,7 +166,7 @@ public class Project extends ModelBase {
     @JsonIgnore
     public Html getTitleAsHtml() {
 
-        return Html.apply(getTitle());
+        return Html.apply(getTitle().replace("\n", "<br>"));
     }
 
 
@@ -223,7 +231,7 @@ public class Project extends ModelBase {
 
     @JsonIgnore
     public Html getDescriptionAsHtml() {
-        return Html.apply(getDescription());
+        return Html.apply(getDescription().replace("\n", "<br>"));
 
     }
 
@@ -248,12 +256,25 @@ public class Project extends ModelBase {
         return developmentStart;
     }
 
+    @JsonIgnore
+    public String getDevelopmentStartString() {
+        return dateTimeFormatter.print(developmentStart);
+    }
+
     public void setDevelopmentStart(DateTime developmentStart) {
         this.developmentStart = developmentStart;
     }
 
     public DateTime getDevelopmentEnd() {
         return developmentEnd;
+    }
+
+    @JsonIgnore
+    public String getDevelopmentEndString() {
+        if(developmentEnd != null)
+            return dateTimeFormatter.print(developmentEnd);
+        else
+            return "";
     }
 
     public void setDevelopmentEnd(DateTime developmentEnd) {
@@ -268,57 +289,57 @@ public class Project extends ModelBase {
         this.typeOf = typeOf;
     }
 
-    
-    
-//    public String getMainImage() {
-//        //if(mainImage.isEmpty()) return null;
-//
-//        return this.mainImage;
-////        try {
-////            BASE64Decoder decoder = new BASE64Decoder();
-////            return decoder.decodeBuffer(this.mainImage);
-////        } catch (Exception e) {
-////            Logger.error("could not save image",e);
-////            return null;
-////        }
-//    }
-    
-//    @JsonIgnore
-//    public File getMainImageFile() {
-//        if(mainImage.isEmpty()) return null;
-//
-//        try {
-//            BASE64Decoder decoder = new BASE64Decoder();
-//            byte[] bytes = decoder.decodeBuffer(this.mainImage);
-//            File file = File.createTempFile(this.getId(), ".jpg");
-//            FileUtils.writeByteArrayToFile(file, bytes);
-//            return file;
-//        } catch (Exception e) {
-//            Logger.error("could not save image",e);
-//            return null;
-//        }
-//    }
 
-//    public void setMainImage(String mainImage) {
-//        this.mainImage = new String(mainImage);
-//    }
+
+    //    public String getMainImage() {
+    //        //if(mainImage.isEmpty()) return null;
+    //
+    //        return this.mainImage;
+    ////        try {
+    ////            BASE64Decoder decoder = new BASE64Decoder();
+    ////            return decoder.decodeBuffer(this.mainImage);
+    ////        } catch (Exception e) {
+    ////            Logger.error("could not save image",e);
+    ////            return null;
+    ////        }
+    //    }
+
+    //    @JsonIgnore
+    //    public File getMainImageFile() {
+    //        if(mainImage.isEmpty()) return null;
+    //
+    //        try {
+    //            BASE64Decoder decoder = new BASE64Decoder();
+    //            byte[] bytes = decoder.decodeBuffer(this.mainImage);
+    //            File file = File.createTempFile(this.getId(), ".jpg");
+    //            FileUtils.writeByteArrayToFile(file, bytes);
+    //            return file;
+    //        } catch (Exception e) {
+    //            Logger.error("could not save image",e);
+    //            return null;
+    //        }
+    //    }
+
+    //    public void setMainImage(String mainImage) {
+    //        this.mainImage = new String(mainImage);
+    //    }
 
     @JsonIgnore
     public File getMainImage() {
         try {
-        if(this.mainImage == null) {
-            Logger.info("Image not present. Loading from db.");
-            File file = new File(System.getProperty("java.io.tmpdir")+this.getId()+".jpg");
-            file.deleteOnExit();
-            InputStream in = CouchDBDatabaseService.getAttachmentForDocument(this,"mainImage");
-            FileUtils.copyInputStreamToFile(in, file);
-            mainImage = file;
-            Logger.debug(mainImage.getPath()+";" +mainImage.length());
-        }
+            if(this.mainImage == null) {
+                Logger.info("Image not present. Loading from db.");
+                File file = new File(System.getProperty("java.io.tmpdir")+this.getId()+".jpg");
+                file.deleteOnExit();
+                InputStream in = CouchDBDatabaseService.getAttachmentForDocument(this,"mainImage");
+                FileUtils.copyInputStreamToFile(in, file);
+                mainImage = file;
+                Logger.debug(mainImage.getPath()+";" +mainImage.length());
+            }
         } catch (Exception e) {
             Logger.error("error while parsing main image",e);
         }
-        
+
         return mainImage;
     }
     @JsonIgnore
@@ -326,18 +347,18 @@ public class Project extends ModelBase {
         this.mainImage = mainImage;
     }
 
-//    private static String imageToBase64String(File image) {
-//        try {
-//            BASE64Encoder encoder = new BASE64Encoder();
-//            FileInputStream in = new FileInputStream(image);
-//            ByteArrayOutputStream out = new ByteArrayOutputStream();
-//            encoder.encode(in, out);
-//            return new String(out.toByteArray(),"UTF-8");
-//        } catch (Exception e) {
-//            Logger.error("could not save image",e);
-//            return null;
-//        }
-//    }
+    //    private static String imageToBase64String(File image) {
+    //        try {
+    //            BASE64Encoder encoder = new BASE64Encoder();
+    //            FileInputStream in = new FileInputStream(image);
+    //            ByteArrayOutputStream out = new ByteArrayOutputStream();
+    //            encoder.encode(in, out);
+    //            return new String(out.toByteArray(),"UTF-8");
+    //        } catch (Exception e) {
+    //            Logger.error("could not save image",e);
+    //            return null;
+    //        }
+    //    }
 
     public File getFile() {
         return file;
@@ -365,7 +386,8 @@ public class Project extends ModelBase {
         int newHeight = (int)(oriHeight * scale);
 
         Image scaledImg = img.getScaledInstance(newWidth,newHeight,Image.SCALE_SMOOTH);
-        BufferedImage fImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
+        
+        BufferedImage fImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
 
         Graphics g = fImage.createGraphics();
         g.drawImage(scaledImg, 0, 0, new Color(0,0,0), null);

@@ -34,11 +34,12 @@ public class CouchDBDatabaseService {
         if(db == null) {
             try {
                 HttpClient httpClient = new StdHttpClient.Builder()
-                .url("http://localhost:5984").username("admin").password("admin")
+                .url("https://juliusse.iriscouch.com:6984").username("website").password("myS3cr3tBlub")
                 .build();
 
                 CouchDbInstance dbInstance = new StdCouchDbInstance(httpClient);
                 db = new StdCouchDbConnector("js_homepage", dbInstance);
+                
             } catch (Exception e) {
                 Logger.error("Unable to connect to database.",e);
             }
@@ -74,6 +75,11 @@ public class CouchDBDatabaseService {
     
     public static List<Project> getProjectsForStartPage() {
         ViewQuery query = new ViewQuery().designDocId("_design/v1/").viewName("projects").key("startpage");
+        return getListOfDocument(Project.class, query);
+    }
+    
+    public static List<Project> getProjectsOfType(String typeString) {
+        ViewQuery query = new ViewQuery().designDocId("_design/v1/").viewName("projects").key(typeString);
         return getListOfDocument(Project.class, query);
     }
     

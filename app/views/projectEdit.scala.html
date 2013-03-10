@@ -1,0 +1,19 @@
+@(projectForm: Form[models.forms.ProjectFormData])
+
+@import controllers.Application
+@import helper._
+@import helper.twitterBootstrap._
+@implicitField = @{ FieldConstructor(views.html.forms.horizontalFieldConstructor.f) }
+
+@defining(Application.getSessionLang()) { langKey => 
+
+@main("Edit Project") {
+
+	@views.html.forms.projectForm(projectForm)
+
+
+
+
+} 
+
+}

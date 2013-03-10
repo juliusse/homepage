@@ -19,11 +19,9 @@
                 }
                 
             </div>
-            @if(false) {
+            @if(session.get(controllers.Secured.SESSION_KEY_EMAIL) != null) {
 	            <div id="buttons"> 
-	                    <a href="/en/Project/id/edit">
-	                        Edit
-	                    </a>
+	                    <a href="@routes.ProjectsController.renderEdit(langKey,project.getId())">Edit</a>
 	                    &nbsp; 
 	                    <a href="/en/Project/id/delete">
 	                        Delete
