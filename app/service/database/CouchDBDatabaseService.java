@@ -78,6 +78,11 @@ public class CouchDBDatabaseService {
         return getListOfDocument(Project.class, query);
     }
     
+    public static List<Project> getProjectsForCurrent() {
+        ViewQuery query = new ViewQuery().designDocId("_design/v1/").viewName("projects").key("current");
+        return getListOfDocument(Project.class, query);
+    }
+    
     public static List<Project> getProjectsOfType(String typeString) {
         ViewQuery query = new ViewQuery().designDocId("_design/v1/").viewName("projects").key(typeString);
         return getListOfDocument(Project.class, query);

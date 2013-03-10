@@ -39,7 +39,7 @@ public class Application extends Controller {
 
     public static Result index(String langKey) {
         setSessionLang(langKey);
-        return ok(index.render(new ArrayList<Project>(),Project.findForStartpage()));
+        return ok(index.render(Project.findCurrent(),Project.findForStartpage()));
     }
 
     public static Result contact(String langKey) {

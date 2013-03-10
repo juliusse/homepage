@@ -71,6 +71,10 @@ public class Project extends ModelBase {
         return CouchDBDatabaseService.getProjectsForStartPage();
     }
     
+    public static List<Project> findCurrent() {
+        return CouchDBDatabaseService.getProjectsForCurrent();
+    }
+    
     public static List<Project> findByType(ProjectType type) {
         return CouchDBDatabaseService.getProjectsOfType(type.toString());
     }
@@ -96,7 +100,7 @@ public class Project extends ModelBase {
         DateTime fromDate = dateTimeFormatter.parseDateTime(data.getDevStart());
         project.setDevelopmentStart(fromDate.plusWeeks(1));
 
-        if(data.getDevEnd() != null) {
+        if(data.getDevEnd() != null && !data.getDevEnd().isEmpty()) {
             project.setDevelopmentEnd(dateTimeFormatter.parseDateTime(data.getDevEnd()).plusWeeks(1));
         }
 
