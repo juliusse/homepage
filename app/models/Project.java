@@ -248,7 +248,6 @@ public class Project extends ModelBase {
     //    }
 
     public List<String> getTechnologies() {
-
         return technologies;
     }
 

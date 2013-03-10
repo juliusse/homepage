@@ -3,5 +3,5 @@ $ ->
   
   activeLi = $('ul.navigation').find('a[href="'+window.location.pathname+'"]').parent()
   activeLi.addClass('active')
-  activeLi.find('ul').removeAttr("class")
-  activeLi.parent().parent().find('ul').removeClass("invisible")
+  activeLi.find('ul').removeClass("invisible")
+  activeLi.parent().removeClass("invisible")
