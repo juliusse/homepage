@@ -1,8 +1,7 @@
 package controllers;
 
-import static controllers.Secured.SESSION_KEY_USERNAME;
 import static controllers.Secured.SESSION_KEY_EMAIL;
-import static java.lang.Long.parseLong;
+import static controllers.Secured.SESSION_KEY_USERNAME;
 import models.User;
 import play.Logger;
 import play.mvc.Controller;

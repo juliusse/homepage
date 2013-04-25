@@ -1,13 +1,10 @@
 package controllers;
 
 
-import models.User;
 import play.Logger;
 import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Security;
-
-import static java.lang.String.format;
 
 public class Secured extends Security.Authenticator {
     public static final String SESSION_KEY_EMAIL = "email";

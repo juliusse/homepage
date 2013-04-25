@@ -5,6 +5,8 @@ import static controllers.Secured.SESSION_KEY_USERNAME;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,21 +33,20 @@ import views.html.contact;
 import views.html.index;
 
 public class Application extends Controller {
-
-    //private static final Form<RegisterFormData> registerForm = Form.form(RegisterFormData.class);
     private static final Form<CredentialsFormData> credentialsForm = Form.form(CredentialsFormData.class);
-
     public final static String SESSION_LANGKEY = "langkey";
-
+    
     public static Result index(String langKey) {
         setSessionLang(langKey);
-        return ok(index.render(Project.findCurrent(),Project.findForStartpage()));
+        List<Project> spProjects = Project.findForStartpage();
+        Collections.sort(spProjects, new NewestProjectsFirstComparator());
+        return ok(index.render(Project.findCurrent(), spProjects));
     }
 
     public static Result contact(String langKey) {
         setSessionLang(langKey);
 
-        return ok(contact.render());  
+        return ok(contact.render());
     }
 
     public static Result profile(String langKey) {
@@ -54,113 +55,47 @@ public class Application extends Controller {
         List<Employment> empl = new ArrayList<Employment>();
 
         if (langKey.equals("de")) {
-            empl.add(new Employment(
-                    new DateTime(2012,4,1,1,1),
-                    null,
-                    "Freiberufler", "", "http://www.julius-seltenheim.com",
-                    new String[] {"Webentwicklung",
-                        "Softwareentwicklung",
-                        "Datenbankentwicklung",
-                    "Beratung"}
-                    )
-                    );
-            empl.add(new Employment(
-                    new DateTime(2011,5,1,1,1),
-                    new DateTime(2011,12,1,1,1),
-                    "HTW Berlin", "Studentische Hilfskraft", "http://www.htw-berlin.de",
-                    new String[] {"Entwicklung von Prototypen",
-                    "Unterstützende Arbeiten"}));
-            empl.add(new Employment(
-                    new DateTime(2010,10,1,1,1),
-                    new DateTime(2011,2,1,1,1),
-                    "Canary Data Solutions Ltd", "Praktikant im Bereich \".Net Softwareentwicklung\"", "http://canary.co.nz",
-                    new String[] {"Softwareentwicklung",
-                        "Kundensupport",
-                        "Administration",
-                    "Refactoring"}));
-            empl.add(new Employment(
-                    new DateTime(2010,3,1,1,1),
-                    new DateTime(2010,9,1,1,1),
-                    "HTW Berlin", "Tutor für Mathematik", "http://www.htw-berlin.de",
-                    new String[] {"Vorbereitung und Durchführung von 2 Tutorien pro Woche",
-                    "Beantwortung von Fragen per E-Mail"}));
-            empl.add(new Employment(
-                    new DateTime(2009,4,1,1,1),
-                    new DateTime(2009,12,1,1,1),
-                    "Café Anna Blume", "Team-Mitarbeiter", "http://www.cafe-anna-blume.de",
-                    new String[] {"vorbereiten",
-                    "servieren"}));
-            empl.add(new Employment(
-                    new DateTime(2008,6,1,1,1),
-                    new DateTime(2009,3,1,1,1),
-                    "Caritas", "Zivildienst", "http://www.invia-center-berlin.de",
-                    new String[] {"Kochen",
-                        "Catering",
-                        "Für Gäste sorgen",
-                        "Vorbereitung",
-                        "Servieren",
-                        "Praktikanten einweisen",
-                    "Lieferungen"}));
+            empl.add(new Employment(new DateTime(2012, 4, 1, 1, 1), null, "Freiberufler", "", "http://www.julius-seltenheim.com", new String[] { "Webentwicklung", "Softwareentwicklung",
+                    "Datenbankentwicklung", "Beratung" }));
+            empl.add(new Employment(new DateTime(2011, 5, 1, 1, 1), new DateTime(2011, 12, 1, 1, 1), "HTW Berlin", "Studentische Hilfskraft", "http://www.htw-berlin.de", new String[] {
+                    "Entwicklung von Prototypen", "Unterstützende Arbeiten" }));
+            empl.add(new Employment(new DateTime(2010, 10, 1, 1, 1), new DateTime(2011, 2, 1, 1, 1), "Canary Data Solutions Ltd", "Praktikant im Bereich \".Net Softwareentwicklung\"",
+                    "http://canary.co.nz", new String[] { "Softwareentwicklung", "Kundensupport", "Administration", "Refactoring" }));
+            empl.add(new Employment(new DateTime(2010, 3, 1, 1, 1), new DateTime(2010, 9, 1, 1, 1), "HTW Berlin", "Tutor für Mathematik", "http://www.htw-berlin.de", new String[] {
+                    "Vorbereitung und Durchführung von 2 Tutorien pro Woche", "Beantwortung von Fragen per E-Mail" }));
+            empl.add(new Employment(new DateTime(2009, 4, 1, 1, 1), new DateTime(2009, 12, 1, 1, 1), "Café Anna Blume", "Team-Mitarbeiter", "http://www.cafe-anna-blume.de", new String[] {
+                    "vorbereiten", "servieren" }));
+            empl.add(new Employment(new DateTime(2008, 6, 1, 1, 1), new DateTime(2009, 3, 1, 1, 1), "Caritas", "Zivildienst", "http://www.invia-center-berlin.de", new String[] { "Kochen", "Catering",
+                    "Für Gäste sorgen", "Vorbereitung", "Servieren", "Praktikanten einweisen", "Lieferungen" }));
         } else {
-            empl.add(new Employment(
-                    new DateTime(2012,4,1,1,1),
-                    null,
-                    "Freelancer", "", "http://www.julius-seltenheim.com",
-                    new String[] {"Webdevelopment",
-                        "Softwaredevelopment",
-                        "Databasedevelopment",
-                    "Consulting"}));
-            empl.add(new Employment(
-                    new DateTime(2011,5,1,1,1),
-                    new DateTime(2011,12,1,1,1),
-                    "HTW Berlin", "Student Research Assistant", "http://www-en.htw-berlin.de",
-                    new String[] {"Prototyping",
-                    "General Tasks"}));
-            empl.add(new Employment(
-                    new DateTime(2010,10,1,1,1),
-                    new DateTime(2011,2,1,1,1),
-                    "Canary Data Solutions Ltd", ".Net Developer Intern", "http://canary.co.nz",
-                    new String[] {"Software Development",
-                        "Customer Support",
-                        "Maintenance",
-                    "Refactoring"}));
-            empl.add(new Employment(
-                    new DateTime(2010,3,1,1,1),
-                    new DateTime(2010,9,1,1,1),
-                    "HTW Berlin", "Tutor for Math", "http://www-en.htw-berlin.de",
-                    new String[] {"Prepare and perform 2 tutorials per week",
-                    "E-mail support"}));
-            empl.add(new Employment(
-                    new DateTime(2009,4,1,1,1),
-                    new DateTime(2009,12,1,1,1),
-                    "Café Anna Blume", "Staff", "http://www.cafe-anna-blume.de",
-                    new String[] {"Preparing",
-                    "Serving"}));
-            empl.add(new Employment(
-                    new DateTime(2008,6,1,1,1),
-                    new DateTime(2009,3,1,1,1),
-                    "Caritas", "Compulsory Community Service", "http://www.invia-center-berlin.de",
-                    new String[] {"Cooking",
-                        "Catering",
-                        "Care for guests",
-                        "Preparing",
-                        "Serving",
-                        "Briefing Interns",
-                    "Delivery"}));
+            empl.add(new Employment(new DateTime(2012, 4, 1, 1, 1), null, "Freelancer", "", "http://www.julius-seltenheim.com", new String[] { "Webdevelopment", "Softwaredevelopment",
+                    "Databasedevelopment", "Consulting" }));
+            empl.add(new Employment(new DateTime(2011, 5, 1, 1, 1), new DateTime(2011, 12, 1, 1, 1), "HTW Berlin", "Student Research Assistant", "http://www-en.htw-berlin.de", new String[] {
+                    "Prototyping", "General Tasks" }));
+            empl.add(new Employment(new DateTime(2010, 10, 1, 1, 1), new DateTime(2011, 2, 1, 1, 1), "Canary Data Solutions Ltd", ".Net Developer Intern", "http://canary.co.nz", new String[] {
+                    "Software Development", "Customer Support", "Maintenance", "Refactoring" }));
+            empl.add(new Employment(new DateTime(2010, 3, 1, 1, 1), new DateTime(2010, 9, 1, 1, 1), "HTW Berlin", "Tutor for Math", "http://www-en.htw-berlin.de", new String[] {
+                    "Prepare and perform 2 tutorials per week", "E-mail support" }));
+            empl.add(new Employment(new DateTime(2009, 4, 1, 1, 1), new DateTime(2009, 12, 1, 1, 1), "Café Anna Blume", "Staff", "http://www.cafe-anna-blume.de",
+                    new String[] { "Preparing", "Serving" }));
+            empl.add(new Employment(new DateTime(2008, 6, 1, 1, 1), new DateTime(2009, 3, 1, 1, 1), "Caritas", "Compulsory Community Service", "http://www.invia-center-berlin.de", new String[] {
+                    "Cooking", "Catering", "Care for guests", "Preparing", "Serving", "Briefing Interns", "Delivery" }));
         }
 
         List<Education> edus = new ArrayList<Education>();
         if (langKey.equals("de")) {
             edus.add(new Education("2012", "(2014)", "HTW Berlin", "http://www.htw-berlin.de/", "---", "", "M.Sc. in Internationaler Medieninformatik", "Spezialisierung: Visual Computing"));
-            edus.add(new Education("2009", "2012", "HTW Berlin", "http://www.htw-berlin.de/", "1.3, sehr gut (A)", "", "B.Sc. in Internationaler Medieninformatik",""));
-            edus.add(new Education("2001", "2008", "Hans und Hilde Coppi Gymnasium, Berlin", "http://www.coppi-gym.de/", "2.1", "", "Abitur",""));
+            edus.add(new Education("2009", "2012", "HTW Berlin", "http://www.htw-berlin.de/", "1.3, sehr gut (A)", "", "B.Sc. in Internationaler Medieninformatik", ""));
+            edus.add(new Education("2001", "2008", "Hans und Hilde Coppi Gymnasium, Berlin", "http://www.coppi-gym.de/", "2.1", "", "Abitur", ""));
         } else {
-            edus.add(new Education("2012", "(2014)", "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "---", "", "M.Sc. in International Media and Computing", "Specialisation: Visual Computing"));
-            edus.add(new Education("2009", "2012", "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "1.3, very good (A)", "", "B.Sc. in International Media and Computing",""));
-            edus.add(new Education("2001", "2008", "Hans und Hilde Coppi Gymnasium, Berlin", "http://www.coppi-gym.de/", "2.1", "", "Abitur",""));
+            edus.add(new Education("2012", "(2014)", "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "---", "", "M.Sc. in International Media and Computing",
+                    "Specialisation: Visual Computing"));
+            edus.add(new Education("2009", "2012", "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "1.3, very good (A)", "", "B.Sc. in International Media and Computing",
+                    ""));
+            edus.add(new Education("2001", "2008", "Hans und Hilde Coppi Gymnasium, Berlin", "http://www.coppi-gym.de/", "2.1", "", "Abitur", ""));
         }
 
-        return ok(views.html.profile.render(empl,edus));
+        return ok(views.html.profile.render(empl, edus));
     }
 
     public static Result skills(String langKey) {
@@ -169,17 +104,9 @@ public class Application extends Controller {
         final List<SkillGroup> skillGroups = new ArrayList<SkillGroup>();
         final boolean isDe = langKey.equals("de");
 
-        final String description = isDe ?
-                "<p>"+
-                "Hier finden sie einen Auszug aus der Liste meiner technischen Qualifikationen.<br>"+
-                "Auf Soft Skills gehe ich an dieser Stelle nicht ein.<br>"+
-                "Jedoch stehe ich gerne für ein Gespräch bereit, in dem sie sich ein Bild von meiner Persönlichkeit machen können."+
-                "</p>" :
-                    "<p>"+
-                    "This page contains an excerpt of my technical qualifications.<br>"+
-                    "Feel free to contact me to get an image of my personality."+
-                    "</p>";
-
+        final String description = isDe ? "<p>" + "Hier finden sie einen Auszug aus der Liste meiner technischen Qualifikationen.<br>" + "Auf Soft Skills gehe ich an dieser Stelle nicht ein.<br>"
+                + "Jedoch stehe ich gerne für ein Gespräch bereit, in dem sie sich ein Bild von meiner Persönlichkeit machen können." + "</p>" : "<p>"
+                + "This page contains an excerpt of my technical qualifications.<br>" + "Feel free to contact me to get an image of my personality." + "</p>";
 
         List<Skill> skills;
 
@@ -197,7 +124,7 @@ public class Application extends Controller {
         skills.add(new Skill("Eclipse", 0.7));
         skills.add(new Skill("NetBeans", 0.6));
         skillGroups.add(new SkillGroup("IDEs", skills));
-        
+
         skills = new ArrayList<Skill>();
         skills.add(new Skill("Windows", 1));
         skills.add(new Skill("Mac OS X 10.x", 0.3));
@@ -208,7 +135,7 @@ public class Application extends Controller {
         skills.add(new Skill(isDe ? "Relationelle Datenbanken entwerfen" : "Database Engineering", 0.75));
         skills.add(new Skill("MySQL", 0.7));
         skills.add(new Skill("MSSQL", 0.4));
-        skillGroups.add(new SkillGroup(isDe? "Netzwerke & Datenbanken" : "Networking & Databases", skills));
+        skillGroups.add(new SkillGroup(isDe ? "Netzwerke & Datenbanken" : "Networking & Databases", skills));
 
         skills = new ArrayList<Skill>();
         skills.add(new Skill("Play! Framework 2", 0.75));
@@ -220,25 +147,24 @@ public class Application extends Controller {
         skills.add(new Skill("XNA 4", 0.55));
         skills.add(new Skill("Processing", 0.90));
         skillGroups.add(new SkillGroup(isDe ? "Frameworks & Bibliotheken" : "Frameworks & Libraries", skills));
-        
+
         skills = new ArrayList<Skill>();
         skills.add(new Skill("SVN", 0.85));
         skills.add(new Skill("Git", 0.70));
         skillGroups.add(new SkillGroup(isDe ? "Versionierungstools" : "Source Code Management", skills));
-        
+
         skills = new ArrayList<Skill>();
         skills.add(new Skill("Maven", -1));
         skills.add(new Skill("Ivy", -1));
         skills.add(new Skill("Sbt", -1));
         skillGroups.add(new SkillGroup("Dependency Management & Build tools", skills));
 
-
-        return ok(views.html.skills.render(Html.apply(description),skillGroups));
+        return ok(views.html.skills.render(Html.apply(description), skillGroups));
     }
 
     public static Result autoSelectLanguage() {
 
-        if(request().host().endsWith(".de"))
+        if (request().host().endsWith(".de"))
             return redirect(routes.Application.index("de"));
         else
             return redirect(routes.Application.index("en"));
@@ -257,7 +183,7 @@ public class Application extends Controller {
     }
 
     public static String getCurrentRouteWithOtherLang(String langKey) {
-        return  "/"+langKey+request().uri().substring(3);
+        return "/" + langKey + request().uri().substring(3);
     }
 
     public static Html messages(String key) {
@@ -269,38 +195,16 @@ public class Application extends Controller {
     }
 
     public static Result register() {
-        //        final Form<RegisterFormData> filledForm = registerForm.bindFromRequest();
-        //
-        //        Result result;
-        //        if (filledForm.hasErrors()) {
-        //            result = badRequest(index.render(filledForm, credentialsForm));
-        //        } else {
-        //            final RegisterFormData register = filledForm.get();
-        //            User userWithSameMail = User.findByEmail(register.getEmail());
-        //
-        //            if (userWithSameMail != null) {
-        //                filledForm.reject("email", "Email already exists.");
-        //                result = badRequest(index.render(filledForm, credentialsForm));
-        //            } else {
-        //                User user = UsersController.createAndSaveUser(register.getEmail(), register.getPassword());
-        //                session(SESSION_KEY_USERID, "" + user.getId());
-        //                session(SESSION_KEY_EMAIL, user.getEmail());
-        //                session(SESSION_KEY_USERNAME, user.getUsername());
-        //                result = redirect(routes.UsersController.home());
-        //            }
-        //        }
-        //        return result;
         return TODO;
     }
 
     public static Result login(String langKey) throws JsonGenerationException, JsonMappingException, IOException {
         final Form<CredentialsFormData> filledForm = credentialsForm.bindFromRequest();
 
-        //Logger.debug(filledForm.toString());
-
+        // Logger.debug(filledForm.toString());
 
         Result result;
-        if (UsersController.getLoggedInUser() != null){
+        if (UsersController.getLoggedInUser() != null) {
             result = redirect(routes.Application.index(langKey));
 
         } else if (filledForm.hasErrors()) {
@@ -327,5 +231,22 @@ public class Application extends Controller {
     public static User authenticate(String username, String password) {
         User user = User.findByNameAndPassword(username, password);
         return user;
+    }
+    
+    private static final class NewestProjectsFirstComparator implements Comparator<Project> {
+        @Override
+        public int compare(Project o1, Project o2) {
+            final DateTime end1 = o1.getDevelopmentEnd();
+            final DateTime end2 = o2.getDevelopmentEnd();
+            if(end1 == null && end2 == null) {
+                return 0;
+            } else if(end1 == null) {
+                return 1;
+            } else if(end2 == null) {
+                return -1;
+            } else {
+                return -end1.compareTo(end2);
+            }
+        }
     }
 }

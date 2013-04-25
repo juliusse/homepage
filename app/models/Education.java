@@ -1,14 +1,9 @@
 package models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-import play.db.ebean.Model;
 
 
-public class Education extends Model{
-    
-    @Id
+public class Education {
+
     private Long id;
     
     private String fromYear;

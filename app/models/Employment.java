@@ -1,20 +1,13 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
 import org.joda.time.DateTime;
 
-import play.db.ebean.Model;
 
+public class Employment {
 
-public class Employment extends Model {
-
-    @Id
     private Long id;
     
     private DateTime from;

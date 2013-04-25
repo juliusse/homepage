@@ -1,7 +1,5 @@
 package models;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
 import service.database.CouchDBDatabaseService;
 
 

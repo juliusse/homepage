@@ -1,21 +1,13 @@
 package models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
-import play.db.ebean.Model;
-import scalax.io.KnownName;
 
 
-public class Skill extends Model{
+public class Skill {
 
-    @Id
     private Long id;
     
     private String name;
     private double knowledge;
-    @ManyToOne
     private SkillGroup skillGroup;
     
     public Skill() {
