@@ -2,7 +2,8 @@
 
 @import controllers.Application 
 
-@defining(Application.getSessionLang()) { langKey => @main("menu_profile") {
+@defining(Application.getSessionLang()) { langKey => 
+@layout("menu_profile") {
 <div>
 	@description
 	<table class="profile">

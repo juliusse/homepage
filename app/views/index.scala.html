@@ -5,7 +5,7 @@
 
 @defining(Application.getSessionLang()) { langKey =>
 
-@main("menu_home") {
+@layout("menu_home") {
     <div>
     <div itemscope itemtype="http://data-vocabulary.org/Person">
         <h3> @Application.messages("home_welcome") </h3>
@@ -30,7 +30,7 @@
                 </td>
                 <td>
                     <span class="place"> @project.getTitle() </span>
-                    <span id="hint">[<a href="@routes.ProjectsController.index(langKey)#@project.getId()"> @Application.messages("home_more") </a>]</span><br>
+                    <span id="hint">[<a href="@routes.ProjectsController.index(langKey,"")#@project.getId()"> @Application.messages("home_more") </a>]</span><br>
                      @Application.messages("home_categories"): 
                     
                     @for(projectType <- project.getTypeOf()) {
@@ -58,7 +58,7 @@
                 </td>
                 <td>
                     <span class="place"> @project.getTitle() </span>
-                    <span id="hint">[<a href="@routes.ProjectsController.index(langKey)#@project.getId()"> @Application.messages("home_more") </a>]</span><br>
+                    <span id="hint">[<a href="@routes.ProjectsController.index(langKey,"")#@project.getId()"> @Application.messages("home_more") </a>]</span><br>
                      @Application.messages("home_categories"): 
                     
                     @for(projectType <- project.getTypeOf()) {

@@ -40,35 +40,15 @@ public class ProjectsController extends Controller {
 
     public static final Form<ProjectFormData> projectForm = Form.form(ProjectFormData.class);
 
-    public Result index(String langKey) throws IOException {
+    public Result index(String langKey, String type) throws IOException {
         Application.setSessionLang(langKey);
 
-        List<Project> projects = databaseService.findAllProjects();
-        Collections.sort(projects, new Comparator<Project>() {
-
-            @Override
-            public int compare(Project o1, Project o2) {
-                final DateTime p1End = o1.getDevelopmentEnd();
-                final DateTime p2End = o2.getDevelopmentEnd();
-                if (p1End == null && p2End == null) {
-                    return 0;
-                } else if (p1End == null) {
-                    return -1;
-                } else if (p2End == null) {
-                    return 1;
-                } else {
-                    return -p1End.compareTo(p2End);
-                }
-            }
-        });
-        Logger.debug("number of Projects: " + projects.size());
-        return ok(views.html.projects.render(projects));
-    }
-
-    public Result index2(String langKey, String type) throws IOException {
-        Application.setSessionLang(langKey);
-
-        List<Project> projects = databaseService.findProjectsOfType(ProjectType.valueOf(type));
+        List<Project> projects = null;
+        if(!type.isEmpty()) {
+            projects = databaseService.findProjectsOfType(ProjectType.valueOf(type));
+        } else {
+            projects = databaseService.findAllProjects();
+        }
         Collections.sort(projects, new Comparator<Project>() {
 
             @Override
@@ -137,7 +117,7 @@ public class ProjectsController extends Controller {
                 updateProject(data.getId(), project);
             }
 
-            return redirect(routes.ProjectsController.index(Application.getSessionLang()));
+            return redirect(routes.ProjectsController.index(Application.getSessionLang(),""));
         }
 
     }

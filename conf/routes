@@ -12,8 +12,8 @@ GET		/:langKey/profile			@controllers.Application.profile(langKey:String)
 GET		/:langKey/skills			@controllers.Application.skills(langKey:String)
 GET		/:langKey/contact			@controllers.Application.contact(langKey:String)
 
-GET		/:langKey/projects			@controllers.ProjectsController.index(langKey:String)
-GET		/:langKey/projects/:projectType	@controllers.ProjectsController.index2(langKey:String,projectType:String)
+GET		/:langKey/projects			@controllers.ProjectsController.index(langKey:String,projectType:String = "")
+GET		/:langKey/projects/:projectType	@controllers.ProjectsController.index(langKey:String,projectType:String)
 
 GET		/:langKey/project/add		@controllers.ProjectsController.renderAdd(langKey:String)
 GET		/:langKey/project/:projectId @controllers.ProjectsController.renderEdit(langKey:String, projectId: String)
