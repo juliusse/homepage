@@ -291,3 +291,21 @@ ul.navigation li.active ul {
     display: none;
 }
 
+div.emptyStars {
+	background: url("/assets/images/star_empty.png") repeat-x;
+	background-size: 12px;
+	width: 120px;
+	position:absolute;
+	height: 12px;
+	margin-left: 10px;
+	
+}
+
+div.fullStars {
+	background: url("/assets/images/star_full.png") repeat-x;
+	background-size: 12px;
+	position:absolute;
+	height: 12px;
+	margin-left: 10px;
+}
+

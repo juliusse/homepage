@@ -1,4 +1,4 @@
-@(description: Html, skillGroups: List[models.SkillGroup]) 
+@(description: Html, skillGroups: List[services.database.SkillGroup]) 
 
 @import controllers.Application 
 
@@ -21,28 +21,63 @@
 			<td>@for(skill <- skillGroup.getSkills()) { 
 				@skill.getName()<br> 
 				}
+				@if(UsersController.isLoggedIn()) {
+					<form action="@routes.SkillsController.addSkill(Application.getSessionLang(),skillGroup.getId())" method="POST">
+					<input name="name" placeholder="Name"><br>
+					<button type="submit">Hinzufügen</button>
+				</form>
+				}
 			</td>
 			<td style="text-align: right; padding-bottom: 10px;">
 			@for(skill <- skillGroup.getSkills()) { 
-				@if(skill.getKnowledge() >= 0) {
-				@defining(skill.getKnowledge() * 10) { knowledge =>
-				@*@skill.getKnowledge(); @knowledge*@
-				@for(index <- 1 to 10) {
-					
-					@if(knowledge + 0.5 >= index) {
-						<img style="height: 10px" src="@routes.Assets.at("images/star_full.png")" alt="star">
-					} else {@if(knowledge+1.5 >= index) {
-						<img style="height: 10px" src="@routes.Assets.at("images/star_half.png")" alt="star">
-					} else {
-						<img style="height: 10px" src="@routes.Assets.at("images/star_empty.png")" alt="star">
-					}}
+				<div id="empty-@langKey-@skillGroup.getId()-@skill.getName()" class="emptyStars"></div>
+				<div id="full-@langKey-@skillGroup.getId()-@skill.getName()" class="fullStars" style="width:@(skill.getKnowledge()* 120)px;"></div><br>
+				
 				}
-				}
-				}
-				<br> }
+			</td>
+		</tr>
+		}
+		@if(UsersController.isLoggedIn()) {
+		<tr>
+			<td>
+				<form action="@routes.SkillsController.addSkillGroup(Application.getSessionLang())" method="POST">
+					<input name="nameDe" placeholder="Deutscher Titel"><br>
+					<input name="nameEn" placeholder="Englischer Titel"><br>
+					<button type="submit">Hinzufügen</button>
+				</form>
 			</td>
 		</tr>
 		}
 	</table>
 </div>
+
+@if(UsersController.isLoggedIn()) {
+<script type="text/javascript">
+$('.emptyStars').click(function(e) {
+	var posX = $(this).offset().left;
+	updateKnowledge($(this).attr("id"), (e.pageX - posX)/120.0);
+});
+
+$('.fullStars').click(function(e) {
+	var posX = $(this).offset().left;
+	updateKnowledge($(this).attr("id"), (e.pageX - posX)/120.0);
+});
+
+var updateKnowledge = function(id, value) {
+	var langKey, skillGroupId, skillName;
+	var parts = id.split("-");
+	langKey = parts[1];
+	skillGroupId = parts[2];
+	skillName = parts[3];
+	
+	$.ajax({
+		  type: "POST",
+		  url: "/"+langKey+"/skillgroup/"+skillGroupId+"/"+encodeURIComponent(skillName)+"/setLevel",
+		  data: "level="+value,
+		  success: function() {location.reload();},
+		});
+} 
+</script>
+}
+
 } }

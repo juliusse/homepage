@@ -9,8 +9,15 @@ POST	/rest/project				@controllers.ProjectsController.changeProject()
 
 GET		/:langKey/home				@controllers.Application.index(langKey:String)
 GET		/:langKey/profile			@controllers.Application.profile(langKey:String)
-GET		/:langKey/skills			@controllers.Application.skills(langKey:String)
+
 GET		/:langKey/contact			@controllers.Application.contact(langKey:String)
+
+# skills
+GET		/:langKey/skills			@controllers.SkillsController.index(langKey:String)
+POST	/:langKey/skillgroup/add	@controllers.SkillsController.addSkillGroup(langKey:String)
+POST	/:langKey/skillgroup/:skillGroupId/addSkill	@controllers.SkillsController.addSkill(langKey:String,skillGroupId:String)
+POST	/:langKey/skillgroup/:skillGroupId/:skillName/setLevel	@controllers.SkillsController.setSkillLevel(langKey:String,skillGroupId:String,skillName:String)
+
 
 GET		/:langKey/projects			@controllers.ProjectsController.index(langKey:String,projectType:String = "")
 GET		/:langKey/projects/:projectType	@controllers.ProjectsController.index(langKey:String,projectType:String)

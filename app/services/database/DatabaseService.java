@@ -10,9 +10,12 @@ import services.database.Project.ProjectType;
 @Component
 public interface DatabaseService {
 
+    // User methods
     User upsertUser(User user) throws IOException;
+
     User findUserByName(String name) throws IOException;
-    
+
+    // Project methods
     Project findProjectById(String projectId) throws IOException;
 
     List<Project> findAllProjects() throws IOException;
@@ -22,7 +25,16 @@ public interface DatabaseService {
     List<Project> findProjectsForCurrent() throws IOException;
 
     List<Project> findProjectsOfType(ProjectType type) throws IOException;
-    
+
     Project upsertProject(Project project) throws IOException;
+
+    // SkillGroup methods
+    SkillGroup findSkillGroupById(String skillGroupId) throws IOException;
+
+    List<SkillGroup> findAllSkillGroups() throws IOException;
+
+    SkillGroup upsertSkillGroup(SkillGroup skillGroup) throws IOException;
+
+    SkillGroup addSkillToGroup(String skillGroupId, Skill skill) throws IOException;
 
 }
