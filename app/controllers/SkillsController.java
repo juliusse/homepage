@@ -40,8 +40,6 @@ public class SkillsController extends Controller {
                 + "Jedoch stehe ich gerne für ein Gespräch bereit, in dem sie sich ein Bild von meiner Persönlichkeit machen können." + "</p>" : "<p>"
                 + "This page contains an excerpt of my technical qualifications.<br>" + "Feel free to contact me to get an image of my personality." + "</p>";
 
-        List<Skill> skills;
-
         // skills = new ArrayList<Skill>();
         // skills.add(new Skill("C#", 0.75));
         // skills.add(new Skill("PHP", 0.75));

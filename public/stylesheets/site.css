@@ -77,7 +77,17 @@ div.menu{
     float: left;
     width: 180px;
     padding:0 0 0 0;
-    margin: 0 20px 10px 0;
+    margin-left: 20px;
+}
+
+div.menu h2 {
+	color: #808080;
+	font-size: 2.1em;
+}
+
+div.menu li a {
+	font-family: Arial;
+	font-size: 1.2em;
 }
 
 
@@ -308,4 +318,6 @@ div.fullStars {
 	height: 12px;
 	margin-left: 10px;
 }
+
+
 

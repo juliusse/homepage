@@ -1,6 +1,5 @@
 package controllers;
 
-import static controllers.secured.OnlyLoggedIn.SESSION_KEY_EMAIL;
 import static controllers.secured.OnlyLoggedIn.SESSION_KEY_USERNAME;
 
 import java.io.IOException;
@@ -29,8 +28,8 @@ public class UsersController extends Controller {
     
     @Security.Authenticated(OnlyLoggedIn.class)
     public Result logout() {
-        Logger.debug("logout " + session(SESSION_KEY_EMAIL));
-        session().clear();
+        Logger.debug("logout " + session(SESSION_KEY_USERNAME));
+        session().remove(SESSION_KEY_USERNAME);
         return redirect(routes.Application.index(Application.getSessionLang()));
     }
 
