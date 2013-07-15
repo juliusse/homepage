@@ -1,9 +1,5 @@
 package controllers;
 
-import static controllers.Secured.SESSION_KEY_EMAIL;
-import static controllers.Secured.SESSION_KEY_USERNAME;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,41 +11,40 @@ import models.Employment;
 import models.Project;
 import models.Skill;
 import models.SkillGroup;
-import models.User;
-import models.forms.CredentialsFormData;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import play.Logger;
 import play.api.templates.Html;
-import play.data.Form;
 import play.i18n.Lang;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
-import views.html.contact;
-import views.html.index;
+import service.database.DatabaseService;
 
+
+@Component
 public class Application extends Controller {
-    private static final Form<CredentialsFormData> credentialsForm = Form.form(CredentialsFormData.class);
     public final static String SESSION_LANGKEY = "langkey";
     
-    public static Result index(String langKey) {
+    @Autowired
+    private DatabaseService databaseService;
+    
+    public Result index(String langKey) {
         setSessionLang(langKey);
-        List<Project> spProjects = Project.findForStartpage();
+        List<Project> spProjects = databaseService.findProjectsForStartPage();
         Collections.sort(spProjects, new NewestProjectsFirstComparator());
-        return ok(index.render(Project.findCurrent(), spProjects));
+        return ok(views.html.index.render(databaseService.findProjectsForCurrent(), spProjects));
     }
 
-    public static Result contact(String langKey) {
+    public Result contact(String langKey) {
         setSessionLang(langKey);
 
-        return ok(contact.render());
+        return ok(views.html.contact.render());
     }
 
-    public static Result profile(String langKey) {
+    public Result profile(String langKey) {
         setSessionLang(langKey);
 
         List<Employment> empl = new ArrayList<Employment>();
@@ -153,7 +148,7 @@ public class Application extends Controller {
         return ok(views.html.profile.render(empl, edus));
     }
 
-    public static Result skills(String langKey) {
+    public Result skills(String langKey) {
         setSessionLang(langKey);
 
         final List<SkillGroup> skillGroups = new ArrayList<SkillGroup>();
@@ -217,7 +212,7 @@ public class Application extends Controller {
         return ok(views.html.skills.render(Html.apply(description), skillGroups));
     }
 
-    public static Result autoSelectLanguage() {
+    public Result autoSelectLanguage() {
 
         if (request().host().endsWith(".de"))
             return redirect(routes.Application.index("de"));
@@ -247,45 +242,6 @@ public class Application extends Controller {
 
     public static String toLower(String string) {
         return string.toLowerCase();
-    }
-
-    public static Result register() {
-        return TODO;
-    }
-
-    public static Result login(String langKey) throws JsonGenerationException, JsonMappingException, IOException {
-        final Form<CredentialsFormData> filledForm = credentialsForm.bindFromRequest();
-
-        // Logger.debug(filledForm.toString());
-
-        Result result;
-        if (UsersController.getLoggedInUser() != null) {
-            result = redirect(routes.Application.index(langKey));
-
-        } else if (filledForm.hasErrors()) {
-            result = badRequest(views.html.login.render());
-
-        } else {
-            final CredentialsFormData credentials = filledForm.get();
-            User user = authenticate(credentials.getUsername(), credentials.getPassword());
-            final boolean authenticationSuccessful = user != null;
-            if (authenticationSuccessful) {
-                session(SESSION_KEY_EMAIL, user.getEmail());
-                session(SESSION_KEY_USERNAME, user.getUsername());
-
-                result = redirect(routes.Application.index(langKey));
-            } else {
-                filledForm.reject("The credentials doesn't match any user.");
-                Logger.debug(credentials.getUsername() + " is unauthorized");
-                result = unauthorized(views.html.login.render());
-            }
-        }
-        return result;
-    }
-
-    public static User authenticate(String username, String password) {
-        User user = User.findByNameAndPassword(username, password);
-        return user;
     }
     
     private static final class NewestProjectsFirstComparator implements Comparator<Project> {

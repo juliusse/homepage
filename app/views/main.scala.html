@@ -51,7 +51,7 @@
 			    <li>
 			        <a href="@routes.ProjectsController.index(langKey)">@Application.messages("menu_projects")</a>
 			        <ul class="invisible">
-			        	@if(UsersController.getLoggedInUser() != null) {
+			        	@if(UsersController.isLoggedIn()) {
 			        	<li>
 			                <a href="@routes.ProjectsController.renderAdd(langKey)">@Application.messages("menu_add_project")</a>
 			            </li>

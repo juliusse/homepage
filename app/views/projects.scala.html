@@ -19,7 +19,7 @@
                 }
                 
             </div>
-            @if(session.get(controllers.Secured.SESSION_KEY_EMAIL) != null) {
+            @if(session.get(controllers.UsersController.isLoggedIn())) {
 	            <div id="buttons"> 
 	                    <a href="@routes.ProjectsController.renderEdit(langKey,project.getId())">Edit</a>
 	                    &nbsp; 
@@ -30,7 +30,7 @@
             }
 
             <div id="image">
-                <img src="@routes.ProjectsController.image(project.getId())"/>
+                <img src="@project.getMainImagePath()"/>
             </div>
             <div id="description">
          		@project.getDescriptionAsHtml() 

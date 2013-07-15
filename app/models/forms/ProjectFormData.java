@@ -53,12 +53,10 @@ public class ProjectFormData {
         this.devStart = project.getDevelopmentStartString();
         this.displayOnFrontpage = project.getDisplayOnStartPage();
         this.id = project.getId();
-        this.image = project.getMainImage();
         this.isApplication = project.getTypeOf().contains(ProjectType.Application);
         this.isWeb = project.getTypeOf().contains(ProjectType.Website);
         this.isGame = project.getTypeOf().contains(ProjectType.Game);
         this.technologiesString = Joiner.on(";").join(project.getTechnologies());
-        this.upload = project.getFile();
     }
 
     public String getId() {

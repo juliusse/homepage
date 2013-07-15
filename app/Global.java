@@ -1,5 +1,7 @@
 import java.lang.reflect.Method;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
@@ -10,11 +12,17 @@ import play.mvc.Http;
 public class Global extends GlobalSettings {
 
     @Override
-    public void onStart(Application arg0) {
-        super.onStart(arg0);
+    public void onStart(Application application) {
+        initializeSpring();
+        
+        super.onStart(application);
         
     }
     
+    private void initializeSpring() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+        configuration.SpringConfiguration.initializeContext(context);
+    }
     
     @SuppressWarnings("rawtypes")
     @Override

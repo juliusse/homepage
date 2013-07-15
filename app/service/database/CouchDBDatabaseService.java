@@ -1,19 +1,13 @@
 package service.database;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import models.ModelBase;
 import models.Project;
 import models.User;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.ektorp.AttachmentInputStream;
-import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
 import org.ektorp.ViewQuery;
@@ -26,7 +20,7 @@ import org.ektorp.impl.StdCouchDbInstance;
 
 import play.Logger;
 
-public class CouchDBDatabaseService {
+public class CouchDBDatabaseService implements DatabaseService {
     private static CouchDbConnector db;
     private static ObjectMapper objectMapper = new ObjectMapper();
 
@@ -48,71 +42,81 @@ public class CouchDBDatabaseService {
         return db;
     }
 
-    public static User getUserByName(String name) {
+    /* (non-Javadoc)
+     * @see service.database.DatabaseService#findUserByName(java.lang.String)
+     */
+    @Override
+    public User findUserByName(String name) {
         ViewQuery query = new ViewQuery().designDocId("_design/v1/").viewName("user").key(name);
         return getUniqueDocument(User.class, query);
     }
     
-    public static User getUserByMail(String email) {
-        ViewQuery query = new ViewQuery().designDocId("_design/v1/").viewName("user").key(email);
-        return getUniqueDocument(User.class, query);
+    @Override
+    public User upsertUser(User user) {
+        // TODO Auto-generated method stub
+        return null;
     }
     
-    public static User getUserByNameAndPassword(String name, String password) {
-        ViewQuery query = new ViewQuery()
-                    .designDocId("_design/v1/")
-                    .viewName("user")
-                    .key(ComplexKey.of(name,password));
-        
-        User user = getUniqueDocument(User.class, query);
-        return user;
+    @Override
+    public Project findProjectById(String projectId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Project upsertProject(Project project) {
+        // TODO Auto-generated method stub
+        return null;
     }
     
-    public static List<Project> getAllProjects() {
+    /* (non-Javadoc)
+     * @see service.database.DatabaseService#findAllProjects()
+     */
+    @Override
+    public List<Project> findAllProjects() {
         ViewQuery query = new ViewQuery().designDocId("_design/v1/").viewName("projects").key("project");
         return getListOfDocument(Project.class, query);
     }
     
-    public static List<Project> getProjectsForStartPage() {
+    /* (non-Javadoc)
+     * @see service.database.DatabaseService#findProjectsForStartPage()
+     */
+    @Override
+    public List<Project> findProjectsForStartPage() {
         ViewQuery query = new ViewQuery().designDocId("_design/v1/").viewName("projects").key("startpage");
         return getListOfDocument(Project.class, query);
     }
     
-    public static List<Project> getProjectsForCurrent() {
+    /* (non-Javadoc)
+     * @see service.database.DatabaseService#findProjectsForCurrent()
+     */
+    @Override
+    public List<Project> findProjectsForCurrent() {
         ViewQuery query = new ViewQuery().designDocId("_design/v1/").viewName("projects").key("current");
         return getListOfDocument(Project.class, query);
     }
     
-    public static List<Project> getProjectsOfType(String typeString) {
+    /* (non-Javadoc)
+     * @see service.database.DatabaseService#findProjectsOfType(java.lang.String)
+     */
+    @Override
+    public List<Project> findProjectsOfType(String typeString) {
         ViewQuery query = new ViewQuery().designDocId("_design/v1/").viewName("projects").key(typeString);
         return getListOfDocument(Project.class, query);
     }
     
-    public static <A> A getById(Class<A> clazz, String id) {
+    public <A> A getById(Class<A> clazz, String id) {
         return getDbConnection().get(clazz, id);
     }
     
-    public static void createDocument(Object o) {
+    public void createDocument(Object o) {
         getDbConnection().create(o);
     }
     
-    public static void updateDocument(Object o) {
+    public void updateDocument(Object o) {
         getDbConnection().update(o);
     }
-    
-    public static void saveAttachmentForDocument(ModelBase model, File attachment, String attachmentName, String fileType) {
-        try {
-        AttachmentInputStream in = new AttachmentInputStream(attachmentName, new FileInputStream(attachment), fileType);
-        getDbConnection().createAttachment(model.getId(), model.getRevision(), in);
-        } catch(Exception e) {
-            Logger.error("Error saving attachement",e);
-        }
-    }
-    
-    public static InputStream getAttachmentForDocument(ModelBase model, String attachmentName) {
-        return getDbConnection().getAttachment(model.getId(), attachmentName);
-    }
-    
+
     private static <A> List<A> getListOfDocument(Class<A> clazz, ViewQuery query) {
         final ViewResult result = getDbConnection().queryView(query);
         
@@ -139,4 +143,8 @@ public class CouchDBDatabaseService {
     private static <A> A jsonToObject(Class<A> clazz, JsonNode json) {
         return objectMapper.convertValue(json, clazz);
     }
+
+
+
+
 }

@@ -1,37 +1,18 @@
 package models;
 
-import service.database.CouchDBDatabaseService;
 
 
-public class User extends ModelBase {
+public class User {
 
 	private String username;
 	private String email;
 	private String password;	
 
-	public User() {
-        setType("user");
-    }
-
     public User(String username, String email, String password) {
-        setType("user");
         this.username = username;
         this.email = email;
         this.password = password;
     }
-
-    public static User findByUsername(final String username) {
-        return CouchDBDatabaseService.getUserByName(username);//find.where().ieq("username", username).findUnique();
-    }
-    
-    public static User findByEmail(final String email) {
-    	return CouchDBDatabaseService.getUserByMail(email);
-    }
-    
-    public static User findByNameAndPassword(final String username, final String password) {
-        return CouchDBDatabaseService.getUserByNameAndPassword(username, password);
-    }
-
 
     public String getUsername() {
 		return username;

@@ -6,25 +6,32 @@ import java.util.Comparator;
 import java.util.List;
 
 import models.Project;
-import models.Project.ProjectType;
 import models.forms.ProjectFormData;
 
 import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import service.database.DatabaseService;
+import controllers.secured.OnlyLoggedIn;
 
+@Component
 public class ProjectsController extends Controller {
+    
+    @Autowired
+    private DatabaseService databaseService;
     
     public static final Form<ProjectFormData> projectForm = Form.form(ProjectFormData.class);
     
-    public static Result index(String langKey) {
+    public Result index(String langKey) {
         Application.setSessionLang(langKey);
         
-        List<Project> projects = Project.findAll();
+        List<Project> projects = databaseService.findAllProjects();
         Collections.sort(projects, new Comparator<Project>() {
 
             @Override
@@ -46,10 +53,10 @@ public class ProjectsController extends Controller {
         return ok(views.html.projects.render(projects));
     }
     
-    public static Result index2(String langKey,String type) {
+    public Result index2(String langKey,String type) {
         Application.setSessionLang(langKey);
         
-        List<Project> projects = Project.findByType(ProjectType.valueOf(type));
+        List<Project> projects = databaseService.findProjectsOfType(type);
         Collections.sort(projects, new Comparator<Project>() {
 
             @Override
@@ -69,35 +76,26 @@ public class ProjectsController extends Controller {
         });
         Logger.debug("number of Projects: "+projects.size());
         return ok(views.html.projects.render(projects));
-    }
-    
-    public static Result image(String projectId) {
-        Project proj = Project.findById(projectId);
-        if(proj == null) {
-            return badRequest();
-        }
-        
-        //response().setContentType("image/jpg");
-        return ok(proj.getMainImage());
     }
     
     //GET
-    public static Result renderAdd(String langKey) {
+    public Result renderAdd(String langKey) {
         Application.setSessionLang(langKey);
 
         return ok(views.html.projectAdd.render(projectForm));
     }
     
     //GET
-    public static Result renderEdit(String langKey,String projectId) {
+    @Security.Authenticated(OnlyLoggedIn.class)
+    public Result renderEdit(String langKey,String projectId) {
         Application.setSessionLang(langKey);
         
-        return ok(views.html.projectAdd.render(projectForm.fill(new ProjectFormData(Project.findById(projectId)))));
+        return ok(views.html.projectAdd.render(projectForm.fill(new ProjectFormData(databaseService.findProjectById(projectId)))));
     }
     
     //POST
-    @Security.Authenticated(Secured.class)
-    public static Result changeProject() throws IOException {
+    @Security.Authenticated(OnlyLoggedIn.class)
+    public Result changeProject() throws IOException {
         Form<ProjectFormData> filledForm = projectForm.bindFromRequest();
         Logger.debug(filledForm.data().toString());
         
@@ -105,15 +103,11 @@ public class ProjectsController extends Controller {
             return badRequest(filledForm.errorsAsJson());
         } else {
             ProjectFormData data = filledForm.get();
-            Project.createFromRequest(data);
+            //TODO merge project from request and from db
+            //Project.createFromRequest(data);
             return redirect(routes.ProjectsController.index(Application.getSessionLang()));
         }
         
-    }
-   
-    
-    public static Result deleteProject(String langKey, String projectId) {
-        return TODO;
     }
     
 }
