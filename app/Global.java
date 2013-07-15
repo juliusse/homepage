@@ -7,6 +7,8 @@ import play.GlobalSettings;
 import play.Logger;
 import play.mvc.Action;
 import play.mvc.Http;
+import services.filesystem.FileSystemService;
+import configuration.SpringConfiguration;
 
 
 public class Global extends GlobalSettings {
@@ -22,6 +24,7 @@ public class Global extends GlobalSettings {
     private void initializeSpring() {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         configuration.SpringConfiguration.initializeContext(context);
+        Logger.debug("di worked: "+(SpringConfiguration.getBean(FileSystemService.class) != null));
     }
     
     @SuppressWarnings("rawtypes")
@@ -30,6 +33,15 @@ public class Global extends GlobalSettings {
         logRequest(request, method);
 
         return super.onRequest(request, method);
+    }
+    
+    @Override
+    public <A> A getControllerInstance(Class<A> clazz) throws Exception {
+        A bean = SpringConfiguration.getBean(clazz);
+        if (bean == null) {
+            bean = super.getControllerInstance(clazz);
+        }
+        return bean;
     }
     
     private void logRequest(Http.Request request, Method method) {

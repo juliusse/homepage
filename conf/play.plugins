@@ -1,0 +1,4 @@
+
+380:info.schleichardt.play.embed.mongo.EmbedMongoPlugin
+400:plugins.mongo.MongoPlugin
+50000:plugins.FixturePlugin

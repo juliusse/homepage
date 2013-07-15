@@ -11,30 +11,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import controllers.secured.OnlyLoggedIn;
-import models.User;
 import models.forms.CredentialsFormData;
 import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import service.database.DatabaseService;
+import services.database.DatabaseService;
+import services.database.User;
 
 @Component
-@Security.Authenticated(OnlyLoggedIn.class)
 public class UsersController extends Controller {
     private static final Form<CredentialsFormData> credentialsForm = Form.form(CredentialsFormData.class);
     
     @Autowired
     private DatabaseService databaseService;
     
+    @Security.Authenticated(OnlyLoggedIn.class)
     public Result logout() {
         Logger.debug("logout " + session(SESSION_KEY_EMAIL));
         session().clear();
         return redirect(routes.Application.index(Application.getSessionLang()));
     }
 
-    public User getLoggedInUser() {
+    public User getLoggedInUser() throws IOException {
         String username = session(SESSION_KEY_USERNAME);
         if(username != null) {
             return databaseService.findUserByName(username);
@@ -59,7 +59,6 @@ public class UsersController extends Controller {
             User user = authenticate(credentials.getUsername(), credentials.getPassword());
             final boolean authenticationSuccessful = user != null;
             if (authenticationSuccessful) {
-                session(SESSION_KEY_EMAIL, user.getEmail());
                 session(SESSION_KEY_USERNAME, user.getUsername());
 
                 result = redirect(routes.Application.index(langKey));
@@ -72,7 +71,7 @@ public class UsersController extends Controller {
         return result;
     }
 
-    public User authenticate(String username, String password) {
+    public User authenticate(String username, String password) throws IOException {
         final User user = databaseService.findUserByName(username);
         if(user != null && user.getPassword().equals(password)) {
             return user;

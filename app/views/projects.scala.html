@@ -1,4 +1,4 @@
-@(projects: List[models.Project]) 
+@(projects: List[services.database.Project]) 
 
 @import controllers.Application 
 
@@ -19,7 +19,7 @@
                 }
                 
             </div>
-            @if(session.get(controllers.UsersController.isLoggedIn())) {
+            @if(controllers.UsersController.isLoggedIn()) {
 	            <div id="buttons"> 
 	                    <a href="@routes.ProjectsController.renderEdit(langKey,project.getId())">Edit</a>
 	                    &nbsp; 
@@ -30,7 +30,7 @@
             }
 
             <div id="image">
-                <img src="@project.getMainImagePath()"/>
+                <img src="@routes.ProjectsController.getImage(project.getId())"/>
             </div>
             <div id="description">
          		@project.getDescriptionAsHtml() 

@@ -17,6 +17,7 @@ GET		/:langKey/projects/:projectType	@controllers.ProjectsController.index2(lang
 
 GET		/:langKey/project/add		@controllers.ProjectsController.renderAdd(langKey:String)
 GET		/:langKey/project/:projectId @controllers.ProjectsController.renderEdit(langKey:String, projectId: String)
+GET		/project/:projectId/image	@controllers.ProjectsController.getImage(projectId: String)
 
 GET		/:langKey/Login				@controllers.UsersController.login(langKey)
 POST	/:langKey/Login				@controllers.UsersController.login(langKey)

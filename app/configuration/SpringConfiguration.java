@@ -14,6 +14,7 @@ import play.Play;
  * (Switch between mock and prod implementations)
  */
 @ComponentScan({"controllers", "services.database", "services.filesystem"})
+@org.springframework.context.annotation.Configuration
 //add here packages containing @Component annotated classes
 public class SpringConfiguration {
 

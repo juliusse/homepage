@@ -1,5 +1,6 @@
 package controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,7 +9,6 @@ import java.util.Locale;
 
 import models.Education;
 import models.Employment;
-import models.Project;
 import models.Skill;
 import models.SkillGroup;
 
@@ -21,7 +21,8 @@ import play.i18n.Lang;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
-import service.database.DatabaseService;
+import services.database.DatabaseService;
+import services.database.Project;
 
 
 @Component
@@ -31,7 +32,7 @@ public class Application extends Controller {
     @Autowired
     private DatabaseService databaseService;
     
-    public Result index(String langKey) {
+    public Result index(String langKey) throws IOException {
         setSessionLang(langKey);
         List<Project> spProjects = databaseService.findProjectsForStartPage();
         Collections.sort(spProjects, new NewestProjectsFirstComparator());

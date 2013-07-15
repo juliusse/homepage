@@ -1,0 +1,12 @@
+{
+	"titleDe":"SSP Online",
+	"titleEn":"SSP Online (english)",
+	"devStart":"2006-08",
+	"devEnd":"2007-08",
+	"descrDe":"Ein Spiel",
+	"descrEn":"A Game",
+	"techs":"CSS,HTML,MySQL,PHP",
+	"ofType":"Website,Game",
+	"displayOnStartPage":true
+
+}

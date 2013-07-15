@@ -8,25 +8,30 @@ import java.io.InputStream;
 import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Component;
 
 import play.Play;
 
 /**
  * 
  * @author Julius
- * This implementation saves all files into the public-folder <br>
- * which makes them uncontrollably downloadable
+ * This implementation saves all files into the folder that is specified in services.filesystem.location
  */
-public class PublicFileSystemService implements FileSystemService {
+@Profile("localFS")
+@Component
+public class LocalFileSystemService implements FileSystemService {
     
     private final File basePath;
     private static final Random random = new Random();
 
-    public PublicFileSystemService() {
+    public LocalFileSystemService() throws IOException {
         final String basePathFromConf = Play.application().configuration().getString("filesystem.basepath");
-        final File playBase = Play.application().path();
-        basePath = new File(playBase,  basePathFromConf != null ? basePathFromConf : "uploaded");
-        basePath.mkdirs();
+        basePath = new File(basePathFromConf != null ? basePathFromConf : "uploaded");
+        if(!basePath.exists()) {
+            FileUtils.forceMkdir(basePath);
+        }
+        
     }
     
     @Override

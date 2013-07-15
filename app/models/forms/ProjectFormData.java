@@ -1,10 +1,17 @@
 package models.forms;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import models.Project;
-import models.Project.ProjectType;
+import org.joda.time.DateTime;
+
 import play.data.validation.Constraints.Required;
+import services.database.Project;
+import services.database.Project.ProjectType;
 
 import com.google.common.base.Joiner;
 
@@ -43,12 +50,12 @@ public class ProjectFormData {
     public ProjectFormData() {
 
     }
-    
+
     public ProjectFormData(Project project) {
-        this.description_de = project.getDescriptionDe();
-        this.description_en = project.getDescriptionEn();
-        this.title_de = project.getTitleDe();
-        this.title_en = project.getTitleEn();
+        this.description_de = project.getDescription("de");
+        this.description_en = project.getDescription("en");
+        this.title_de = project.getTitle("de");
+        this.title_en = project.getTitle("en");
         this.devEnd = project.getDevelopmentEndString();
         this.devStart = project.getDevelopmentStartString();
         this.displayOnFrontpage = project.getDisplayOnStartPage();
@@ -57,6 +64,30 @@ public class ProjectFormData {
         this.isWeb = project.getTypeOf().contains(ProjectType.Website);
         this.isGame = project.getTypeOf().contains(ProjectType.Game);
         this.technologiesString = Joiner.on(";").join(project.getTechnologies());
+    }
+
+    public Project toProject() {
+        final Map<String, String> titleMap = new HashMap<String, String>();
+        titleMap.put("de", title_de);
+        titleMap.put("en", title_en);
+        final Map<String, String> descriptionMap = new HashMap<String, String>();
+        descriptionMap.put("de", description_de);
+        descriptionMap.put("en", description_en);
+        final boolean displayOnStartPage = displayOnFrontpage != null;
+        final List<String> technologyList = Arrays.asList(technologiesString.split(";"));
+        final DateTime developmentStart = Project.PROJECT_DATETIME_FORMAT.parseDateTime(devStart);
+        final DateTime developmentEnd = devEnd.isEmpty() ? null : Project.PROJECT_DATETIME_FORMAT.parseDateTime(devEnd);
+        final String mainImagePath = null;
+        final String filePath = null;
+        final List<ProjectType> typeOf = new ArrayList<Project.ProjectType>();
+        if (isWeb != null)
+            typeOf.add(ProjectType.Website);
+        if (isGame != null)
+            typeOf.add(ProjectType.Game);
+        if (isApplication != null)
+            typeOf.add(ProjectType.Application);
+
+        return new Project(titleMap, descriptionMap, displayOnStartPage, technologyList, developmentStart, developmentEnd, mainImagePath, filePath, typeOf);
     }
 
     public String getId() {
