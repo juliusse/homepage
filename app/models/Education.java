@@ -1,13 +1,15 @@
 package models;
 
+import org.joda.time.DateTime;
+
 
 
 public class Education {
 
     private Long id;
     
-    private String fromYear;
-    private String toYear;
+    private DateTime fromDate;
+    private DateTime toDate;
     private String place;
     private String website;
     private String score;
@@ -19,10 +21,10 @@ public class Education {
         
     }
 
-    public Education(String fromYear, String toYear, String place, String website, String score, String scale, String degree, String degreeNote) {
+    public Education(DateTime fromDate, DateTime toDate, String place, String website, String score, String scale, String degree, String degreeNote) {
         super();
-        this.fromYear = fromYear;
-        this.toYear = toYear;
+        this.fromDate = fromDate;
+        this.toDate = toDate;
         this.place = place;
         this.website = website;
         this.score = score;
@@ -39,20 +41,20 @@ public class Education {
         this.id = id;
     }
 
-    public String getFrom() {
-        return fromYear;
+    public DateTime getFromDate() {
+        return fromDate;
     }
 
-    public void setFrom(String from) {
-        this.fromYear = from;
+    public void setFromDate(DateTime fromDate) {
+        this.fromDate = fromDate;
     }
 
-    public String getTo() {
-        return toYear;
+    public DateTime getToDate() {
+        return toDate;
     }
 
-    public void setTo(String to) {
-        this.toYear = to;
+    public void setToDate(DateTime toDate) {
+        this.toDate = toDate;
     }
 
     public String getPlace() {

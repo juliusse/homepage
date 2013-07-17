@@ -21,8 +21,6 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import services.database.DatabaseService;
 import services.database.Project;
-import services.database.Skill;
-import services.database.SkillGroup;
 
 
 @Component
@@ -55,23 +53,23 @@ public class Application extends Controller {
                     "Datenbankentwicklung", "Beratung" }));
             empl.add(new Employment(
                     new DateTime(2012,10, 1, 1, 1), 
-                    null,
-                    "Teamleiter & Javaentwickler", 
+                    new DateTime(2013,07, 20, 1, 1),
                     "Docear", 
+                    "Teamleiter & Javaentwickler", 
                     "http://docear.org", 
                     new String[] { "Uniprojekt, Entwicklung einer Real-Time Collaborative Mindmapping Tool","Kommunikation mit Auftraggeber", "Backendentwicklung (Java, OSGI, Play Framework, Akka,...)"}));
             empl.add(new Employment(
                     new DateTime(2013, 2, 1, 1, 1), 
                     new DateTime(2013, 4, 1, 1, 1),
-                    "Freiberufler", 
-                    "first fox in space", 
+                    "first fox in space",
+                    "Freiberufler",  
                     "http://firstfox.com", 
                     new String[] { "Planung einer Applikation", "Implementation","IT-Infrastruktur (Jenkins CI, Linux-Server)"}));
             empl.add(new Employment(
                     new DateTime(2012, 4, 1, 1, 1), 
                     new DateTime(2012,11, 1, 1, 1),
-                    "Freiberufler", 
                     "Best Ants", 
+                    "Freiberufler", 
                     "", 
                     new String[] { "Planung einer Applikation", "Entwicklung eines Prototyps"}));
             empl.add(new Employment(new DateTime(2011, 5, 1, 1, 1), new DateTime(2011, 12, 1, 1, 1), "HTW Berlin", "Studentische Hilfskraft", "http://www.htw-berlin.de", new String[] {
@@ -87,23 +85,23 @@ public class Application extends Controller {
                     "Databasedevelopment", "Consulting" }));
             empl.add(new Employment(
                     new DateTime(2012,10, 1, 1, 1), 
-                    null,
-                    "Team Leader & Java Developer", 
+                    new DateTime(2013,07, 20, 1, 1),
                     "Docear", 
+                    "Team Leader & Java Developer", 
                     "http://docear.org", 
                     new String[] { "University project about developping a real time mind map collaboration tool","Communication with product owner", "Backend development (Java, OSGI, Play Framework, Akka,...)"}));
             empl.add(new Employment(
                     new DateTime(2013, 2, 1, 1, 1), 
                     new DateTime(2013, 4, 1, 1, 1),
-                    "Freelancer", 
                     "first fox in space", 
+                    "Freelancer", 
                     "http://firstfox.com", 
                     new String[] { "Design an application based on Play Framework (Java) and MySQL", "Implementation","Set up Jenkins Continuous Integration and Linux servers"}));
             empl.add(new Employment(
                     new DateTime(2012, 4, 1, 1, 1), 
                     new DateTime(2012,11, 1, 1, 1),
-                    "Freelancer", 
                     "Best Ants", 
+                    "Freelancer", 
                     "", 
                     new String[] { "Design an application based on PHP, the Zend Framework and MySQL", "Start development of a prototype"}));
             empl.add(new Employment(new DateTime(2011, 5, 1, 1, 1), new DateTime(2011, 12, 1, 1, 1), "HTW Berlin", "Student Research Assistant", "http://www-en.htw-berlin.de", new String[] {
@@ -118,15 +116,15 @@ public class Application extends Controller {
 
         List<Education> edus = new ArrayList<Education>();
         if (langKey.equals("de")) {
-            edus.add(new Education("2012", "(2014)", "HTW Berlin", "http://www.htw-berlin.de/", "---", "", "M.Sc. in Internationaler Medieninformatik", "Spezialisierung: Visual Computing"));
-            edus.add(new Education("2009", "2012", "HTW Berlin", "http://www.htw-berlin.de/", "1.3, sehr gut (A)", "", "B.Sc. in Internationaler Medieninformatik", ""));
-            edus.add(new Education("2001", "2008", "Hans und Hilde Coppi Gymnasium, Berlin", "http://www.coppi-gym.de/", "2.1", "", "Abitur", ""));
+            edus.add(new Education(new DateTime(2012,4,1,1,1), new DateTime(2014,3,31,1,1), "HTW Berlin", "http://www.htw-berlin.de/", "---", "", "M.Sc. in Internationaler Medieninformatik", "Spezialisierung: Visual Computing"));
+            edus.add(new Education(new DateTime(2009,4,1,1,1), new DateTime(2012,3,31,1,1), "HTW Berlin", "http://www.htw-berlin.de/", "1.3, sehr gut (A)", "", "B.Sc. in Internationaler Medieninformatik", ""));
+            edus.add(new Education(new DateTime(2001,8,1,1,1), new DateTime(2008,6,30,1,1), "Hans und Hilde Coppi Gymnasium, Berlin", "http://www.coppi-gym.de/", "2.1", "", "Abitur", ""));
         } else {
-            edus.add(new Education("2012", "(2014)", "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "---", "", "M.Sc. in International Media and Computing",
+            edus.add(new Education(new DateTime(2012,4,1,1,1), new DateTime(2014,3,31,1,1), "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "---", "", "M.Sc. in International Media and Computing",
                     "Specialisation: Visual Computing"));
-            edus.add(new Education("2009", "2012", "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "1.3, very good (A)", "", "B.Sc. in International Media and Computing",
+            edus.add(new Education(new DateTime(2009,4,1,1,1), new DateTime(2012,3,31,1,1), "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "1.3, very good (A)", "", "B.Sc. in International Media and Computing",
                     ""));
-            edus.add(new Education("2001", "2008", "Hans und Hilde Coppi Gymnasium, Berlin", "http://www.coppi-gym.de/", "2.1", "", "Abitur", ""));
+            edus.add(new Education(new DateTime(2001,8,1,1,1), new DateTime(2008,6,30,1,1), "Hans und Hilde Coppi Gymnasium, Berlin", "http://www.coppi-gym.de/", "2.1", "", "Abitur", ""));
         }
         
         Collections.sort(empl, new Comparator<Employment>() {

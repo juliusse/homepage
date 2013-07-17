@@ -42,24 +42,28 @@ a#black {
     color: #77b900;
 }
 /* Table */
-th {
+
+table.js {
+    border-collapse: collapse;
+}
+
+table.js th {
     text-align: left;
 }
-td, th {
+
+table.js td, th {
     padding: 5px;
     margin: 5px;
     vertical-align: top;
     
 }
 
-td {
+table.js td {
     height: 40px;
 }
 
-table {
-    border-collapse: collapse;
-}
-td, th {
+
+table.js td, table.js th {
     
     border-width: 0px;
     border-bottom-width: 3px;
@@ -239,7 +243,7 @@ div.content > div > p {
 
 /* PROFILE */
 table.profile {
-    width: 700px;
+    width: 670px;
 }
 table.profile td{
     vertical-align: top;
