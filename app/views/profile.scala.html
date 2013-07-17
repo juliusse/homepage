@@ -87,7 +87,7 @@
 	var entryDatas = [
 	["undefined",new Date(2009,1,1),new Date(2009,1,1)]
 	@for(education <- educations) {
-		,["@education.getPlace()",new Date(@education.getFromDate().getMillis()),new Date(@education.getToDate().getMillis())]
+		,["@education.getPlace() - @education.getDegree()",new Date(@education.getFromDate().getMillis()),new Date(@education.getToDate().getMillis())]
 	}
 	@for(employment <- employments) {
 		@if(employment.getTo != null) {
