@@ -3,85 +3,80 @@ light green: #d5eab0
 middle green: #9acb42
 darker green: #77b900
 */
-
 body,html {
-    font-family: Arial,Verdana,sans-serif;
-    font-size: 0.9em;
+	font-family: Arial, Verdana, sans-serif;
+	font-size: 0.9em;
 }
+
 h1 {
-    font-size: 2em;
-    color: #77b900;
-    padding-top: 0px;
-    margin: 0px 0px;
+	font-size: 2em;
+	color: #77b900;
+	padding-top: 0px;
+	margin: 0px 0px;
 }
 
 h2 {
-    color: #77b900;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin: 0px 0px;
+	color: #77b900;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	margin: 0px 0px;
 }
 
 a {
-    color: #77b900;
+	color: #77b900;
 }
 
 a#black {
-    color: black;
+	color: black;
 }
 
 .spacer {
-    height: 50px;
+	height: 50px;
 }
 
 #hint {
-    font-size: 0.8em;
+	font-size: 0.8em;
 }
 
 #breadcrumb {
-    color: #77b900;
+	color: #77b900;
 }
 /* Table */
-
 table.js {
-    border-collapse: collapse;
+	border-collapse: collapse;
+	width:100%;
 }
 
 table.js th {
-    text-align: left;
+	text-align: left;
 }
 
-table.js td, th {
-    padding: 5px;
-    margin: 5px;
-    vertical-align: top;
-    
+table.js td,th {
+	padding: 5px;
+	margin: 5px;
+	vertical-align: top;
 }
 
 table.js td {
-    height: 40px;
+	height: 40px;
 }
 
-
-table.js td, table.js th {
-    
-    border-width: 0px;
-    border-bottom-width: 3px;
-    border-bottom-style: solid;
-    border-bottom-color: #d5eab0;
-    border-right-width: 3px;
-    border-right-style: solid;
-    border-right-color: #d5eab0;
-    
+table.js td,table.js th {
+	border-width: 0px;
+	border-bottom-width: 3px;
+	border-bottom-style: solid;
+	border-bottom-color: #d5eab0;
+	border-right-width: 3px;
+	border-right-style: solid;
+	border-right-color: #d5eab0;
 }
 
 /* style form */
-
-div.menu{
-    float: left;
-    width: 180px;
-    padding:0 0 0 0;
-    margin-left: 20px;
+div.menu {
+	float: left;
+	width: 180px;
+	padding: 0 0 0 0;
+	margin-left: 20px;
 }
 
 div.menu h2 {
@@ -94,234 +89,231 @@ div.menu li a {
 	font-size: 1.2em;
 }
 
-
 div.wrapper {
-    width: 970px;
-    margin: 0 auto;
-
+	width: 970px;
+	margin: 0 auto;
 }
 
 div.header {
-    width: 960px;
-    height: 150px;
-    position: relative;
-/*    padding: 10px;*/
+	width: 960px;
+	height: 150px;
+	position: relative;
+	/*    padding: 10px;*/
 }
 
 div.content {
-    border-left: 1px;
-    border-left-style: dotted;
-    float: left;
-    width: 749px;
-    padding:10px 0 0 0;
-    
-    min-height: 500px;
-    border-right-color: #9acb42;
-    border-right-width: 10px;
-    border-right-style: solid;
-
-
+	border-left: 1px;
+	border-left-style: dotted;
+	float: left;
+	width: 749px;
+	padding: 10px 0 0 0;
+	min-height: 500px;
+	border-right-color: #9acb42;
+	border-right-width: 10px;
+	border-right-style: solid;
 }
 
 div.footer {
-    clear:left;
-    width: 940px;
-    margin: 0 auto;
-    height: 34px;
-    padding-top: 16px;
-    background-image: url(../images/footer.png); 
-    background-position: -20px 0px;
-    text-align:center;
-    
-    border-right-color: #9acb42;
-    border-right-width: 10px;
-    border-right-style: solid; 
-/*    border-top-width: 1px;
+	clear: left;
+	width: 940px;
+	margin: 0 auto;
+	height: 34px;
+	padding-top: 16px;
+	background-image: url(../images/footer.png);
+	background-position: -20px 0px;
+	text-align: center;
+	border-right-color: #9acb42;
+	border-right-width: 10px;
+	border-right-style: solid;
+	/*    border-top-width: 1px;
     border-top-style: dotted; */
 }
 
 div.header div.banner {
-    position: relative;
-    width: 100%;
+	position: relative;
+	width: 100%;
 }
 
-.flags {    
-    position: absolute;
-    background-color: white;
-    padding: 3px 4px 1px 4px;
-    top: 150px;
-    left: 900px;
+.flags {
+	position: absolute;
+	background-color: white;
+	padding: 3px 4px 1px 4px;
+	top: 150px;
+	left: 900px;
 }
 
 div.project {
-    width: 709px;
-    min-height: 250px;
-    padding-right: 10px;
-    position: relative;
-/*    padding: 10px 10px;*/
-    border-top : 5px;
-    border-top-style: solid;
-    border-top-color: #9acb42;
-    overflow:hidden;
+	width: 709px;
+	min-height: 250px;
+	padding-right: 10px;
+	position: relative;
+	/*    padding: 10px 10px;*/
+	border-top: 5px;
+	border-top-style: solid;
+	border-top-color: #9acb42;
+	overflow: hidden;
 }
 
 div.project div#title {
-    float: left;
-    width: 450px;
-    padding-bottom: 20px;
+	float: left;
+	width: 450px;
+	padding-bottom: 20px;
 }
 
 div.project div#title h2 {
-    margin-bottom: 0px;
-    padding-bottom: 0px;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
 }
 
 div.project div#buttons {
-    float: right;
-    padding-right: 30px;
+	float: right;
+	padding-right: 30px;
 }
 
 div.project div#image {
-    text-align: right;
-    float: right;
-    width: 250px;
-    margin-top: 30px;
-    margin-bottom: 20px;
+	text-align: right;
+	float: right;
+	width: 250px;
+	margin-top: 30px;
+	margin-bottom: 20px;
 }
 
 div.project div#tech {
-    float: left;
-    position: absolute;
-    bottom: 10px;
+	float: left;
+	position: absolute;
+	bottom: 10px;
 }
 
-div.project div#tech p{
-    display: inline;
+div.project div#tech p {
+	display: inline;
 }
 
 div.project div#tech img {
-    max-width: 15px;
-    max-height: 15px;
+	max-width: 15px;
+	max-height: 15px;
 }
 
 div.project div#download {
-    float: left;
-    position: absolute;
-    bottom: 30px;
-    font-size: large;
-    
+	float: left;
+	position: absolute;
+	bottom: 30px;
+	font-size: large;
 }
 
-div.project div#download a{
-    position: absolute;
-    width: 300px;
-    top: 20%;
+div.project div#download a {
+	position: absolute;
+	width: 300px;
+	top: 20%;
 }
 
 div.project div#image img {
-    max-width: 250px;
-    max-height: 300px;
+	max-width: 250px;
+	max-height: 300px;
 }
 
 div.project div#description {
-    float: left;
-    width: 450px;
-    margin-bottom: 6em;
+	float: left;
+	width: 450px;
+	margin-bottom: 6em;
 }
 
-div.content > div {
-    padding-left: 30px;
+div.content>div {
+	padding-left: 30px;
 }
 
-div.content > div > p {
-    padding-top: 0px;
-    margin-top: 0px;
-    padding-bottom: 10px;
-    
+div.content>div>p {
+	padding-top: 0px;
+	margin-top: 0px;
+	padding-bottom: 10px;
 }
-
 
 /* PROFILE */
-table.profile {
-    width: 670px;
+div.profileTimelineContainer {
+	float: left;
+	position: relative;
+	width: 70px;
+	height: 100%;
 }
-table.profile td{
-    vertical-align: top;
+
+div.profileListingContainer {
+	width: auto;
+	position: relative;
+	margin-left: 70px;
+	margin-right: 10px;
+}
+
+table.profile td {
+	vertical-align: top;
 }
 
 table.profile p {
-    margin-top: 0;
-    margin-bottom: 0.4em;
-    padding-top: 0;  
+	margin-top: 0;
+	margin-bottom: 0.4em;
+	padding-top: 0;
 }
 
-table.profile .place  {
-    font-weight: bold;
-    width: 300px;
+table.profile .place {
+	font-weight: bold;
+	width: 300px;
 }
 
-table.profile .degree  {
-    font-weight: bold;
-    width: 300px;
+table.profile .degree {
+	font-weight: bold;
+	width: 300px;
 }
 
 table.profile td.period {
-    
-    width: 80px;
-    vertical-align: top;
+	width: 80px;
+	vertical-align: top;
 }
 
 table.profile ul {
-    margin: 0.2em 0em 0em 0em ;
+	margin: 0.2em 0em 0em 0em;
 }
 
 table.education td {
-    height: 60px;
-    
+	height: 60px;
 }
 
 ul.navigation {
-    padding: 0 0 0 10px;
-}
-ul.navigation li {
-    display: compact;
-    padding: 1px;
-    margin: 1px;
+	padding: 0 0 0 10px;
 }
 
-ul.navigation li.active > a{
-    font-weight: bold;
+ul.navigation li {
+	display: compact;
+	padding: 1px;
+	margin: 1px;
+}
+
+ul.navigation li.active>a {
+	font-weight: bold;
 }
 
 ul.navigation a {
-    text-decoration: none;
+	text-decoration: none;
 }
 
 ul.navigation li.active ul {
-    display: block;
+	display: block;
 }
 
 .invisible {
-    display: none;
+	display: none;
 }
 
 div.emptyStars {
 	background: url("/assets/images/star_empty.png") repeat-x;
 	background-size: 12px;
 	width: 120px;
-	position:absolute;
+	position: absolute;
 	height: 12px;
 	margin-left: 10px;
-	
 }
 
 div.fullStars {
 	background: url("/assets/images/star_full.png") repeat-x;
 	background-size: 12px;
-	position:absolute;
+	position: absolute;
 	height: 12px;
 	margin-left: 10px;
 }
-
-
-
