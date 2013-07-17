@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Random;
+
 import org.joda.time.DateTime;
 
 
@@ -18,7 +20,7 @@ public class Education {
     private String degreeNote;
     
     public Education() {
-        
+        this.id = new Random().nextLong();
     }
 
     public Education(DateTime fromDate, DateTime toDate, String place, String website, String score, String scale, String degree, String degreeNote) {
@@ -31,6 +33,7 @@ public class Education {
         this.scale = scale;
         this.degree = degree;
         this.degreeNote = degreeNote;
+        this.id = new Random().nextLong();
     }
 
     public Long getId() {

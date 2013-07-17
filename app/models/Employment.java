@@ -2,6 +2,7 @@ package models;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.joda.time.DateTime;
 
@@ -29,6 +30,7 @@ public class Employment {
         this.title = title;
         this.website = website;
         this.tasks = tasks;
+        this.id = new Random().nextLong();
     }
     
     public Employment(DateTime from, DateTime to, String place, String title, String website, String[] tasks) {
@@ -39,6 +41,7 @@ public class Employment {
         this.title = title;
         this.website = website;
         this.tasks = Arrays.asList(tasks);
+        this.id = new Random().nextLong();
     }
     
     public Long getId() {

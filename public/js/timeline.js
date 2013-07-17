@@ -5,8 +5,9 @@ Author:
     
 */
 
-
 window.Timeline = Timeline;
+
+var js = {};
 
 var defaultConfig = {};
 defaultConfig.scale = {};
@@ -16,13 +17,16 @@ defaultConfig.scale.arrowHeadHeight = 13;
 defaultConfig.scale.arrowHeadWidth = 20;
 defaultConfig.drawToday = true;
 defaultConfig.drawBaseLineYear = true;
+defaultConfig.drawTickLabels = true;
+defaultConfig.entries = {};
+defaultConfig.entries.colors = ["f7c6c7", "fad8c7", "fef2c0", "bfe5bf", "bfdadc", "c7def8", "bfd4f2", "d4c5f9"];
 
 Timeline.prototype.defaultConfig = defaultConfig;
 
 //Timeline stuff
 
 function Timeline(_htmlElement, _fromYear, _config) {
-
+    //init config
     this.config = !_config ? this.defaultConfig : _config;
     this.initializeConfig();
 
@@ -31,18 +35,13 @@ function Timeline(_htmlElement, _fromYear, _config) {
     this.timelineEntries = [];
     this.timelineShapes = {};
 
-    //to see the arrow head
-    this.offsetTop = 15;
-
-    //this.colors = ["e11d21", "eb6420", "fbca04", "009800", "006b75", "207de5", "0052cc", "5319e7"];
-    this.colors = ["f7c6c7", "fad8c7", "fef2c0", "bfe5bf", "bfdadc", "c7def8", "bfd4f2", "d4c5f9"];
     this.lastColor = 0;
 
     this.initialize();
 }
 
 Timeline.prototype.initializeConfig = function () {
-    
+    //TODO merge values with default conf
 }
 
 Timeline.prototype.initialize = function () {
@@ -58,34 +57,21 @@ Timeline.prototype.initialize = function () {
     //set hover style
     var style = document.createElement("style");
     style.setAttribute("type", "text/css");
-    var styleText = document.createTextNode(".js_timeline_entry:hover{opacity:0.5;}");
+    var styleText = document.createTextNode(".js_timeline_entry.hover{opacity:0.5;}");
     style.appendChild(styleText);
 
     this.masterSvg.appendChild(style);
 
-    this.svgLine = this.updateScale();
-    this.svgTicks = createTicksPerYear(this, true);
-    this.svgText = createStartYearAndNowString(this);
-    this.svgArrowHead = createArrowHead(this);
-
-
-
-
-    this.masterSvg.appendChild(this.svgLine);
-    for (index in this.svgTicks) {
-        this.masterSvg.appendChild(this.svgTicks[index]);
-    }
-
-    for (index in this.svgText) {
-        this.masterSvg.appendChild(this.svgText[index]);
-    }
-
-    this.masterSvg.appendChild(this.svgArrowHead);
+    this.updateScale();
+    this.updateTicks();
+    this.updateStartYearAndNowString();
+    this.updateArrowHead(this);
 
     this.location.appendChild(this.masterSvg);
 }
 
 
+// getter
 
 Timeline.prototype.getWidth = function () {
     return this.location.clientWidth;
@@ -96,7 +82,6 @@ Timeline.prototype.getCenter = function () {
     var usedCenter = realCenter * 0.9;
     return usedCenter;
 }
-
 
 Timeline.prototype.getHeight = function () {
     return this.location.clientHeight;
@@ -153,17 +138,10 @@ Timeline.prototype.getHeightForScale = function () {
     return this.getHeight() - offset;
 }
 
-Timeline.prototype.getNextColor = function () {
-    var colorIndex = this.lastColor + 1;
 
-    if (this.colors.length == colorIndex)
-        colorIndex = 0;
 
-    this.lastColor = colorIndex;
 
-    return this.colors[colorIndex];
-}
-
+// timelineEntry related
 Timeline.prototype.getEntriesInTimeRange = function (fromDate, toDate) {
     var resultList = [];
     for (index in this.timelineEntries) {
@@ -189,6 +167,17 @@ Timeline.prototype.getTakenLevelsInTimeRange = function (fromDate, toDate) {
     }
 
     return result;
+}
+
+Timeline.prototype.getNextColor = function () {
+    var colorIndex = this.lastColor + 1;
+
+    if (this.config.entries.colors.length == colorIndex)
+        colorIndex = 0;
+
+    this.lastColor = colorIndex;
+
+    return this.config.entries.colors[colorIndex];
 }
 
 
@@ -220,7 +209,7 @@ Timeline.prototype.getPosForDate = function (date) {
  Draw methods
  Each method keeps track of it's own elements
 */
-Timeline.prototype.updateScale = function() {
+Timeline.prototype.updateScale = function () {
     "use strict";
     var yStart = this.getTopOffsetForScale();
     var yEnd = this.getHeight() - this.getBottomOffsetForScale();
@@ -228,76 +217,63 @@ Timeline.prototype.updateScale = function() {
     var lineWidth = this.config.scale.lineWidth;
     var center = this.getCenter();
 
-
-    var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    line.setAttribute("x1", center);
-    line.setAttribute("y1", yStart);
-
-    line.setAttribute("x2", center);
-    line.setAttribute("y2", yEnd);
-
-    line.setAttribute("style", "stroke:rgb(0,0,0);stroke-width:" + lineWidth);
-
-
-    return line;
-}
-
-function createTicks(timeline) {
-    "use strict";
-    var height = timeline.getHeightForLines() + timeline.offsetTop;
-    var width = timeline.getWidth();
-    var marginLeft = timeline.getCenter();
-    var stepSize = height / 10;
-
-    var lines = [];
-
-    for (var i = 0; i < 10; i += 1) {
-        var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        line.setAttribute("x1", marginLeft - 8);
-        line.setAttribute("y1", i * stepSize + stepSize);
-
-        line.setAttribute("x2", marginLeft + 8);
-        line.setAttribute("y2", i * stepSize + stepSize);
-
-        line.setAttribute("style", "stroke:rgb(0,0,0);stroke-width:" + 2);
-
-        lines.push(line);
+    if (!this.scaleLine) {
+        this.scaleLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        this.masterSvg.appendChild(this.scaleLine);
     }
 
-    return lines;
+    
+    this.scaleLine.setAttribute("x1", center);
+    this.scaleLine.setAttribute("y1", yStart);
+
+    this.scaleLine.setAttribute("x2", center);
+    this.scaleLine.setAttribute("y2", yEnd);
+
+    this.scaleLine.setAttribute("style", "stroke:rgb(0,0,0);stroke-width:" + lineWidth);
 }
 
-function createTicksPerYear(timeline, withLabels) {
+//currently one tick per year
+Timeline.prototype.updateTicks = function() {
     "use strict";
 
-    var height = timeline.getHeightForScale();
-    var offsetTop = timeline.getTopOffsetForScale();
+    var height = this.getHeightForScale();
+    var offsetTop = this.getTopOffsetForScale();
+    var withLabels = this.config.drawTickLabels;
 
-    var marginLeft = timeline.getCenter();
-    var fromYear = timeline.getFromYear()
+    var center = this.getCenter();
+    var widthHalf = 8;
+
+    //calculate step size
+    var fromYear = this.getFromYear()
     var ticks = new Date().getFullYear() - fromYear + 1;
-
     var stepSize = height / ticks;
 
-    var svgs = [];
+    if (this.tickSvgs) {
+        for (index in this.tickSvgs) {
+            this.masterSvg.removeChild(this.tickSvgs[index]);
+        }
+    }
+
+    this.tickSvgs = [];
 
     for (var i = 0; i < ticks; i += 1) {
         var yPos = offsetTop + height - i * stepSize;
         var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
 
-        line.setAttribute("x1", marginLeft - 8);
+        line.setAttribute("x1", center - widthHalf);
         line.setAttribute("y1", yPos);
 
-        line.setAttribute("x2", marginLeft + 8);
+        line.setAttribute("x2", center + widthHalf);
         line.setAttribute("y2", yPos);
 
         line.setAttribute("style", "stroke:rgb(0,0,0);stroke-width:" + 2);
 
-        svgs.push(line);
+        this.tickSvgs.push(line);
+        this.masterSvg.appendChild(line);
 
         if (withLabels && i != 0) {
             var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-            text.setAttribute("x", marginLeft + 3);
+            text.setAttribute("x", center + 3);
             text.setAttribute("y", yPos + 10);
             text.setAttribute("fill", "black");
             text.setAttribute("font-size", "10");
@@ -306,21 +282,27 @@ function createTicksPerYear(timeline, withLabels) {
             var str = document.createTextNode((fromYear + i + ""));
             text.appendChild(str);
 
-            svgs.push(text);
+            this.tickSvgs.push(text);
+            this.masterSvg.appendChild(text);
+        }
+    }
+}
+
+Timeline.prototype.updateStartYearAndNowString = function() {
+    "use strict";
+    if (this.labelSvgs) {
+        for (index in this.labelSvgs) {
+            this.masterSvg.removeChild(this.labelSvgs[index]);
         }
     }
 
-    return svgs;
-}
+    this.labelSvgs = [];
 
-function createStartYearAndNowString(timeline) {
-    "use strict";
-    var texts = [];
-    var left = timeline.getCenter() - 15;
-    var fontSize = timeline.config.scale.fontSize;
+    var left = this.getCenter() - 15;
+    var fontSize = this.config.scale.fontSize;
     var fontOffset = fontSize * 0.3;
 
-    if (timeline.config.drawToday) {
+    if (this.config.drawToday) {
         var todaySvg = document.createElementNS("http://www.w3.org/2000/svg", "text");
         todaySvg.setAttribute("x", left);
         todaySvg.setAttribute("y", fontOffset * 2.7);
@@ -329,37 +311,37 @@ function createStartYearAndNowString(timeline) {
 
         var todayString = document.createTextNode("today");
         todaySvg.appendChild(todayString);
-        texts.push(todaySvg);
+        this.labelSvgs.push(todaySvg);
+        this.masterSvg.appendChild(todaySvg);
 
     }
 
-    if (timeline.config.drawBaseLineYear) {
+    if (this.config.drawBaseLineYear) {
         var baseLineYearSvg = document.createElementNS("http://www.w3.org/2000/svg", "text");
         baseLineYearSvg.setAttribute("x", left);
-        baseLineYearSvg.setAttribute("y", timeline.getHeight() - fontOffset);
+        baseLineYearSvg.setAttribute("y", this.getHeight() - fontOffset);
         baseLineYearSvg.setAttribute("fill", "black");
         baseLineYearSvg.setAttribute("font-size", fontSize);
 
-        var baseLineYearString = document.createTextNode(timeline.getFromYear());
+        var baseLineYearString = document.createTextNode(this.getFromYear());
         baseLineYearSvg.appendChild(baseLineYearString);
-        texts.push(baseLineYearSvg);
+        this.labelSvgs.push(baseLineYearSvg);
+        this.masterSvg.appendChild(baseLineYearSvg);
 
     }
-
-    return texts;
 }
 
-function createArrowHead(timeline) {
+Timeline.prototype.updateArrowHead = function() {
     "use strict";
-    var topOffset = timeline.getTopOffsetForScale();
-    var lineWidth = timeline.config.scale.lineWidth;
+    var topOffset = this.getTopOffsetForScale();
+    var lineWidth = this.config.scale.lineWidth;
 
-    var center = timeline.getCenter();
+    var center = this.getCenter();
 
-    var width = timeline.config.scale.arrowHeadWidth;
+    var width = this.config.scale.arrowHeadWidth;
     var widthHalf = width / 2;
     
-    var arrowHeight = timeline.config.scale.arrowHeadHeight;
+    var arrowHeight = this.config.scale.arrowHeadHeight;
 
     var xStart = center - widthHalf;
     var yStart = arrowHeight + topOffset;
@@ -370,11 +352,13 @@ function createArrowHead(timeline) {
     var xEnd = center + widthHalf;
     var yEnd = arrowHeight + topOffset;
 
-    var path = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
-    path.setAttribute("points", xStart + "," + yStart + " " + xCenter + "," + yCenter + " " + xEnd + "," + yEnd);
-    path.setAttribute("style", "fill:none;stroke:black;stroke-width:"+lineWidth);
+    if (!this.arrowHeadSvg) {
+        this.arrowHeadSvg = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+        this.masterSvg.appendChild(this.arrowHeadSvg);
+    }
 
-    return path;
+    this.arrowHeadSvg.setAttribute("points", xStart + "," + yStart + " " + xCenter + "," + yCenter + " " + xEnd + "," + yEnd);
+    this.arrowHeadSvg.setAttribute("style", "fill:none;stroke:black;stroke-width:" + lineWidth);
 }
 ﻿/*
 
@@ -386,11 +370,13 @@ Author:
 //TimelineEntry stuff
 
 
-function TimelineEntry(_title, _fromDate, _toDate) {
+function TimelineEntry(_title, _fromDate, _toDate, _color) {
     this.title = _title;
     this.fromDate = _fromDate;
     this.toDate = _toDate;
+    this.color = _color;
     this.level = 0;
+    this.shapeList = [];
 }
 
 TimelineEntry.prototype.getHash = function () {
@@ -400,7 +386,7 @@ TimelineEntry.prototype.getHash = function () {
 TimelineEntry.prototype.getShapeForTimeline = function (timeline) {
     //decide level
     var takenLevels = timeline.getTakenLevelsInTimeRange(this.fromDate, this.toDate);
-
+    var color = !this.color ? timeline.getNextColor() : this.color;
     var newLevel = 0;
     while (takenLevels.indexOf(newLevel) != -1) {
         newLevel += 1;
@@ -431,60 +417,92 @@ TimelineEntry.prototype.getShapeForTimeline = function (timeline) {
     shape.setAttribute("x", left);
     shape.setAttribute("height", height);
     shape.setAttribute("width", 5);
-    shape.setAttribute("style", "fill:#" + timeline.getNextColor() + ";stroke:black;stroke-width:1;pointer-events:all;");
+    shape.setAttribute("style", "fill:#" + color + ";stroke:black;stroke-width:1;pointer-events:all;");
     shape.setAttribute("class", "js_timeline_entry");
-    shape.setAttribute("onmouseover", "tooltip(evt, '" + this.title + "',this)");
-    shape.setAttribute("onmouseout", "tooltipHide()");
+
+
+    this.shapeList.push(shape);
+
+    var entry = this;
+    shape.onmouseover = function (event) {
+        entry.tooltip = new Tooltip(event, entry.title);
+        shape.classList.add("hover");
+
+    };
+    shape.onmouseout = function () {
+        entry.tooltip.destroyExistingTooltip();
+        shape.classList.remove("hover");
+    }
 
     return shape;
 
-}﻿/*
+}
+
+TimelineEntry.prototype.addHTMLElementToTriggerHover = function (hTMLElement) {
+    var entry = this;
+    for (index in this.shapeList) {
+        var shape = this.shapeList[index];
+        hTMLElement.onmouseover = function (event) {
+            shape.classList.add("hover");
+
+        };
+    }
+    for (index in this.shapeList) {
+        var shape = this.shapeList[index];
+        hTMLElement.onmouseout = function () {
+            shape.classList.remove("hover");
+        }
+    }
+}
+﻿/*
 
 Author:
     Julius Seltenheim (mail@julius-seltenheim.com)
     
+    Tooltip is right now a single instance class.
+    When another instance is created, the old one will be destroyed
 */
 
-var jsTimelineTooltipDiv = null;
-function tooltip(event, text, element) {
+var jsTimelineTooltip = null;
+
+
+function Tooltip(event, text) {
+    //check if tooltip exists
+    this.destroyExistingTooltip();
+    jsTimelineTooltip = this;
+    this.div = this.createDiv();
+    
 
     var offsetDistance = 20;
 
     var x = event.pageX;
     var y = event.pageY;
 
-    var tt = getNewTooltipDiv();
-    var elem = element;
-    tt.style.top = y + 'px';
-    tt.style.left = (x + 10) + 'px';
-    tt.style.display = 'block';
-    tt.style.backgroundColor = "black";
-    tt.style.color = "white";
-    tt.style.font = "Arial";
-    tt.style.fontSize = "10px";
-    tt.style.padding = "3px";
-    tt.innerHTML = text;
+    this.div.style.top = y + 'px';
+    this.div.style.left = (x + 10) + 'px';
 
+    this.div.innerHTML = text;
 
-
+    document.getElementsByTagName("body")[0].appendChild(this.div);
 }
 
-function tooltipHide() {
-    destroyCurrentTooltip();
-}
-
-function destroyCurrentTooltip() {
-    if (jsTimelineTooltipDiv != null) {
-        document.getElementsByTagName("body")[0].removeChild(jsTimelineTooltipDiv);
-    }
-    jsTimelineTooltipDiv = null;
-}
-
-function getNewTooltipDiv(parent) {
-    destroyCurrentTooltip();
+Tooltip.prototype.createDiv = function () {
     var div = document.createElement("div");
     div.style.position = "absolute";
-    document.getElementsByTagName("body")[0].appendChild(div);
-    jsTimelineTooltipDiv = div;
+    div.style.display = 'block';
+    div.style.backgroundColor = "black";
+    div.style.color = "white";
+    div.style.font = "Arial";
+    div.style.fontSize = "10px";
+    div.style.padding = "3px";
+    
+    
     return div;
+}
+
+Tooltip.prototype.destroyExistingTooltip = function () {
+    if (jsTimelineTooltip != null) {
+        document.getElementsByTagName("body")[0].removeChild(jsTimelineTooltip.div);
+    }
+    jsTimelineTooltip = null;
 }

@@ -31,7 +31,7 @@
         </tr>
         
         @for(employment <- employments) {
-        <tr class="c0">
+        <tr id="@employment.getId()" class="c0">
                 <td class="period"> 
                 	@employment.getFrom().toString("MMM yyyy",Application.getCurrentLocale()) - 
                 	@if(employment.getTo() != null) {@employment.getTo().toString("MMM yyyy",Application.getCurrentLocale())} else {@Application.messages("ongoing")} 
@@ -55,7 +55,7 @@
     <p style="height: 20px;"> </p>
     <h2> @Application.messages("menu_education")</h2>
     <table class="js profile education">
-        <tr class="c0">
+        <tr>
             <th class="period"> @Application.messages("profile_period")</th>
             <th class="place"> @Application.messages("profile_location")</th>
             <th class="degree"> @Application.messages("profile_degree")</th>
@@ -63,7 +63,7 @@
 
 
         @for(education <- educations) {
-        <tr class="c $line++ ">
+        <tr id="@education.getId()">
                 <td class="period"> 
                 	@education.getFromDate().getYear - @education.getToDate().getYear
                 </td>
@@ -87,30 +87,47 @@
 </div>   
 	   
 <script type="text/javascript">
-	var entryDatas = [
+	var eduEntryData = [
 	["undefined",new Date(2009,1,1),new Date(2009,1,1)]
 	@for(education <- educations) {
-		,["@education.getPlace() - @education.getDegree()",new Date(@education.getFromDate().getMillis()),new Date(@education.getToDate().getMillis())]
-	}
-	@for(employment <- employments) {
-		@if(employment.getTo != null) {
-		,["@employment.getPlace() - @employment.getTitle()",new Date(@employment.getFrom().getMillis()),new Date(@employment.getTo().getMillis())]
-		} else {
-			,["@employment.getPlace() - @employment.getTitle()",new Date(@employment.getFrom().getMillis()),new Date()]	
-		}
+		,["@education.getPlace() - @education.getDegree()",new Date(@education.getFromDate().getMillis()),new Date(@education.getToDate().getMillis()),"@education.getId()"]
 	}
 	];
+	
+	var emplEntryData = [
+	                	["undefined",new Date(2009,1,1),new Date(2009,1,1),"idForHighlighting"]
+
+	                	@for(employment <- employments) {
+	                		@if(employment.getTo != null) {
+	                		,["@employment.getPlace() - @employment.getTitle()",new Date(@employment.getFrom().getMillis()),new Date(@employment.getTo().getMillis()),"@employment.getId()"]
+	                		} else {
+	                			,["@employment.getPlace() - @employment.getTitle()",new Date(@employment.getFrom().getMillis()),new Date(),"@employment.getId()"]	
+	                		}
+	                	}
+	                	];
 	
 	var profileContainer = document.getElementById("profileContainer");
 	profileContainer.style.height = profileContainer.clientHeight +"px";
 	
 	var timeline = new Timeline(document.getElementById("timeline"),2008)
-	for(index in entryDatas) {
+	for(index in eduEntryData) {
 		if(index == 0) {
 			continue;
 		}
-		var entryData = entryDatas[index];
-		timeline.addTimelineEntry(new TimelineEntry(entryData[0],entryData[1],entryData[2]));
+		var entryData = eduEntryData[index];
+		var timelineEntry = new TimelineEntry(entryData[0],entryData[1],entryData[2],'bfe5bf');
+		timeline.addTimelineEntry(timelineEntry);
+		timelineEntry.addHTMLElementToTriggerHover(document.getElementById(entryData[3]));
+	}
+	
+	for(index in emplEntryData) {
+		if(index == 0) {
+			continue;
+		}
+		var entryData = emplEntryData[index];
+		var timelineEntry = new TimelineEntry(entryData[0],entryData[1],entryData[2],'fad8c7');
+		timeline.addTimelineEntry(timelineEntry);
+		timelineEntry.addHTMLElementToTriggerHover(document.getElementById(entryData[3]));
 	}
 </script> 
 
