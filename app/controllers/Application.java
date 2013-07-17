@@ -78,7 +78,7 @@ public class Application extends Controller {
                     "http://canary.co.nz", new String[] { "Softwareentwicklung", "Kundensupport", "Administration", "Refactoring" }));
             empl.add(new Employment(new DateTime(2010, 3, 1, 1, 1), new DateTime(2010, 9, 1, 1, 1), "HTW Berlin", "Tutor für Mathematik", "http://www.htw-berlin.de", new String[] {
                     "Vorbereitung und Durchführung von 2 Tutorien pro Woche", "Beantwortung von Fragen per E-Mail" }));
-            empl.add(new Employment(new DateTime(2008, 7, 1, 1, 1), new DateTime(2009, 3, 1, 1, 1), "Caritas", "Zivildienst", "http://www.invia-center-berlin.de", new String[] { "Kochen", "Catering",
+            empl.add(new Employment(new DateTime(2008, 7, 1, 1, 1), new DateTime(2009, 3, 31, 1, 1), "Caritas", "Zivildienst", "http://www.invia-center-berlin.de", new String[] { "Kochen", "Catering",
                     "Für Gäste sorgen", "Vorbereitung", "Servieren", "Praktikanten einweisen", "Lieferungen" }));
         } else {
             empl.add(new Employment(new DateTime(2012, 4, 1, 1, 1), null, "Freelancer", "", "http://www.julius-seltenheim.com", new String[] { "Webdevelopment", "Softwaredevelopment",
@@ -110,7 +110,7 @@ public class Application extends Controller {
                     "Software Development", "Customer Support", "Maintenance", "Refactoring" }));
             empl.add(new Employment(new DateTime(2010, 3, 1, 1, 1), new DateTime(2010, 9, 1, 1, 1), "HTW Berlin", "Tutor for Math", "http://www-en.htw-berlin.de", new String[] {
                     "Prepare and perform 2 tutorials per week", "E-mail support" }));
-            empl.add(new Employment(new DateTime(2008, 7, 1, 1, 1), new DateTime(2009, 3, 1, 1, 1), "Caritas", "Compulsory Community Service", "http://www.invia-center-berlin.de", new String[] {
+            empl.add(new Employment(new DateTime(2008, 7, 1, 1, 1), new DateTime(2009, 3, 31, 1, 1), "Caritas", "Compulsory Community Service", "http://www.invia-center-berlin.de", new String[] {
                     "Cooking", "Catering", "Care for guests", "Preparing", "Serving", "Briefing Interns", "Delivery" }));
         }
 
