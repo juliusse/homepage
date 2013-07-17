@@ -7,20 +7,18 @@
 
 
 @layout("menu_profile") {
-<div>
-	<h2> @Application.messages("menu_employment")</h2>
-</div>
-<div>
-<table>
-	<tr>
-		<td>
-		<div style="position:relative;width: 40px; height: 1500px;">
+
+<div id="profileContainer">
+
+		<div style="float:left;position:relative;width: 40px; height: 100%;">
 			<div id="timeline" style="float:left;width: 40px;position: absolute; height: 100%;top:0px;">
 			te e e e e s t
 			</div>
 		</div>
 
-				 
+		<div>
+	<h2> @Application.messages("menu_employment")</h2>
+</div>		 
 		</td>
 		<td>
 	<table class="js profile">
@@ -79,9 +77,6 @@
         }
         
     </table>
-		</td>
-	</tr>
-</table>
 
 </div> 
 <div style="height: 30px;">
@@ -102,6 +97,9 @@
 		}
 	}
 	];
+	
+	var profileContainer = document.getElementById("profileContainer");
+	profileContainer.style.height = profileContainer.clientHeight +"px";
 	
 	var timeline = new Timeline(document.getElementById("timeline"),2008)
 	for(index in entryDatas) {
