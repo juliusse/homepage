@@ -2,101 +2,64 @@
 
 @import controllers.Application
 
+@menuItem(link: String, text: String) = {
+    <li @if(request.uri.contains(link)) {class="selected"}>
+        <a href="@link">@text</a>
+    </li>
+}
 
 @defining(Application.getSessionLang()) { langKey =>
+
 <!DOCTYPE html>
 
 <html>
-<head>
-<title>@Application.messages(title) - Julius Seltenheim</title>
-<!-- <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">  -->
-<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/site.css")">
-<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-<link rel="apple-touch-icon" sizes="114x114" href="@routes.Assets.at("images/favicon.png")">
-
-<script type="text/javascript" src='@routes.Assets.at("js/jquery.min.js")'></script>
-<script type="text/javascript" src='@routes.Assets.at("js/timeline.js")'></script>
-</head>
-<body>
-
-	<script type="text/javascript" src='@routes.Assets.at("javascripts/script.js")'></script>
-	<div class="wrapper">
-		<div class="header">
-			<div class="banner">
-				<img src="@routes.Assets.at("images/banner1.png")" />
+	<head>
+		<title>@Application.messages(title) - Julius Seltenheim</title>
+		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/site.css")">
+		<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+		<link rel="apple-touch-icon" sizes="114x114" href="@routes.Assets.at("images/favicon.png")">
+		
+		<script type="text/javascript" src='@routes.Assets.at("js/jquery.min.js")'></script>
+		<script type="text/javascript" src='@routes.Assets.at("js/timeline.js")'></script>
+		
+	</head>
+	<body>
+		<div class="pageContainer">
+			<div class="header"></div>
+			<div class="navbarTop">
+				<ul class="navigation-inline">
+					@menuItem(routes.Application.index(langKey).toString,Application.messages("menu_home").toString)
+					@menuItem(routes.Application.profile(langKey).toString,Application.messages("menu_profile").toString)
+					@menuItem(routes.SkillsController.index(langKey).toString,Application.messages("menu_skills").toString)
+					@menuItem(routes.ProjectsController.index(langKey,"").toString,Application.messages("menu_projects").toString)
+					@menuItem(routes.Application.contact(langKey).toString,Application.messages("menu_contact").toString)
+				</ul>
+				
+				<div class="navbarTop-flags">
+					@if(Application.getSessionLang().equals("de")) {
+						<a href="#"> <img src="@routes.Assets.at("images/de_g.png")" /></a>
+						<a href="@Application.getCurrentRouteWithOtherLang("en")"> <img src="@routes.Assets.at("images/en.png")" />
+					} else {
+						<a href="@Application.getCurrentRouteWithOtherLang("de")"> <img src="@routes.Assets.at("images/de.png")" /></a>
+						<a href="#"> <img src="@routes.Assets.at("images/en_g.png")" />
+					}
+					</a>
+				</div>
 			</div>
-			<div class="flags">
-				@if(Application.getSessionLang().equals("de")) {
-					<a href='@Application.getCurrentRouteWithOtherLang("de")'> <img src="@routes.Assets.at("images/de_g.png")" /></a>&nbsp;
-					<a href='@Application.getCurrentRouteWithOtherLang("en")'> <img src="@routes.Assets.at("images/en.png")" />
-				} else {
-					<a href='@Application.getCurrentRouteWithOtherLang("de")'> <img src="@routes.Assets.at("images/de.png")" /></a>&nbsp;
-					<a href='@Application.getCurrentRouteWithOtherLang("en")'> <img src="@routes.Assets.at("images/en_g.png")" />
-				}
-				</a>
-			</div>
-		</div>
-
-		<div class="menu">
-			<h2>
-				 @Application.messages("menu_menu") 
-			</h2>
-			<ul class="navigation">
-			    <li>
-			        <a href="@routes.Application.index(langKey)">@Application.messages("menu_home")</a>
-			    </li>
-			    <li>
-			        <a href="@routes.Application.profile(langKey)">@Application.messages("menu_profile")</a>
-			    </li>
-			    <li>
-			        <a href="@routes.SkillsController.index(langKey)">@Application.messages("menu_skills")</a>
-			    </li>
-			    <li>
-			        <a href="@routes.ProjectsController.index(langKey,"")">@Application.messages("menu_projects")</a>
-			        <ul class="invisible">
-			        	@if(UsersController.isLoggedIn()) {
-			        	<li>
-			                <a href="@routes.ProjectsController.renderAdd(langKey)">@Application.messages("menu_add_project")</a>
-			            </li>
-			            }
-			            <li>
-			                <a href="@routes.ProjectsController.index(langKey,"Application")">@Application.messages("menu_applications")</a>
-			            </li>
-			            <li>
-			                <a href="@routes.ProjectsController.index(langKey,"Game")">@Application.messages("menu_games")</a>
-			            </li>
-			            <li>
-			                <a href="@routes.ProjectsController.index(langKey,"Website")">@Application.messages("menu_websites")</a>
-			            </li>
-			        </ul>
-			    </li>
-			    <li>
-			        <a href="@routes.Application.contact(langKey)">@Application.messages("menu_contact")</a>
-			    </li>
-			</ul>
-
-		</div>
+		<h1>
+			 @Application.messages(title) 
+		</h1>
 		<div class="content">
-			<div id="contentTitle">
-				<h1>
-					 @Application.messages(title) 
-				</h1>
-				<p>
-					  
-				</p>
-			</div>
-
 			@content
 		</div>
-	</div>
-	<div class="footer">
-		&copy; Julius Seltenheim 2013 | 
-		<a href='@routes.Application.contact(Application.getSessionLang())'>  
-			@Application.messages("menu_contact") 
-		</a>
-	</div>
-	</div>
-</body>
+		<div class="footer">
+			&copy; Julius Seltenheim 2013 | 
+			<a href='@routes.Application.contact(Application.getSessionLang())'>  
+				@Application.messages("menu_contact") 
+			</a>
+		</div>
+		</div>
+	</body>
 </html>
 
 }

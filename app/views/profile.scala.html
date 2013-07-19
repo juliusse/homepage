@@ -5,87 +5,56 @@
 @defining(Application.getSessionLang()) { langKey =>
 
 
-
 @layout("menu_profile") {
 
 <div id="profileContainer">
-
 	<div class="profileTimelineContainer">
-		
-		<div id="timeline" style="float:left;width: 50px;position: absolute; height: 100%;top:20px;">
-		te e e e e s t
-		</div>
+		<div id="timeline" style="float:left;width: 50px;position: absolute; height: 98%;top:20px;"></div>
 	</div>
 
 	<div class="profileListingContainer">
-	
-	
-	<div>
-	<h2> @Application.messages("menu_employment")</h2>
-		</div>		 
+		<h2>@Application.messages("menu_employment")</h2>
+		@for(employment <- employments) {
+			<div id="@employment.getId()" class="employmentCard">
+				<h3>@employment.getTitle()</h3>
+				<span class="sosa">o</span> 
+				@if(employment.getWebsite().isEmpty()) {
+					@employment.getPlace()
+				} else {
+					<a target="_blank" href="@employment.getWebsite()">@employment.getPlace()</a>
+				}<br>
+				<span class="sosa">[</span>
+				@employment.getFrom().toString("MMM yyyy",Application.getCurrentLocale()) - 
+	            @if(employment.getTo() != null) {
+	            	@employment.getTo().toString("MMM yyyy",Application.getCurrentLocale())
+	            } else {
+	            	@Application.messages("ongoing")
+	            }<br><br>
+	            @for(task <- employment.getTasks()) {
+	            <div class="employmentDuty">
+	            	<span class="sosa">ñ</span> @task
+	            </div>	            
+	            }
+			</div>
+		}
 
-	<table class="js profile">
-        <tr class="c0">
-            <th class="period"> @Application.messages("profile_period") </th>
-            <th> </th>
-        </tr>
-        
-        @for(employment <- employments) {
-        <tr id="@employment.getId()" class="c0">
-                <td class="period"> 
-                	@employment.getFrom().toString("MMM yyyy",Application.getCurrentLocale()) - 
-                	@if(employment.getTo() != null) {@employment.getTo().toString("MMM yyyy",Application.getCurrentLocale())} else {@Application.messages("ongoing")} 
-               	</td>
-                <td>
-                    <p><span class="place">@employment.getPlace() - @employment.getTitle()</span><br>
-                        <span class="link"><a target="_blank" style="color: #000;" href="@employment.getWebsite()"> @employment.getWebsite() </a></span>
-                    </p>
-                    <p>
-                         @Application.messages("profile_duties") 
-                    <ul>
-                        @for(task <- employment.getTasks()) {
-                        <li>@task</li>
-                        }
-                    </ul>
-                    </p>
-                </td>
-            </tr>
-        }       
-    </table>
-    <p style="height: 20px;"> </p>
-    <h2> @Application.messages("menu_education")</h2>
-    <table class="js profile education">
-        <tr>
-            <th class="period"> @Application.messages("profile_period")</th>
-            <th class="place"> @Application.messages("profile_location")</th>
-            <th class="degree"> @Application.messages("profile_degree")</th>
-        </tr>
-
-
-        @for(education <- educations) {
-        <tr id="@education.getId()">
-                <td class="period"> 
-                	@education.getFromDate().getYear - @education.getToDate().getYear
-                </td>
-                <td>
-                    <span class="place"> @education.getPlace() </span><br>
-                    <span class="link"><a target="_blank" style="color: #000;" href=" @education.getWebsite() "> @education.getWebsite() </a></span>
-                </td>
-                <td>
-                    <span class="degree"> @education.getDegree() </span><br>
-                    <span> @Application.messages("profile_score"): @education.getScore() </span><br>
-                    <span> @education.getDegreeNote() </span>
-                </td>
-            </tr>
-        }
-        
-    </table>
-</div>
+	    <h2> @Application.messages("menu_education")</h2>
+	   	@for(education <- educations) {
+			<div id="@education.getId()" class="employmentCard">
+				<h3>@education.getDegree()</h3>
+				<span class="sosa">o</span> 
+				@if(education.getWebsite().isEmpty()) {
+					@education.getPlace()
+				} else {
+					<a target="_blank" href="@education.getWebsite()">@education.getWebsite()</a>
+				}<br>
+				<span class="sosa">[</span> @education.getFromDate().getYear - @education.getToDate().getYear<br>
+				<span class="sosa">G</span> @education.getScore()
+			</div>
+		}
+	</div>
 </div> 
-<div style="height: 30px;">
-	&nbsp;
-</div>   
-	   
+
 <script type="text/javascript">
 	var eduEntryData = [
 	["undefined",new Date(2009,1,1),new Date(2009,1,1)]
@@ -107,7 +76,7 @@
 	                	];
 	
 	var profileContainer = document.getElementById("profileContainer");
-	profileContainer.style.height = profileContainer.clientHeight +"px";
+	profileContainer.style.height = (profileContainer.clientHeight) +"px";
 	
 	var timeline = new Timeline(document.getElementById("timeline"),2008)
 	for(index in eduEntryData) {

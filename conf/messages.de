@@ -13,7 +13,7 @@ menu_websites=Webseiten
 menu_imprint=Impressum
 menu_contact=Kontakt
     
-develope_finished=Entwicklung endete im
+develope_finished=bis
 develope_ongoing=In Entwicklung
 ongoing=bis heute
 forbidden_title=Zugriff verwehrt
@@ -39,7 +39,7 @@ home_more=mehr
 home_application=Anwendung
 home_game=Spiel
 home_website=Webseite
-home_finished_in=Fertiggestellt im
+home_finished_in=Bis
     
 contact_address=Adresse
 contact_country=Deutschland

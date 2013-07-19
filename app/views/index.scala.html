@@ -6,71 +6,68 @@
 @defining(Application.getSessionLang()) { langKey =>
 
 @layout("menu_home") {
-    <div>
-    <div itemscope itemtype="http://data-vocabulary.org/Person">
-        <h3> @Application.messages("home_welcome") </h3>
-        <p> @Application.messages("home_welcome_text") </p>
-        <meta itemprop="name" content="Julius Seltenheim" />
-        <meta itemprop="url" content="www.julius-seltenheim.com" />
-        <meta itemprop="title" content="Freelancer for Web- and Softwaredevelopment" />
-    </div>
-    <h2> @Application.messages("home_current_projects") </h2>
 
-    <table class="js profile">
-        <tr class="c0">
-            <th style="width: 150px;"> @Application.messages("home_since") </th>
-            <th > @Application.messages("home_project") </th>
-        </tr>
+<h2> @Application.messages("home_welcome") </h2>
+<p> @Application.messages("home_welcome_text") </p>
 
-        
-        @for(project <- currentProjects) {
-        <tr class="c1">
-                <td>
-                @project.getDevelopmentStart().toString("MMM yyyy",Application.getCurrentLocale())
-                </td>
-                <td>
-                    <span class="place"> @project.getTitle() </span>
-                    <span id="hint">[<a href="@routes.ProjectsController.index(langKey,"")#@project.getId()"> @Application.messages("home_more") </a>]</span><br>
-                     @Application.messages("home_categories"): 
-                    
-                    @for(projectType <- project.getTypeOf()) {
-                    	@Application.messages("home_" + Application.toLower(projectType.toString())),
-                    }
-                    
-                </td>
-            </tr>
-        }
-        
-    </table>
-    <p class="spacer"></p>
-    <h2> @Application.messages("home_other_projects") </h2>
+<div class="projectListContainer">
+	<h3> @Application.messages("home_current_projects") </h3>
+	<table class="js projectList">
+	    <tr>
+	        <th style="width: 75px;"> @Application.messages("home_since") </th>
+	        <th > @Application.messages("home_project") </th>
+	    </tr>
+	
+	    
+	    @for(project <- currentProjects) {
+	    <tr class="c1">
+	            <td>
+	            @project.getDevelopmentStart().toString("MMM yyyy",Application.getCurrentLocale())
+	            </td>
+	            <td>
+	                <span class="place"> @project.getTitle() </span>
+	                <span id="hint">[<a href="@routes.ProjectsController.index(langKey,"")#@project.getId()"> @Application.messages("home_more") </a>]</span><br>
+	                 @Application.messages("home_categories"): 
+	                
+	                @for(projectType <- project.getTypeOf()) {
+	                	@Application.messages("home_" + Application.toLower(projectType.toString())),
+	                }
+	                
+	            </td>
+	        </tr>
+	    }
+	    
+	</table>
+</div>
 
-    <table class="js profile">
-        <tr class="c0">
-            <th style="width: 150px;"> @Application.messages("home_finished_in") </th>
-            <th > @Application.messages("home_project") </th>
-        </tr>
-
-        @for(project <- specialProjects) {
-                <tr class="c1">
-                <td>
-                @project.getDevelopmentEnd().toString("MMM yyyy",Application.getCurrentLocale())
-                </td>
-                <td>
-                    <span class="place"> @project.getTitle() </span>
-                    <span id="hint">[<a href="@routes.ProjectsController.index(langKey,"")#@project.getId()"> @Application.messages("home_more") </a>]</span><br>
-                     @Application.messages("home_categories"): 
-                    
-                    @for(projectType <- project.getTypeOf()) {
-                    	@Application.messages("home_" + Application.toLower(projectType.toString())),
-                    }
-                    
-                </td>
-            </tr>
-        }
-        
-    </table>
-    <p class="spacer"></p>
+<div class="projectListContainer">
+	<h3> @Application.messages("home_other_projects") </h3>
+	
+	<table class="js projectList">
+	    <tr class="c0">
+	        <th style="width: 75px;"> @Application.messages("home_finished_in") </th>
+	        <th > @Application.messages("home_project") </th>
+	    </tr>
+	
+	    @for(project <- specialProjects) {
+	            <tr class="c1">
+	            <td>
+	            @project.getDevelopmentEnd().toString("MMM yyyy",Application.getCurrentLocale())
+	            </td>
+	            <td>
+	                <span class="place"> @project.getTitle() </span>
+	                <span id="hint">[<a href="@routes.ProjectsController.index(langKey,"")#@project.getId()"> @Application.messages("home_more") </a>]</span><br>
+	                 @Application.messages("home_categories"): 
+	                
+	                @for(projectType <- project.getTypeOf()) {
+	                	@Application.messages("home_" + Application.toLower(projectType.toString())),
+	                }
+	                
+	            </td>
+	        </tr>
+	    }
+	    
+	</table>
 </div>
 }
 }

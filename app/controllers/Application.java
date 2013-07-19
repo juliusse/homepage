@@ -49,7 +49,7 @@ public class Application extends Controller {
         List<Employment> empl = new ArrayList<Employment>();
 
         if (langKey.equals("de")) {
-            empl.add(new Employment(new DateTime(2012, 4, 1, 1, 1), null, "Freiberufler", "", "http://www.julius-seltenheim.com", new String[] { "Webentwicklung", "Softwareentwicklung",
+            empl.add(new Employment(new DateTime(2012, 4, 1, 1, 1), null, "julius-seltenheim.com", "Freiberufler", "http://www.julius-seltenheim.com", new String[] { "Webentwicklung", "Softwareentwicklung",
                     "Datenbankentwicklung", "Beratung" }));
             empl.add(new Employment(
                     new DateTime(2012,10, 1, 1, 1), 
@@ -87,7 +87,7 @@ public class Application extends Controller {
             empl.add(new Employment(new DateTime(2008, 7, 1, 1, 1), new DateTime(2009, 3, 31, 1, 1), "Caritas", "Zivildienst", "http://www.invia-center-berlin.de", new String[] { "Kochen", "Catering",
                     "Für Gäste sorgen", "Vorbereitung", "Servieren", "Praktikanten einweisen", "Lieferungen" }));
         } else {
-            empl.add(new Employment(new DateTime(2012, 4, 1, 1, 1), null, "Freelancer", "", "http://www.julius-seltenheim.com", new String[] { "Webdevelopment", "Softwaredevelopment",
+            empl.add(new Employment(new DateTime(2012, 4, 1, 1, 1), null, "julius-seltenheim.com", "Freelancer", "http://www.julius-seltenheim.com", new String[] { "Webdevelopment", "Softwaredevelopment",
                     "Databasedevelopment", "Consulting" }));
             empl.add(new Employment(
                     new DateTime(2012,10, 1, 1, 1), 
@@ -128,11 +128,11 @@ public class Application extends Controller {
 
         List<Education> edus = new ArrayList<Education>();
         if (langKey.equals("de")) {
-            edus.add(new Education(new DateTime(2012,4,1,1,1), new DateTime(2014,3,31,1,1), "HTW Berlin", "http://www.htw-berlin.de/", "---", "", "M.Sc. in Internationaler Medieninformatik", "Spezialisierung: Visual Computing"));
+            edus.add(new Education(new DateTime(2012,4,1,1,1), new DateTime(2014,3,31,1,1), "HTW Berlin", "http://www.htw-berlin.de/", "---", "", "(M.Sc. in Internationaler Medieninformatik)", "Spezialisierung: Visual Computing"));
             edus.add(new Education(new DateTime(2009,4,1,1,1), new DateTime(2012,3,31,1,1), "HTW Berlin", "http://www.htw-berlin.de/", "1.3, sehr gut (A)", "", "B.Sc. in Internationaler Medieninformatik", ""));
             edus.add(new Education(new DateTime(2001,8,1,1,1), new DateTime(2008,6,30,1,1), "Hans und Hilde Coppi Gymnasium, Berlin", "http://www.coppi-gym.de/", "2.1", "", "Abitur", ""));
         } else {
-            edus.add(new Education(new DateTime(2012,4,1,1,1), new DateTime(2014,3,31,1,1), "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "---", "", "M.Sc. in International Media and Computing",
+            edus.add(new Education(new DateTime(2012,4,1,1,1), new DateTime(2014,3,31,1,1), "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "---", "", "(M.Sc. in International Media and Computing)",
                     "Specialisation: Visual Computing"));
             edus.add(new Education(new DateTime(2009,4,1,1,1), new DateTime(2012,3,31,1,1), "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "1.3, very good (A)", "", "B.Sc. in International Media and Computing",
                     ""));
@@ -163,7 +163,21 @@ public class Application extends Controller {
 
     public Result autoSelectLanguage() {
 
-        if (request().host().endsWith(".de"))
+        final List<Lang> langs = request().acceptLanguages();
+        boolean acceptGerman = false;
+        boolean acceptEnglish = false;
+        for(Lang lang : langs) {
+            if(lang.language().equals("de")) {
+                acceptGerman = true;
+            } else if(lang.language().equals("en")) {
+                acceptEnglish = true;
+            }    
+        }
+        if(acceptGerman) {
+            return redirect(routes.Application.index("de"));
+        } else if(acceptEnglish) {
+            return redirect(routes.Application.index("en"));
+        } else if (request().host().endsWith(".de"))
             return redirect(routes.Application.index("de"));
         else
             return redirect(routes.Application.index("en"));

@@ -3,48 +3,165 @@ light green: #d5eab0
 middle green: #9acb42
 darker green: #77b900
 */
-body,html {
-	font-family: Arial, Verdana, sans-serif;
+body {
+	font-family: Arial, Helvetica, sans-serif;
 	font-size: 0.9em;
+	margin: 0px;
+	min-width: 980px;
 }
 
 h1 {
-	font-size: 2em;
-	color: #77b900;
+	font-size: 3.5em;
+	color: #9acb42;
 	padding-top: 0px;
 	margin: 0px 0px;
 }
 
 h2 {
-	color: #77b900;
+	font-size: 1.7em;
+	color: #666;
 	padding-top: 10px;
 	padding-bottom: 10px;
 	margin: 0px 0px;
 }
 
+h3 {
+	font-size: 1.4em;
+	margin-bottom: 1px;
+	color: #9acb42;
+	
+}
+
 a {
+	border: 0px;
 	color: #77b900;
 }
 
-a#black {
-	color: black;
+a img {
+	border: 0px;
 }
 
-.spacer {
-	height: 50px;
+@font-face {
+	font-family: 'Sosa';
+	src: url('/assets/fonts/sosa/sosa.eot');
+	src: local('Sosa'), local('Sosa'), url('/assets/fonts/sosa/sosa.woff')
+		format('woff'), url('/assets/fonts/sosa/sosa.ttf') format('truetype'),
+		url('/assets/fonts/sosa/sosa.svg#Sosa') format('svg');
+	font-weight: normal;
+	font-style: normal;
 }
 
-#hint {
-	font-size: 0.8em;
+.sosa {
+	font-family: "Sosa";
+	font-size: 1.5em;
+	text-decoration: none;
+	font-weight: normal;
+	speak: none;
+	color: #666;
 }
 
-#breadcrumb {
-	color: #77b900;
+/* site skeleton */
+div.pageContainer {
+	width: 980px;
+	margin: 0 auto;
+	   -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+	border-right-color: #9acb42;
+	border-right-width: 5px;
+	border-right-style: solid;
 }
-/* Table */
+
+div.header {
+	width: 100%;
+	height: 120px;
+	position: relative;
+	background: url("/assets/images/julius_seltenheim_logo.png") no-repeat;
+	background: url("/assets/images/julius_seltenheim_logo.png") no-repeat, -moz-linear-gradient(left,  #ffffff 0%, #ffffff 33%, #9acb42 97%, #9acb42 100%);
+	background: url("/assets/images/julius_seltenheim_logo.png") no-repeat, -webkit-gradient(linear, left top, right top, color-stop(0%,#ffffff), color-stop(33%,#ffffff), color-stop(97%,#9acb42), color-stop(100%,#9acb42));
+	background: url("/assets/images/julius_seltenheim_logo.png") no-repeat, -webkit-linear-gradient(left,  #ffffff 0%,#ffffff 33%,#9acb42 97%,#9acb42 100%);
+	background: url("/assets/images/julius_seltenheim_logo.png") no-repeat, -o-linear-gradient(left,  #ffffff 0%,#ffffff 33%,#9acb42 97%,#9acb42 100%);
+	background: url("/assets/images/julius_seltenheim_logo.png") no-repeat, -ms-linear-gradient(left,  #ffffff 0%,#ffffff 33%,#9acb42 97%,#9acb42 100%);
+	background: url("/assets/images/julius_seltenheim_logo.png") no-repeat, linear-gradient(to right,  #ffffff 0%,#ffffff 33%,#9acb42 97%,#9acb42 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#9acb42',GradientType=1 );
+
+}
+
+div.navbarTop {
+	width: 100%;
+	height: 33px;
+	   -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+	border-bottom-width: 1px;
+	border-bottom-color: #9acb42;
+	border-bottom-style: dotted; 
+}
+
+div.navbarTop-flags {
+	float: right;
+	padding-right: 9px;
+	padding-top: 7px;
+}
+
+div.navigation-inline {
+	display: inline;
+}
+
+ul.navigation-inline {
+    overflow: hidden;
+    float: left;
+    margin: 5px 0px;
+    font-size: 18px;
+    padding-left: 10px;
+    display: table;
+    table-layout: fixed;
+}
+
+ul.navigation-inline li {
+    float: left;
+    list-style: none;
+    margin: 0px 20px;
+    display: table-cell;
+}
+
+ul.navigation-inline li a {
+    float: left;
+    text-decoration: none;
+    color: #9acb42;
+}
+
+ul.navigation-inline li.selected a {
+    text-decoration: underline;
+}
+
+div.content {
+	width: 100%;
+	padding: 10px 0 0 0;
+	min-height: 500px;
+	overflow: hidden;
+}
+
+div.footer {
+	width: 100%;
+	padding-top: 10px;
+	margin-top: 20px;
+	height: 25px;
+	text-align: center;
+	background: #FFFFFF;
+	background: -moz-linear-gradient(left,  #ffffff 0%, #ffffff 33%, #9acb42 97%, #9acb42 100%);
+	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#ffffff), color-stop(33%,#ffffff), color-stop(97%,#9acb42), color-stop(100%,#9acb42));
+	background: -webkit-linear-gradient(left,  #ffffff 0%,#ffffff 33%,#9acb42 97%,#9acb42 100%);
+	background: -o-linear-gradient(left,  #ffffff 0%,#ffffff 33%,#9acb42 97%,#9acb42 100%);
+	background: -ms-linear-gradient(left,  #ffffff 0%,#ffffff 33%,#9acb42 97%,#9acb42 100%);
+	background: linear-gradient(to right,  #ffffff 0%,#ffffff 33%,#9acb42 97%,#9acb42 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#9acb42',GradientType=1 );
+}
+
+
+/* Table Base */
 table.js {
 	border-collapse: collapse;
-	width:100%;
 }
 
 table.js th {
@@ -71,163 +188,63 @@ table.js td,table.js th {
 	border-right-color: #d5eab0;
 }
 
-/* style form */
-div.menu {
+
+/* index page */
+
+div.projectListContainer {
+	width: 48%;
 	float: left;
-	width: 180px;
-	padding: 0 0 0 0;
-	margin-left: 20px;
+	margin-right: 2%;
 }
 
-div.menu h2 {
-	color: #808080;
-	font-size: 2.1em;
-}
-
-div.menu li a {
-	font-family: Arial;
-	font-size: 1.2em;
-}
-
-div.wrapper {
-	width: 970px;
-	margin: 0 auto;
-}
-
-div.header {
-	width: 960px;
-	height: 150px;
-	position: relative;
-	/*    padding: 10px;*/
-}
-
-div.content {
-	border-left: 1px;
-	border-left-style: dotted;
-	float: left;
-	width: 749px;
-	padding: 10px 0 0 0;
-	min-height: 500px;
-	border-right-color: #9acb42;
-	border-right-width: 10px;
-	border-right-style: solid;
-}
-
-div.footer {
-	clear: left;
-	width: 940px;
-	margin: 0 auto;
-	height: 34px;
-	padding-top: 16px;
-	background-image: url(../images/footer.png);
-	background-position: -20px 0px;
-	text-align: center;
-	border-right-color: #9acb42;
-	border-right-width: 10px;
-	border-right-style: solid;
-	/*    border-top-width: 1px;
-    border-top-style: dotted; */
-}
-
-div.header div.banner {
-	position: relative;
+table.projectList {
 	width: 100%;
 }
 
-.flags {
-	position: absolute;
-	background-color: white;
-	padding: 3px 4px 1px 4px;
-	top: 150px;
-	left: 900px;
-}
-
-div.project {
-	width: 709px;
-	min-height: 250px;
-	padding-right: 10px;
-	position: relative;
-	/*    padding: 10px 10px;*/
-	border-top: 5px;
-	border-top-style: solid;
-	border-top-color: #9acb42;
+/*
+ * Project page
+ */
+ 
+div.projectCard {
+	width: 100%;
+	margin-bottom: 20px;
+	border-bottom: 1px;
+	border-bottom-style: dotted;
+	border-bottom-color: #9acb42;
 	overflow: hidden;
 }
 
-div.project div#title {
-	float: left;
-	width: 450px;
-	padding-bottom: 20px;
-}
-
-div.project div#title h2 {
-	margin-bottom: 0px;
-	padding-bottom: 0px;
-}
-
-div.project div#buttons {
+div.projectImage {
 	float: right;
-	padding-right: 30px;
+	padding-right: 20px;
+	width: 40%;
+	
 }
 
-div.project div#image {
-	text-align: right;
-	float: right;
-	width: 250px;
-	margin-top: 30px;
-	margin-bottom: 20px;
+div.projectImage img {
+	width: 100%;
+	
 }
 
-div.project div#tech {
+div.projectDescription {
+	width: 55%;
+}
+
+div.projectTechnologies {
+	width: 100%;
 	float: left;
-	position: absolute;
-	bottom: 10px;
+	margin-top: 15px;
 }
 
-div.project div#tech p {
-	display: inline;
-}
-
-div.project div#tech img {
-	max-width: 15px;
-	max-height: 15px;
-}
-
-div.project div#download {
+div.projectTechnology {
+	width: 22%;
+	margin-right: 2%;
 	float: left;
-	position: absolute;
-	bottom: 30px;
-	font-size: large;
 }
 
-div.project div#download a {
-	position: absolute;
-	width: 300px;
-	top: 20%;
-}
-
-div.project div#image img {
-	max-width: 250px;
-	max-height: 300px;
-}
-
-div.project div#description {
-	float: left;
-	width: 450px;
-	margin-bottom: 6em;
-}
-
-div.content>div {
-	padding-left: 30px;
-}
-
-div.content>div>p {
-	padding-top: 0px;
-	margin-top: 0px;
-	padding-bottom: 10px;
-}
-
-/* PROFILE */
+/* 
+ * PROFILE 
+ */
 div.profileTimelineContainer {
 	float: left;
 	position: relative;
@@ -242,78 +259,64 @@ div.profileListingContainer {
 	margin-right: 10px;
 }
 
-table.profile td {
-	vertical-align: top;
+div.employmentCard {
+	border-bottom-style: dotted;
+	border-bottom-color: #d5eab0;
+	border-bottom-width: 1px;
+	overflow: auto;
+	margin-bottom: 20px;
 }
 
-table.profile p {
-	margin-top: 0;
-	margin-bottom: 0.4em;
-	padding-top: 0;
+div.employmentCard a {
+	color: black;
 }
 
-table.profile .place {
-	font-weight: bold;
-	width: 300px;
+div.employmentDuty {
+	width: 25%;
+	margin-right: 2%;
+	position: relative;
+	float: left;
 }
 
-table.profile .degree {
-	font-weight: bold;
-	width: 300px;
+/*
+ * Skills
+ */
+ 
+div.skillGroupCard {
+	width: 30%;
+	margin-right: 3%;
+	float: left;
+	min-height: 300px;
 }
 
-table.profile td.period {
-	width: 80px;
-	vertical-align: top;
+div.skillRow {
+	width: 100%;
+	height: 20px;	
+	margin-bottom: 5px;
 }
 
-table.profile ul {
-	margin: 0.2em 0em 0em 0em;
+div.skillName {
+	width: 60%;
+	float: left;	
 }
 
-table.education td {
-	height: 60px;
-}
-
-ul.navigation {
-	padding: 0 0 0 10px;
-}
-
-ul.navigation li {
-	display: compact;
-	padding: 1px;
-	margin: 1px;
-}
-
-ul.navigation li.active>a {
-	font-weight: bold;
-}
-
-ul.navigation a {
-	text-decoration: none;
-}
-
-ul.navigation li.active ul {
-	display: block;
-}
-
-.invisible {
-	display: none;
+div.skillLevel {
+	float: left;
 }
 
 div.emptyStars {
 	background: url("/assets/images/star_empty.png") repeat-x;
-	background-size: 12px;
-	width: 120px;
+	background-size: 15px;
+	width: 90px;
 	position: absolute;
-	height: 12px;
+	height: 15px;
 	margin-left: 10px;
 }
 
 div.fullStars {
 	background: url("/assets/images/star_full.png") repeat-x;
-	background-size: 12px;
+	background-size: 15px;
 	position: absolute;
-	height: 12px;
+	height: 15px;
 	margin-left: 10px;
 }

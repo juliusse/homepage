@@ -14,7 +14,7 @@ menu_websites=Websites
 menu_imprint=Imprint
 menu_contact=Contact
 
-develope_finished=Development was finished in
+develope_finished=until
 develope_ongoing=In development
 ongoing=ongoing
 forbidden_title=Access Denied
@@ -40,7 +40,7 @@ home_more=more
 home_application=Application
 home_game=Game
 home_website=Website
-home_finished_in=Finished in
+home_finished_in=Until
 
 
 contact_address=Address
