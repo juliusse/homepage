@@ -10,6 +10,37 @@
 <h2> @Application.messages("home_welcome") </h2>
 <p> @Application.messages("home_welcome_text") </p>
 
+<div class="groupCard">
+	<h2>@Application.messages("home_projects")</h2>
+	@for(project <- (currentProjects ++ specialProjects)) {
+    
+		<div class="projectCard">
+	    	<a id="@project.getId()"></a>
+            <h3>
+            	@project.getTitleAsHtml()
+            </h3>
+            <div class="projectImage">
+                <img src="@routes.ProjectsController.getImage(project.getId())"/>
+            </div>
+            
+
+            <span class="sosa">Y</span>
+            @if(project.getDevelopmentEnd() != null) {
+		        @Application.messages("develope_finished") @project.getDevelopmentEnd().toString("MMM yyyy",Application.getCurrentLocale())
+		    } else {
+		        @Application.messages("develope_ongoing")
+		    }   
+
+			<div class="projectTechnologies">
+			@for(tech <- project.getTechnologies()) {
+				<div class="projectTechnology">
+					<span class="sosa">å</span> @tech
+				</div>		
+				}
+			</div>
+		</div>
+    }
+</div>
 <div class="projectListContainer">
 	<h3> @Application.messages("home_current_projects") </h3>
 	<table class="js projectList">
