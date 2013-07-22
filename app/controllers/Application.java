@@ -9,6 +9,7 @@ import java.util.Locale;
 
 import models.Education;
 import models.Employment;
+import models.Position;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,17 @@ public class Application extends Controller {
         setSessionLang(langKey);
         List<Project> spProjects = databaseService.findProjectsForStartPage();
         Collections.sort(spProjects, new NewestProjectsFirstComparator());
-        return ok(views.html.index.render(databaseService.findProjectsForCurrent(), spProjects));
+        
+        //get current positions
+        final List<Position> positions = new ArrayList<Position>();
+        if(langKey.equals("de")) {
+            //positions.add(new Employment(new DateTime(2013,8,1,1,1), new DateTime(2013,10,1,1,1), "Rohde & Schwarz SIT", "Praktikant", "", new ArrayList<String>()));
+            positions.add(new Education(new DateTime(2012,4,1,1,1), new DateTime(2014,3,31,1,1), "HTW Berlin", "http://www.htw-berlin.de/", "---", "", "Student", "(M.Sc., Int. Medieninformatik)", "Spezialisierung: Visual Computing"));
+        } else {
+            positions.add(new Education(new DateTime(2012,4,1,1,1), new DateTime(2014,3,31,1,1), "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "---", "", "Student","(M.Sc., Int. Media and Computing)",
+                    "Specialisation: Visual Computing"));
+        }
+        return ok(views.html.index.render(databaseService.findProjectsForCurrent(), spProjects, positions));
     }
 
     public Result contact(String langKey) {
@@ -128,22 +139,22 @@ public class Application extends Controller {
 
         List<Education> edus = new ArrayList<Education>();
         if (langKey.equals("de")) {
-            edus.add(new Education(new DateTime(2012,4,1,1,1), new DateTime(2014,3,31,1,1), "HTW Berlin", "http://www.htw-berlin.de/", "---", "", "(M.Sc. in Internationaler Medieninformatik)", "Spezialisierung: Visual Computing"));
-            edus.add(new Education(new DateTime(2009,4,1,1,1), new DateTime(2012,3,31,1,1), "HTW Berlin", "http://www.htw-berlin.de/", "1.3, sehr gut (A)", "", "B.Sc. in Internationaler Medieninformatik", ""));
-            edus.add(new Education(new DateTime(2001,8,1,1,1), new DateTime(2008,6,30,1,1), "Hans und Hilde Coppi Gymnasium, Berlin", "http://www.coppi-gym.de/", "2.1", "", "Abitur", ""));
+            edus.add(new Education(new DateTime(2012,4,1,1,1), new DateTime(2014,3,31,1,1), "HTW Berlin", "http://www.htw-berlin.de/", "---", "","Student", "(M.Sc. in Internationaler Medieninformatik)", "Spezialisierung: Visual Computing"));
+            edus.add(new Education(new DateTime(2009,4,1,1,1), new DateTime(2012,3,31,1,1), "HTW Berlin", "http://www.htw-berlin.de/", "1.3, sehr gut (A)", "", "Student", "B.Sc. in Internationaler Medieninformatik", ""));
+            edus.add(new Education(new DateTime(2001,8,1,1,1), new DateTime(2008,6,30,1,1), "Hans und Hilde Coppi Gymnasium, Berlin", "http://www.coppi-gym.de/", "2.1", "","Schüler", "Abitur", ""));
         } else {
-            edus.add(new Education(new DateTime(2012,4,1,1,1), new DateTime(2014,3,31,1,1), "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "---", "", "(M.Sc. in International Media and Computing)",
+            edus.add(new Education(new DateTime(2012,4,1,1,1), new DateTime(2014,3,31,1,1), "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "---", "","Student",  "(M.Sc. in International Media and Computing)",
                     "Specialisation: Visual Computing"));
-            edus.add(new Education(new DateTime(2009,4,1,1,1), new DateTime(2012,3,31,1,1), "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "1.3, very good (A)", "", "B.Sc. in International Media and Computing",
+            edus.add(new Education(new DateTime(2009,4,1,1,1), new DateTime(2012,3,31,1,1), "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "1.3, very good (A)", "","Student",  "B.Sc. in International Media and Computing",
                     ""));
-            edus.add(new Education(new DateTime(2001,8,1,1,1), new DateTime(2008,6,30,1,1), "Hans und Hilde Coppi Gymnasium, Berlin", "http://www.coppi-gym.de/", "2.1", "", "Abitur", ""));
+            edus.add(new Education(new DateTime(2001,8,1,1,1), new DateTime(2008,6,30,1,1), "Hans und Hilde Coppi Gymnasium, Berlin", "http://www.coppi-gym.de/", "2.1", "", "Student", "Abitur", ""));
         }
         
         Collections.sort(empl, new Comparator<Employment>() {
             @Override
             public int compare(Employment o1, Employment o2) {
-                final DateTime end1 = o1.getTo();
-                final DateTime end2 = o2.getTo();
+                final DateTime end1 = o1.getToDate();
+                final DateTime end2 = o2.getToDate();
                 if(end1 == null && end2 == null) {
                     return 0;
                 } else if(end1 == null) {

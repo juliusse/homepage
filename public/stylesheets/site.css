@@ -92,6 +92,7 @@ div.header {
 div.navbarTop {
 	width: 100%;
 	height: 33px;
+	margin-top: 5px;
 	   -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;

@@ -1,5 +1,6 @@
 @(currentProjects:List[services.database.Project] = scala.collection.immutable.List[services.database.Project](),
-  specialProjects:List[services.database.Project] = scala.collection.immutable.List[services.database.Project]())
+  specialProjects:List[services.database.Project] = scala.collection.immutable.List[services.database.Project](),
+  currentPositions:List[models.Position] = scala.collection.immutable.List[models.Position]())
 
 @import controllers.Application
 
@@ -7,8 +8,11 @@
 
 @layout("menu_home") {
 
-<h2> @Application.messages("home_welcome") </h2>
-<p> @Application.messages("home_welcome_text") </p>
+
+<p> 
+	<strong>@Application.messages("home_welcome")</strong><br>
+	@Application.messages("home_welcome_text") 
+</p>
 
 <div class="groupCard">
 	<h2>@Application.messages("home_projects")</h2>
@@ -41,64 +45,23 @@
 		</div>
     }
 </div>
-<div class="projectListContainer">
-	<h3> @Application.messages("home_current_projects") </h3>
-	<table class="js projectList">
-	    <tr>
-	        <th style="width: 75px;"> @Application.messages("home_since") </th>
-	        <th > @Application.messages("home_project") </th>
-	    </tr>
+<div class="groupCard">
+	<h2>@Application.messages("home_positions")</h2>
+	@for(position <- currentPositions) {
+		<div id="@position.getId()" class="employmentCard">
+			<h3>@position.getTitle() @if(position.isInstanceOf[models.Education]) {- @position.asInstanceOf[models.Education].getDegree()}</h3>
+			<span class="sosa">o</span> 
+			@if(position.getWebsite().isEmpty()) {
+				@position.getPlace()
+			} else {
+				<a target="_blank" href="@position.getWebsite()">@position.getWebsite()</a>
+			}<br>
+			<span class="sosa">[</span>
+			@Application.messages("home_since") 
+			@position.getFromDate().toString("MMM yyyy",Application.getCurrentLocale()) 
+		</div>
+	}
 	
-	    
-	    @for(project <- currentProjects) {
-	    <tr class="c1">
-	            <td>
-	            @project.getDevelopmentStart().toString("MMM yyyy",Application.getCurrentLocale())
-	            </td>
-	            <td>
-	                <span class="place"> @project.getTitle() </span>
-	                <span id="hint">[<a href="@routes.ProjectsController.index(langKey,"")#@project.getId()"> @Application.messages("home_more") </a>]</span><br>
-	                 @Application.messages("home_categories"): 
-	                
-	                @for(projectType <- project.getTypeOf()) {
-	                	@Application.messages("home_" + Application.toLower(projectType.toString())),
-	                }
-	                
-	            </td>
-	        </tr>
-	    }
-	    
-	</table>
-</div>
-
-<div class="projectListContainer">
-	<h3> @Application.messages("home_other_projects") </h3>
-	
-	<table class="js projectList">
-	    <tr class="c0">
-	        <th style="width: 75px;"> @Application.messages("home_finished_in") </th>
-	        <th > @Application.messages("home_project") </th>
-	    </tr>
-	
-	    @for(project <- specialProjects) {
-	            <tr class="c1">
-	            <td>
-	            @project.getDevelopmentEnd().toString("MMM yyyy",Application.getCurrentLocale())
-	            </td>
-	            <td>
-	                <span class="place"> @project.getTitle() </span>
-	                <span id="hint">[<a href="@routes.ProjectsController.index(langKey,"")#@project.getId()"> @Application.messages("home_more") </a>]</span><br>
-	                 @Application.messages("home_categories"): 
-	                
-	                @for(projectType <- project.getTypeOf()) {
-	                	@Application.messages("home_" + Application.toLower(projectType.toString())),
-	                }
-	                
-	            </td>
-	        </tr>
-	    }
-	    
-	</table>
 </div>
 }
 }

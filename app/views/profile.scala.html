@@ -24,9 +24,9 @@
 					<a target="_blank" href="@employment.getWebsite()">@employment.getPlace()</a>
 				}<br>
 				<span class="sosa">[</span>
-				@employment.getFrom().toString("MMM yyyy",Application.getCurrentLocale()) - 
-	            @if(employment.getTo() != null) {
-	            	@employment.getTo().toString("MMM yyyy",Application.getCurrentLocale())
+				@employment.getFromDate().toString("MMM yyyy",Application.getCurrentLocale()) - 
+	            @if(employment.getToDate() != null) {
+	            	@employment.getToDate().toString("MMM yyyy",Application.getCurrentLocale())
 	            } else {
 	            	@Application.messages("ongoing")
 	            }<br><br>
@@ -67,10 +67,10 @@
 	                	["undefined",new Date(2009,1,1),new Date(2009,1,1),"idForHighlighting"]
 
 	                	@for(employment <- employments) {
-	                		@if(employment.getTo != null) {
-	                		,["@employment.getPlace() - @employment.getTitle()",new Date(@employment.getFrom().getMillis()),new Date(@employment.getTo().getMillis()),"@employment.getId()"]
+	                		@if(employment.getToDate != null) {
+	                		,["@employment.getPlace() - @employment.getTitle()",new Date(@employment.getFromDate().getMillis()),new Date(@employment.getToDate().getMillis()),"@employment.getId()"]
 	                		} else {
-	                			,["@employment.getPlace() - @employment.getTitle()",new Date(@employment.getFrom().getMillis()),new Date(),"@employment.getId()"]	
+	                			,["@employment.getPlace() - @employment.getTitle()",new Date(@employment.getFromDate().getMillis()),new Date(),"@employment.getId()"]	
 	                		}
 	                	}
 	                	];
