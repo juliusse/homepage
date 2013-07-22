@@ -4,6 +4,10 @@
 @import services.database._
 @import helper._
 
+@dateForJavaScript(dateTime : org.joda.time.DateTime) = {
+	@dateTime.getYear(),@(dateTime.getMonthOfYear()-1),@dateTime.getDayOfMonth()
+}
+
 @defining(Application.getSessionLang()) { langKey =>
 
 
@@ -102,9 +106,9 @@
 	["undefined",new Date(2009,1,1),new Date(2009,1,1)]
 	@for(education <- educations) {
 		@if(education.getToDate() != null) {
-			,["@education.getPlace() - @education.getDegree()",new Date(@education.getFromDate().getMillis()),new Date(@education.getToDate().getMillis()),"@education.getId()"]
+			,["@education.getPlace() - @education.getDegree()",new Date(@dateForJavaScript(education.getFromDate())),new Date(@dateForJavaScript(education.getToDate())),"@education.getId()"]
 		} else {
-			,["@education.getPlace() - @education.getDegree()",new Date(@education.getFromDate().getMillis()),new Date(),"@education.getId()"]
+			,["@education.getPlace() - @education.getDegree()",new Date(@dateForJavaScript(education.getFromDate())),new Date(),"@education.getId()"]
 		}
 	}
 	];
@@ -114,9 +118,9 @@
 
 	                	@for(employment <- employments) {
 	                		@if(employment.getToDate != null) {
-	                		,["@employment.getPlace() - @employment.getTitle()",new Date(@employment.getFromDate().getMillis()),new Date(@employment.getToDate().getMillis()),"@employment.getId()"]
+	                		,["@employment.getPlace() - @employment.getTitle()",new Date(@dateForJavaScript(employment.getFromDate())),new Date(@dateForJavaScript(employment.getToDate())),"@employment.getId()"]
 	                		} else {
-	                			,["@employment.getPlace() - @employment.getTitle()",new Date(@employment.getFromDate().getMillis()),new Date(),"@employment.getId()"]	
+	                			,["@employment.getPlace() - @employment.getTitle()",new Date(@dateForJavaScript(employment.getFromDate())),new Date(),"@employment.getId()"]	
 	                		}
 	                	}
 	                	];
