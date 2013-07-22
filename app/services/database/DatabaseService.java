@@ -39,6 +39,7 @@ public interface DatabaseService {
     
     //Positions methods
     <T extends Position> T upsertPosition(T position) throws IOException;
+    Position findPositionById(String positionId) throws IOException;
     List<Position> findCurrentPositions() throws IOException;
     
     List<Employment> findAllEmployments() throws IOException;

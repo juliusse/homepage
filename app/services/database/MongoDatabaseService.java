@@ -294,6 +294,17 @@ public class MongoDatabaseService implements DatabaseService {
     }
 
     @Override
+    public Position findPositionById(String positionId) throws IOException {
+        try {
+            final BasicDBObject query = queryById(positionId);
+            final BasicDBObject positionJson = (BasicDBObject) positions().findOne(query);
+            return convertToPosition(positionJson);
+        } catch (MongoException e) {
+            throw new IOException(e);
+        }
+    }
+    
+    @Override
     public List<Position> findCurrentPositions() throws IOException {
         try {
             final List<Position> positions = new ArrayList<Position>();

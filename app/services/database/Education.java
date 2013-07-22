@@ -44,6 +44,10 @@ public class Education extends Position {
             return degreeMap.get("en");
         }
     }
+    
+    public String getDegree(String langKey) {
+        return degreeMap.get(langKey);
+    }
 
     public void setDegree(String lang, String degree) {
         this.degreeMap.put(lang, degree);

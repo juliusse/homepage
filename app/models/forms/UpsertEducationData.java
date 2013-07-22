@@ -1,12 +1,5 @@
 package models.forms;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import play.data.validation.Constraints.Required;
 
 public class UpsertEducationData extends UpsertPositionData {

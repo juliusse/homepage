@@ -73,6 +73,10 @@ public abstract class Position {
             return titleMap.get("en");
         }
     }
+    
+    public String getTitle(String langKey) {
+        return titleMap.get(langKey);
+    }
 
     public void setTitle(String lang, String title) {
         this.titleMap.put(lang, title);

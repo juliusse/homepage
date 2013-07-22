@@ -33,6 +33,18 @@ public class Employment extends Position {
         }
     }
     
+    public List<String> getTasks(String langKey) {
+        return tasksMap.get(langKey);
+    }
+    
+    public String getTasksAsString(String langKey) {
+        String result = "";
+        for(String s : tasksMap.get(langKey)) {
+            result += s+"\n";
+        }
+        return result;
+    }
+    
     public void setTasks(String lang, List<String> tasks) {
         tasksMap.put(lang, tasks);
     }

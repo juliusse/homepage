@@ -29,7 +29,7 @@
 			<div class="navbarTop">
 				<ul class="navigation-inline">
 					@menuItem(routes.Application.index(langKey).toString,Application.messages("menu_home").toString)
-					@menuItem(routes.ProfileController.index(langKey).toString,Application.messages("menu_profile").toString)
+					@menuItem(routes.ProfileController.index(langKey,"").toString,Application.messages("menu_profile").toString)
 					@menuItem(routes.SkillsController.index(langKey).toString,Application.messages("menu_skills").toString)
 					@menuItem(routes.ProjectsController.index(langKey,"").toString,Application.messages("menu_projects").toString)
 					@menuItem(routes.Application.contact(langKey).toString,Application.messages("menu_contact").toString)
