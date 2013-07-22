@@ -97,7 +97,9 @@
 				@employmentForm(employment)
 			} else {
 				<h3>@employment.getTitle()</h3>
-				<a href="@routes.ProfileController.index(langKey,employment.getId()).toString()#@employment.getId()">Edit</a><br>
+				@if(controllers.UsersController.isLoggedIn()) {
+					<a href="@routes.ProfileController.index(langKey,employment.getId()).toString()#@employment.getId()">Edit</a><br>
+				}
 				<span class="sosa">o</span> 
 				@if(employment.getWebsite().isEmpty()) {
 					@employment.getPlace()
