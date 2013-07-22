@@ -16,6 +16,7 @@
 
 	<div class="profileListingContainer">
 		<h2>@Application.messages("menu_employment")</h2>
+		@if(controllers.UsersController.isLoggedIn()) {
 		<div class="employmentCard">
 		@form(routes.ProfileController.upsertEmployment(langKey)) {
 			<h3>New Employment</h3>
@@ -31,6 +32,7 @@
 			<button type="submit" name="create">Create</button>
         }
 		</div>
+		}
 		@for(employment <- employments) {
 			<div id="@employment.getId()" class="employmentCard">
 				<h3>@employment.getTitle()</h3>
@@ -56,6 +58,7 @@
 		}
 
 	    <h2> @Application.messages("menu_education")</h2>
+	    @if(controllers.UsersController.isLoggedIn()) {
 	    <div class="employmentCard">
 		@form(routes.ProfileController.upsertEducation(langKey)) {
 			<h3>New Education</h3>
@@ -71,6 +74,7 @@
 			<button type="submit" name="create">Create</button>
         }
 		</div>
+		}
 	   	@for(education <- educations) {
 			<div id="@education.getId()" class="employmentCard">
 				<h3>@education.getDegree()</h3>

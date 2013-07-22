@@ -12,9 +12,12 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import controllers.secured.OnlyLoggedIn;
+
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import services.database.DatabaseService;
 import services.database.Education;
 import services.database.Employment;
@@ -143,6 +146,7 @@ public class ProfileController extends Controller {
         return ok(views.html.profile.render(empl, edus));
     }
     
+    @Security.Authenticated(OnlyLoggedIn.class)
     public Result upsertEmployment(String langKey, String employmentId) throws IOException {
         Form<UpsertEmploymentData> filledForm = Form.form(UpsertEmploymentData.class).bindFromRequest();
         
@@ -166,6 +170,7 @@ public class ProfileController extends Controller {
         }
     }
     
+    @Security.Authenticated(OnlyLoggedIn.class)
     public Result upsertEducation(String langKey, String educationId) throws IOException {
         Form<UpsertEducationData> filledForm = Form.form(UpsertEducationData.class).bindFromRequest();
         
