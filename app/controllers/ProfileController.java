@@ -1,65 +1,36 @@
 package controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
+import models.forms.UpsertEducationData;
+import models.forms.UpsertEmploymentData;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import play.api.templates.Html;
-import play.i18n.Lang;
-import play.i18n.Messages;
+import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import services.database.DatabaseService;
 import services.database.Education;
 import services.database.Employment;
-import services.database.Position;
-import services.database.Project;
-
 
 @Component
-public class Application extends Controller {
-    public final static String SESSION_LANGKEY = "langkey";
-    
+public class ProfileController extends Controller {
+
     @Autowired
     private DatabaseService databaseService;
     
+    
     public Result index(String langKey) throws IOException {
-        setSessionLang(langKey);
-        final List<Project> spProjects = databaseService.findProjectsForStartPage();
-        Collections.sort(spProjects, new NewestProjectsFirstComparator());
-        
-        final  List<Position> currentPositions = databaseService.findCurrentPositions();
-        //get current positions
-//        final List<Position> positions = new ArrayList<Position>();
-//        if(langKey.equals("de")) {
-//            //positions.add(new Employment(new DateTime(2013,8,1,1,1), new DateTime(2013,10,1,1,1), "Rohde & Schwarz SIT", "Praktikant", "", new ArrayList<String>()));
-//            positions.add(new Education(new DateTime(2012,4,1,1,1), new DateTime(2014,3,31,1,1), "HTW Berlin", "http://www.htw-berlin.de/", "---", "Student", "(M.Sc., Int. Medieninformatik)", "Spezialisierung: Visual Computing"));
-//        } else {
-//            positions.add(new Education(new DateTime(2012,4,1,1,1), new DateTime(2014,3,31,1,1), "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "---", "Student","(M.Sc., Int. Media and Computing)",
-//                    "Specialisation: Visual Computing"));
-//        }
-        return ok(views.html.index.render(databaseService.findProjectsForCurrent(), spProjects, currentPositions));
-    }
+        Application.setSessionLang(langKey);
 
-    public Result contact(String langKey) {
-        setSessionLang(langKey);
-
-        return ok(views.html.contact.render());
-    }
-
-    public Result profile(String langKey) {
-        setSessionLang(langKey);
-
-        List<Employment> empl = new ArrayList<Employment>();
-        List<Education> edus = new ArrayList<Education>();
+        List<Employment> empl = databaseService.findAllEmployments();
+        List<Education> edus = databaseService.findAllEducations();
 
 //        if (langKey.equals("de")) {
 //            empl.add(new Employment(new DateTime(2012, 4, 1, 1, 1), null, "julius-seltenheim.com", "Freiberufler", "http://www.julius-seltenheim.com", new String[] { "Webentwicklung", "Softwareentwicklung",
@@ -171,69 +142,52 @@ public class Application extends Controller {
 
         return ok(views.html.profile.render(empl, edus));
     }
-
     
+    public Result upsertEmployment(String langKey, String employmentId) throws IOException {
+        Form<UpsertEmploymentData> filledForm = Form.form(UpsertEmploymentData.class).bindFromRequest();
+        
+        if(filledForm.hasErrors()) {
+            return badRequest(filledForm.errorsAsJson());
+        } else {
+            UpsertEmploymentData data = filledForm.get();
+            final Employment employment = employmentId != "-1" ? databaseService.findEmploymentById(employmentId) : new Employment();
 
-    public Result autoSelectLanguage() {
-
-        final List<Lang> langs = request().acceptLanguages();
-        boolean acceptGerman = false;
-        boolean acceptEnglish = false;
-        for(Lang lang : langs) {
-            if(lang.language().equals("de")) {
-                acceptGerman = true;
-            } else if(lang.language().equals("en")) {
-                acceptEnglish = true;
-            }    
-        }
-        if(acceptGerman) {
-            return redirect(routes.Application.index("de"));
-        } else if(acceptEnglish) {
-            return redirect(routes.Application.index("en"));
-        } else if (request().host().endsWith(".de"))
-            return redirect(routes.Application.index("de"));
-        else
-            return redirect(routes.Application.index("en"));
-    }
-
-    public static void setSessionLang(String langKey) {
-        session(SESSION_LANGKEY, langKey);
-    }
-
-    public static String getSessionLang() {
-        return session(SESSION_LANGKEY);
-    }
-
-    public static Locale getCurrentLocale() {
-        return Lang.forCode(getSessionLang()).toLocale();
-    }
-
-    public static String getCurrentRouteWithOtherLang(String langKey) {
-        return "/" + langKey + request().uri().substring(3);
-    }
-
-    public static Html messages(String key) {
-        return Html.apply(Messages.get(Lang.forCode(getSessionLang()), key));
-    }
-
-    public static String toLower(String string) {
-        return string.toLowerCase();
-    }
-    
-    private static final class NewestProjectsFirstComparator implements Comparator<Project> {
-        @Override
-        public int compare(Project o1, Project o2) {
-            final DateTime end1 = o1.getDevelopmentEnd();
-            final DateTime end2 = o2.getDevelopmentEnd();
-            if(end1 == null && end2 == null) {
-                return 0;
-            } else if(end1 == null) {
-                return 1;
-            } else if(end2 == null) {
-                return -1;
-            } else {
-                return -end1.compareTo(end2);
-            }
+            employment.setFromDate(data.getFromDateObject());
+            employment.setToDate(data.getToDateObject());
+            employment.setPlace(data.getPlace());
+            employment.setTitle("de", data.getTitleDe());
+            employment.setTitle("en", data.getTitleEn());
+            employment.setWebsite(data.getWebsite());
+            employment.setTasks("de", data.getTasksDeList());
+            employment.setTasks("en", data.getTasksEnList());
+            
+            databaseService.upsertPosition(employment);
+            return redirect(routes.ProfileController.index(langKey));
         }
     }
+    
+    public Result upsertEducation(String langKey, String educationId) throws IOException {
+        Form<UpsertEducationData> filledForm = Form.form(UpsertEducationData.class).bindFromRequest();
+        
+        if(filledForm.hasErrors()) {
+            return badRequest(filledForm.errorsAsJson());
+        } else {
+            UpsertEducationData data = filledForm.get();
+            final Education education = educationId != "-1" ? databaseService.findEducationById(educationId) : new Education();
+
+            education.setFromDate(data.getFromDateObject());
+            education.setToDate(data.getToDateObject());
+            education.setPlace(data.getPlace());
+            education.setTitle("de", data.getTitleDe());
+            education.setTitle("en", data.getTitleEn());
+            education.setWebsite(data.getWebsite());
+            education.setDegree("de", data.getDegreeDe());
+            education.setDegree("en", data.getDegreeEn());
+            education.setScore(data.getScore());
+            
+            databaseService.upsertPosition(education);
+            return redirect(routes.ProfileController.index(langKey));
+        }
+    }
+
 }

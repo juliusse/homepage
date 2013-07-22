@@ -1,8 +1,9 @@
 @(currentProjects:List[services.database.Project] = scala.collection.immutable.List[services.database.Project](),
   specialProjects:List[services.database.Project] = scala.collection.immutable.List[services.database.Project](),
-  currentPositions:List[models.Position] = scala.collection.immutable.List[models.Position]())
+  currentPositions:List[services.database.Position] = scala.collection.immutable.List[services.database.Position]())
 
 @import controllers.Application
+@import services.database._
 
 @defining(Application.getSessionLang()) { langKey =>
 
@@ -49,7 +50,7 @@
 	<h2>@Application.messages("home_positions")</h2>
 	@for(position <- currentPositions) {
 		<div id="@position.getId()" class="employmentCard">
-			<h3>@position.getTitle() @if(position.isInstanceOf[models.Education]) {- @position.asInstanceOf[models.Education].getDegree()}</h3>
+			<h3>@position.getTitle() @if(position.isInstanceOf[Education]) {- @position.asInstanceOf[Education].getDegree()}</h3>
 			<span class="sosa">o</span> 
 			@if(position.getWebsite().isEmpty()) {
 				@position.getPlace()

@@ -81,6 +81,10 @@ public class MongoPlugin extends Plugin {
     public static DBCollection skillGroups() {
         return db().getCollection("skillGroups");
     }
+    
+    public static DBCollection positions() {
+        return db().getCollection("positions");
+    }
 
     public static BasicDBObject doc() {
         return new BasicDBObject();
