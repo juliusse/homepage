@@ -36,16 +36,20 @@ public class Application extends Controller {
         final List<Project> spProjects = databaseService.findProjectsForStartPage();
         Collections.sort(spProjects, new NewestProjectsFirstComparator());
         
-        final  List<Position> currentPositions = databaseService.findCurrentPositions();
-        //get current positions
-//        final List<Position> positions = new ArrayList<Position>();
-//        if(langKey.equals("de")) {
-//            //positions.add(new Employment(new DateTime(2013,8,1,1,1), new DateTime(2013,10,1,1,1), "Rohde & Schwarz SIT", "Praktikant", "", new ArrayList<String>()));
-//            positions.add(new Education(new DateTime(2012,4,1,1,1), new DateTime(2014,3,31,1,1), "HTW Berlin", "http://www.htw-berlin.de/", "---", "Student", "(M.Sc., Int. Medieninformatik)", "Spezialisierung: Visual Computing"));
-//        } else {
-//            positions.add(new Education(new DateTime(2012,4,1,1,1), new DateTime(2014,3,31,1,1), "HTW Berlin, University of Applied Science", "http://www-en.htw-berlin.de/", "---", "Student","(M.Sc., Int. Media and Computing)",
-//                    "Specialisation: Visual Computing"));
-//        }
+        final List<Position> currentPositions = databaseService.findCurrentPositions();
+        Collections.sort(currentPositions,new Comparator<Position>() {
+            @Override
+            public int compare(Position o1, Position o2) {
+                if(o1 instanceof Employment && o2 instanceof Education) {
+                    return -1;
+                } else if(o1 instanceof Education && o2 instanceof Employment) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+        
         return ok(views.html.index.render(databaseService.findProjectsForCurrent(), spProjects, currentPositions));
     }
 

@@ -80,7 +80,13 @@
 				} else {
 					<a target="_blank" href="@education.getWebsite()">@education.getPlace()</a>
 				}<br>
-				<span class="sosa">[</span> @education.getFromDate().getYear - @education.getToDate().getYear<br>
+				<span class="sosa">[</span> 
+				@education.getFromDate().getYear() - 
+	            @if(education.getToDate() != null) {
+	            	@education.getToDate().getYear()
+	            } else {
+	            	@Application.messages("ongoing")
+	            }<br>
 				<span class="sosa">G</span> @education.getScore()
 			</div>
 		}
@@ -91,7 +97,11 @@
 	var eduEntryData = [
 	["undefined",new Date(2009,1,1),new Date(2009,1,1)]
 	@for(education <- educations) {
-		,["@education.getPlace() - @education.getDegree()",new Date(@education.getFromDate().getMillis()),new Date(@education.getToDate().getMillis()),"@education.getId()"]
+		@if(education.getToDate() != null) {
+			,["@education.getPlace() - @education.getDegree()",new Date(@education.getFromDate().getMillis()),new Date(@education.getToDate().getMillis()),"@education.getId()"]
+		} else {
+			,["@education.getPlace() - @education.getDegree()",new Date(@education.getFromDate().getMillis()),new Date(),"@education.getId()"]
+		}
 	}
 	];
 	

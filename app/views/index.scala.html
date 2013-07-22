@@ -18,11 +18,9 @@
 <div class="groupCard">
 	<h2>@Application.messages("home_projects")</h2>
 	@for(project <- (currentProjects ++ specialProjects)) {
-    
 		<div class="projectCard">
-	    	<a id="@project.getId()"></a>
             <h3>
-            	@project.getTitleAsHtml()
+            	<a href="@routes.ProjectsController.index(langKey,"").toString()#@project.getId()">@project.getTitleAsHtml()</a>
             </h3>
             <div class="projectImage">
                 <img src="@routes.ProjectsController.getImage(project.getId())"/>
@@ -55,7 +53,7 @@
 			@if(position.getWebsite().isEmpty()) {
 				@position.getPlace()
 			} else {
-				<a target="_blank" href="@position.getWebsite()">@position.getWebsite()</a>
+				<a target="_blank" href="@position.getWebsite()">@position.getPlace()</a>
 			}<br>
 			<span class="sosa">[</span>
 			@Application.messages("home_since") 

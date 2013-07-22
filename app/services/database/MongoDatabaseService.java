@@ -360,7 +360,7 @@ public class MongoDatabaseService implements DatabaseService {
             final BasicDBObject query = doc("type", "education");
             DBCursor cursor = null;
             try {
-                cursor = positions().find(query);
+                cursor = positions().find(query).sort(doc("fromDate", -1));
 
                 for (DBObject dbObject : cursor) {
                     if (dbObject instanceof BasicDBObject) {
@@ -442,10 +442,10 @@ public class MongoDatabaseService implements DatabaseService {
         if (bson != null) {
             final String idFromBson = bson.get("_id").toString();
             final boolean displayOnStartPage = Boolean.parseBoolean(bson.get("displayOnStart").toString());
-            final DateTime developmentStart = persistenceDateTimeFormatter.parseDateTime((bson.get("developmentStart").toString()));
+            final DateTime developmentStart = Project.PROJECT_DATETIME_FORMAT.parseDateTime((bson.get("developmentStart").toString()));
 
             final Object devEndObj = bson.get("developmentEnd");
-            final DateTime developmentEnd = devEndObj == null ? null : persistenceDateTimeFormatter.parseDateTime((devEndObj.toString()));
+            final DateTime developmentEnd = devEndObj == null ? null : Project.PROJECT_DATETIME_FORMAT.parseDateTime((devEndObj.toString()));
 
             final Object mainImagePathObj = bson.get("mainImagePath");
             final String mainImagePath = mainImagePathObj != null ? mainImagePathObj.toString() : "";
