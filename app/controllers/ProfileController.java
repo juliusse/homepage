@@ -19,7 +19,6 @@ import play.mvc.Security;
 import services.database.DatabaseService;
 import services.database.Education;
 import services.database.Employment;
-import services.database.Position;
 import controllers.secured.OnlyLoggedIn;
 
 @Component

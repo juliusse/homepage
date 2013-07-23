@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import play.Logger;
+import play.Play;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -31,6 +32,7 @@ import controllers.utils.ImageUtils;
 
 @Component
 public class ProjectsController extends Controller {
+    private final int maxImageWidth = Play.application().configuration().getInt("controllers.ProjectsController.images.maxWidth"); 
 
     @Autowired
     private DatabaseService databaseService;
@@ -140,7 +142,7 @@ public class ProjectsController extends Controller {
             if (image != null) {
                 
                 if(image.getWidth() > 250) {
-                    image = ImageUtils.scaleImageKeepRelations(image, 250);
+                    image = ImageUtils.scaleImageKeepRelations(image, maxImageWidth);
                 }
                 ImageIO.write(image, "png", out);
                 output = out.toByteArray();

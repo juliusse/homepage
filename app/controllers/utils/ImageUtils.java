@@ -7,8 +7,6 @@ import java.awt.image.BufferedImage;
 
 public class ImageUtils {
     public static BufferedImage scaleImageKeepRelations(BufferedImage img, int newWidth) {
-
-        //return img;
         int oriWidth = img.getWidth();
         int oriHeight = img.getHeight();
 
