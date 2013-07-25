@@ -268,8 +268,13 @@ div.projectTechnology {
 div.profileTimelineContainer {
 	float: left;
 	position: relative;
-	width: 70px;
+	width: 60px;
 	height: 100%;
+	border-right-color: #666;
+	border-right-style: solid;
+	border-right-width: 5px;
+	margin-right: 10px;
+	margin-top: 15px;
 }
 
 div.profileListingContainer {

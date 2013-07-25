@@ -19,19 +19,19 @@ POST	/:langKey/skillgroup/:skillGroupId/addSkill	@controllers.SkillsController.a
 POST	/:langKey/skillgroup/:skillGroupId/:skillName/setLevel	@controllers.SkillsController.setSkillLevel(langKey:String,skillGroupId:String,skillName:String)
 
 # profile
-GET		/:langKey/profile				@controllers.ProfileController.index(langKey:String,positionId = "")
-GET		/:langKey/profile/edit/:positionId	@controllers.ProfileController.index(langKey:String,positionId :String)
-POST	/:langKey/profile/addEmployment @controllers.ProfileController.upsertEmployment(langKey:String, employmentId = "-1")
-POST	/:langKey/profile/employment/:employmentId @controllers.ProfileController.upsertEmployment(langKey:String, employmentId:String)
-POST	/:langKey/profile/addEducation @controllers.ProfileController.upsertEducation(langKey:String, educationId = "-1")
-POST	/:langKey/profile/education/:educationId @controllers.ProfileController.upsertEducation(langKey:String, educationId:String)
+GET		/:langKey/profile							@controllers.ProfileController.index(langKey:String,positionId = "")
+POST	/:langKey/profile/employment 				@controllers.ProfileController.upsertEmployment(langKey:String, employmentId = "-1")
+POST	/:langKey/profile/employment/:employmentId 	@controllers.ProfileController.upsertEmployment(langKey:String, employmentId:String)
+POST	/:langKey/profile/education 				@controllers.ProfileController.upsertEducation(langKey:String, educationId = "-1")
+POST	/:langKey/profile/education/:educationId 	@controllers.ProfileController.upsertEducation(langKey:String, educationId:String)
+GET		/:langKey/profile/:positionId				@controllers.ProfileController.index(langKey:String,positionId :String)
 
-GET		/:langKey/projects			@controllers.ProjectsController.index(langKey:String,projectType:String = "")
+#projects
+GET		/:langKey/projects				@controllers.ProjectsController.index(langKey:String,projectType:String = "")
 GET		/:langKey/projects/:projectType	@controllers.ProjectsController.index(langKey:String,projectType:String)
-
-GET		/:langKey/project/add		@controllers.ProjectsController.renderAdd(langKey:String)
-GET		/:langKey/project/:projectId @controllers.ProjectsController.renderEdit(langKey:String, projectId: String)
-GET		/project/:projectId/image	@controllers.ProjectsController.getImage(projectId: String)
+GET		/:langKey/project/add			@controllers.ProjectsController.renderAdd(langKey:String)
+GET		/:langKey/project/:projectId 	@controllers.ProjectsController.renderEdit(langKey:String, projectId: String)
+GET		/project/:projectId/image		@controllers.ProjectsController.getImage(projectId: String)
 
 GET		/:langKey/login				@controllers.UsersController.login(langKey)
 POST	/:langKey/login				@controllers.UsersController.login(langKey)

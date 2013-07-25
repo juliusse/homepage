@@ -81,7 +81,7 @@
 
 <div id="profileContainer">
 	<div class="profileTimelineContainer">
-		<div id="timeline" style="float:left;width: 50px;position: absolute; height: 98%;top:20px;"></div>
+		<div id="timeline" style="float:left;width: 90%;position: absolute; height: 100%;"></div>
 	</div>
 
 	<div class="profileListingContainer">
@@ -187,8 +187,13 @@
 	var profileContainer = document.getElementById("profileContainer");
 	profileContainer.style.height = (profileContainer.clientHeight) +"px";
 	
-	var timeline = new Timeline(document.getElementById("timeline"),2008)
-	for(index in eduEntryData) {
+	var timeline = new Timeline(2008)
+	var visu = timeline.addVisualisation(Timeline.Visualisations.VerticalBigBar, document.getElementById("timeline"));;
+	
+	visu.config.scale.numbersMarginRight = 25;
+	visu.repaint();
+	
+	for(var index in eduEntryData) {
 		if(index == 0) {
 			continue;
 		}
@@ -198,7 +203,7 @@
 		timelineEntry.addHTMLElementToTriggerHover(document.getElementById(entryData[3]));
 	}
 	
-	for(index in emplEntryData) {
+	for(var index = (emplEntryData.length-1); index > 0; index--) {
 		if(index == 0) {
 			continue;
 		}

@@ -5,7 +5,6 @@
 @defining(Application.getSessionLang()) { langKey => 
 
 @layout("menu_projects") {
-
 	@for(project <- projects) {
 		<div class="projectCard">
 	    	<a id="@project.getId()"></a>
