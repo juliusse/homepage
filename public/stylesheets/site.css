@@ -162,36 +162,6 @@ div.footer {
 }
 
 
-/* Table Base */
-table.js {
-	border-collapse: collapse;
-}
-
-table.js th {
-	text-align: left;
-}
-
-table.js td,th {
-	padding: 5px;
-	margin: 5px;
-	vertical-align: top;
-}
-
-table.js td {
-	height: 40px;
-}
-
-table.js td,table.js th {
-	border-width: 0px;
-	border-bottom-width: 3px;
-	border-bottom-style: solid;
-	border-bottom-color: #d5eab0;
-	border-right-width: 3px;
-	border-right-style: solid;
-	border-right-color: #d5eab0;
-}
-
-
 /* index page */
 
 div.projectListContainer {
@@ -341,4 +311,20 @@ div.fullStars {
 	position: absolute;
 	height: 15px;
 	margin-left: 10px;
+}
+
+/*
+ * Contact page
+ */
+ 
+table.contact {
+	float: left;
+}
+
+table.contact td.detail {
+	text-align: center;
+}
+
+table.contact td.detail * {
+	margin-right: 20px;
 }
