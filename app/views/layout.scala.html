@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, metaDescription: Html = Html.apply(""))(content: Html)
 
 @import controllers.Application
 
@@ -15,6 +15,7 @@
 <html>
 	<head>
 		<title>@Application.messages(title) - Julius Seltenheim</title>
+		<meta name="Description" content="@metaDescription">
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/site.css")">
 		<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
 		<link rel="apple-touch-icon" sizes="114x114" href="@routes.Assets.at("images/favicon.png")">
