@@ -1,5 +1,7 @@
 package controllers;
 
+import info.seltenheim.play2.usertracking.actions.TrackIgnore;
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -87,6 +89,7 @@ public class ProjectsController extends Controller {
         return ok(views.html.projectAdd.render(projectForm.fill(new ProjectFormData(databaseService.findProjectById(projectId)))));
     }
 
+    @TrackIgnore
     public Result getImage(String projectId) throws IOException {
         final Project project = databaseService.findProjectById(projectId);
         return ok(fileSystemService.getImage(project.getMainImagePath()));

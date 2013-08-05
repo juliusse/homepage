@@ -1,3 +1,5 @@
+import info.seltenheim.play2.usertracking.actions.TrackUserAction;
+
 import java.lang.reflect.Method;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -7,6 +9,8 @@ import play.GlobalSettings;
 import play.Logger;
 import play.mvc.Action;
 import play.mvc.Http;
+import play.mvc.Http.Context;
+import play.mvc.Result;
 import services.filesystem.FileSystemService;
 import configuration.SpringConfiguration;
 
@@ -32,7 +36,18 @@ public class Global extends GlobalSettings {
     public Action onRequest(Http.Request request, Method method) {
         logRequest(request, method);
 
-        return super.onRequest(request, method);
+        final String action = method.getName();
+        final String controller = method.getDeclaringClass().getSimpleName();
+
+        return new Action.Simple() {
+
+            @Override
+            public Result call(Context ctx) throws Throwable {
+                final Result result = delegate.call(ctx);
+                TrackUserAction.call(ctx, controller, action);
+                return result;
+            }
+        };
     }
     
     @Override
