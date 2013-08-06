@@ -36,7 +36,7 @@ GET		/project/:projectId/image		@controllers.ProjectsController.getImage(project
 GET		/:langKey/login				@controllers.UsersController.login(langKey)
 POST	/:langKey/login				@controllers.UsersController.login(langKey)
 GET		/logout						@controllers.UsersController.logout()
-GET     /							@controllers.Application.autoSelectLanguage()
+GET     /							@controllers.Application.indexWithLanguageAutoSelect()
 
 
 

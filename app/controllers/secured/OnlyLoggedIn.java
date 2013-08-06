@@ -26,6 +26,6 @@ public class OnlyLoggedIn extends Security.Authenticator {
     @Override
     public Result onUnauthorized(Context ctx) {
         ctx.flash().put("error", "You need to authenticate.");
-        return redirect(routes.Application.autoSelectLanguage());
+        return redirect(routes.Application.indexWithLanguageAutoSelect());
     }
 }

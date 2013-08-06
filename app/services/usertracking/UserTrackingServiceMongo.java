@@ -18,9 +18,10 @@ public class UserTrackingServiceMongo extends UserTrackingServiceConsole impleme
     public void track(Context context, String controller, String action) {
         super.track(context, controller,action);
         final String session = session(context);
+        final String userAgentString = context.request().getHeader("user-agent");
         
         try {
-            DatabaseActions.saveTrackingEntry(session, controller, action);
+            DatabaseActions.saveTrackingEntry(session, userAgentString, controller, action);
         } catch (IOException e) {
             Logger.error("Problem saving tracking entry! ", e);
         }

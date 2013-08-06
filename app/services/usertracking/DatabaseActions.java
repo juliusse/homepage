@@ -14,10 +14,10 @@ import com.mongodb.MongoException;
 
 public class DatabaseActions {
 
-    public static Tracking saveTrackingEntry(String session, String controller, String action) throws IOException {
+    public static Tracking saveTrackingEntry(String session, String userAgentString, String controller, String action) throws IOException {
         Tracking tracking = findTrackingBySession(session);
         if (tracking == null) {
-            tracking = Tracking.create(session);
+            tracking = Tracking.create(session, userAgentString);
         }
         tracking.addVisitedPage(new VisitedPage(controller, action, System.currentTimeMillis()));
         upsertTracking(tracking);
@@ -33,9 +33,10 @@ public class DatabaseActions {
             }
 
             final String id = trackingBson.getString("_id");
+            final String userAgentString = trackingBson.getString("uaString");
             final List<VisitedPage> visitedPages = toVisitedPagesList((BasicDBList)trackingBson.get("visitedPages"));
 
-            return new Tracking(id, session, visitedPages);
+            return new Tracking(id, session, userAgentString, visitedPages);
         } catch (MongoException e) {
             throw new IOException(e);
         }
@@ -43,7 +44,7 @@ public class DatabaseActions {
 
     public static Tracking upsertTracking(Tracking tracking) throws IOException {
         try {
-            final BasicDBObject document = doc("session", tracking.getSession()).append("visitedPages", convert(tracking.getVisitedPages()));
+            final BasicDBObject document = doc("session", tracking.getSession()).append("visitedPages", convert(tracking.getVisitedPages())).append("uaString", tracking.getUserAgentString());
             String id = tracking.getId();
             if (id == null) { // insert
                 trackings().insert(document);

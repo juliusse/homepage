@@ -21,33 +21,32 @@ import services.database.Employment;
 import services.database.Position;
 import services.database.Project;
 
-
 @Component
 public class Application extends Controller {
     public final static String SESSION_LANGKEY = "langkey";
-    
+
     @Autowired
     private DatabaseService databaseService;
-    
+
     public Result index(String langKey) throws IOException {
         setSessionLang(langKey);
         final List<Project> spProjects = databaseService.findProjectsForStartPage();
         Collections.sort(spProjects, new NewestProjectsFirstComparator());
-        
+
         final List<Position> currentPositions = databaseService.findCurrentPositions();
-        Collections.sort(currentPositions,new Comparator<Position>() {
+        Collections.sort(currentPositions, new Comparator<Position>() {
             @Override
             public int compare(Position o1, Position o2) {
-                if(o1 instanceof Employment && o2 instanceof Education) {
+                if (o1 instanceof Employment && o2 instanceof Education) {
                     return -1;
-                } else if(o1 instanceof Education && o2 instanceof Employment) {
+                } else if (o1 instanceof Education && o2 instanceof Employment) {
                     return 1;
                 } else {
                     return 0;
                 }
             }
         });
-        
+
         return ok(views.html.index.render(databaseService.findProjectsForCurrent(), spProjects, currentPositions));
     }
 
@@ -56,28 +55,29 @@ public class Application extends Controller {
 
         return ok(views.html.contact.render());
     }
-    
 
-    public Result autoSelectLanguage() {
+    public Result indexWithLanguageAutoSelect() throws IOException {
+        // english is default lang
+        // currently only check needed if German is accepted
+        String langKey = "en";
 
         final List<Lang> langs = request().acceptLanguages();
         boolean acceptGerman = false;
         boolean acceptEnglish = false;
-        for(Lang lang : langs) {
-            if(lang.language().equals("de")) {
+        for (Lang lang : langs) {
+            if (lang.language().equals("de")) {
                 acceptGerman = true;
-            } else if(lang.language().equals("en")) {
+            } else if (lang.language().equals("en")) {
                 acceptEnglish = true;
-            }    
+            }
         }
-        if(acceptGerman) {
-            return redirect(routes.Application.index("de"));
-        } else if(acceptEnglish) {
-            return redirect(routes.Application.index("en"));
-        } else if (request().host().endsWith(".de"))
-            return redirect(routes.Application.index("de"));
-        else
-            return redirect(routes.Application.index("en"));
+        if (acceptGerman) {
+            langKey = "de";
+        } else if (!acceptEnglish && request().host().endsWith(".de")) {
+            langKey = "de";
+        }
+
+        return index(langKey);
     }
 
     public static void setSessionLang(String langKey) {
@@ -93,6 +93,10 @@ public class Application extends Controller {
     }
 
     public static String getCurrentRouteWithOtherLang(String langKey) {
+        // index page
+        if(request().uri().length() < 3) { //no language key present
+            return routes.Application.index(langKey).toString();
+        }
         return "/" + langKey + request().uri().substring(3);
     }
 
@@ -103,17 +107,17 @@ public class Application extends Controller {
     public static String toLower(String string) {
         return string.toLowerCase();
     }
-    
+
     private static final class NewestProjectsFirstComparator implements Comparator<Project> {
         @Override
         public int compare(Project o1, Project o2) {
             final DateTime end1 = o1.getDevelopmentEnd();
             final DateTime end2 = o2.getDevelopmentEnd();
-            if(end1 == null && end2 == null) {
+            if (end1 == null && end2 == null) {
                 return 0;
-            } else if(end1 == null) {
+            } else if (end1 == null) {
                 return 1;
-            } else if(end2 == null) {
+            } else if (end2 == null) {
                 return -1;
             } else {
                 return -end1.compareTo(end2);

@@ -6,18 +6,20 @@ import java.util.List;
 public class Tracking {
     private String id;
     private String session;
+    private String userAgentString;
 
     private List<VisitedPage> visitedPages;
 
-    Tracking(String id, String session, List<VisitedPage> visited) {
+    Tracking(String id, String session, String userAgentString, List<VisitedPage> visited) {
         super();
         this.id = id;
         this.session = session;
         this.visitedPages = visited;
+        this.userAgentString = userAgentString;
     }
     
-    public static Tracking create(String session) {
-        return new Tracking(null,session,new ArrayList<VisitedPage>());
+    public static Tracking create(String session, String userAgentString) {
+        return new Tracking(null,session, userAgentString, new ArrayList<VisitedPage>());
     }
     
     public String getId() {
@@ -46,6 +48,10 @@ public class Tracking {
     
     public void addVisitedPage(VisitedPage visitedPage) {
         this.visitedPages.add(visitedPage);
+    }
+    
+    public String getUserAgentString() {
+        return userAgentString;
     }
 
 }
