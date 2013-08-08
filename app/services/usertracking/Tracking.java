@@ -53,5 +53,9 @@ public class Tracking {
     public String getUserAgentString() {
         return userAgentString;
     }
+    
+    public String getLastAppearance() {
+        return this.visitedPages.get(this.visitedPages.size()-1).getTimeString();
+    }
 
 }

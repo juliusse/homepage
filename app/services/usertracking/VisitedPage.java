@@ -1,9 +1,12 @@
 package services.usertracking;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 public class VisitedPage {
     public static final String DATETIME_FORMAT = "yyyy-MM-dd HH:mm";
+    public static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm");
     
     
     private final String controller;

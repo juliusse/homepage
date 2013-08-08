@@ -10,9 +10,67 @@ import java.util.List;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 
 public class DatabaseActions {
+
+    public static List<Tracking> findAllTrackings() throws IOException {
+        try {
+            final List<Tracking> trackings = new ArrayList<Tracking>();
+            DBCursor cursor = null;
+            try {
+                cursor = trackings().find();
+
+                for (DBObject dbObject : cursor) {
+                    if (dbObject instanceof BasicDBObject) {
+                        trackings.add(toTracking((BasicDBObject) dbObject));
+                    }
+                }
+            } finally {
+                cursor.close();
+            }
+
+            return trackings;
+        } catch (MongoException e) {
+            throw new IOException(e);
+        }
+    }
+
+    public static List<Tracking> findTrackingsWhereUserAgentContains(String uaContains) throws IOException {
+        try {
+            final BasicDBObject query = doc("uaString", doc("$regex", uaContains));
+            final List<Tracking> trackings = new ArrayList<Tracking>();
+            DBCursor cursor = null;
+            try {
+                cursor = trackings().find(query);
+
+                for (DBObject dbObject : cursor) {
+                    if (dbObject instanceof BasicDBObject) {
+                        trackings.add(toTracking((BasicDBObject) dbObject));
+                    }
+                }
+            } finally {
+                cursor.close();
+            }
+
+            return trackings;
+        } catch (MongoException e) {
+            throw new IOException(e);
+        }
+    }
+
+    public static int deleteTrackingsWhereUserAgentEquals(String userAgent) throws IOException {
+        try {
+            final BasicDBObject query = doc("uaString", userAgent);
+
+            return trackings().remove(query).getN();
+
+        } catch (MongoException e) {
+            throw new IOException(e);
+        }
+    }
 
     public static Tracking saveTrackingEntry(String session, String userAgentString, String controller, String action) throws IOException {
         Tracking tracking = findTrackingBySession(session);
@@ -32,11 +90,7 @@ public class DatabaseActions {
                 return null;
             }
 
-            final String id = trackingBson.getString("_id");
-            final String userAgentString = trackingBson.getString("uaString");
-            final List<VisitedPage> visitedPages = toVisitedPagesList((BasicDBList)trackingBson.get("visitedPages"));
-
-            return new Tracking(id, session, userAgentString, visitedPages);
+            return toTracking(trackingBson);
         } catch (MongoException e) {
             throw new IOException(e);
         }
@@ -80,8 +134,16 @@ public class DatabaseActions {
             visitedPages.add(new VisitedPage(controller, action, timeString));
 
         }
-        
+
         return visitedPages;
     }
 
+    private static Tracking toTracking(BasicDBObject trackingBson) {
+        final String id = trackingBson.getString("_id");
+        final String userAgentString = trackingBson.getString("uaString");
+        final String session = trackingBson.getString("session");
+        final List<VisitedPage> visitedPages = toVisitedPagesList((BasicDBList) trackingBson.get("visitedPages"));
+
+        return new Tracking(id, session, userAgentString, visitedPages);
+    }
 }

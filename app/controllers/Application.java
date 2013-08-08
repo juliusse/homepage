@@ -29,7 +29,6 @@ public class Application extends Controller {
     private DatabaseService databaseService;
 
     public Result index(String langKey) throws IOException {
-        setSessionLang(langKey);
         final List<Project> spProjects = databaseService.findProjectsForStartPage();
         Collections.sort(spProjects, new NewestProjectsFirstComparator());
 
@@ -51,8 +50,6 @@ public class Application extends Controller {
     }
 
     public Result contact(String langKey) {
-        setSessionLang(langKey);
-
         return ok(views.html.contact.render());
     }
 

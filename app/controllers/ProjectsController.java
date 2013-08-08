@@ -45,8 +45,6 @@ public class ProjectsController extends Controller {
     public static final Form<ProjectFormData> projectForm = Form.form(ProjectFormData.class);
 
     public Result index(String langKey, String type) throws IOException {
-        Application.setSessionLang(langKey);
-
         List<Project> projects = null;
         if(!type.isEmpty()) {
             projects = databaseService.findProjectsOfType(ProjectType.valueOf(type));
@@ -76,16 +74,12 @@ public class ProjectsController extends Controller {
 
     // GET
     public Result renderAdd(String langKey) {
-        Application.setSessionLang(langKey);
-
         return ok(views.html.projectAdd.render(projectForm));
     }
 
     // GET
     @Security.Authenticated(OnlyLoggedIn.class)
     public Result renderEdit(String langKey, String projectId) throws IOException {
-        Application.setSessionLang(langKey);
-
         return ok(views.html.projectAdd.render(projectForm.fill(new ProjectFormData(databaseService.findProjectById(projectId)))));
     }
 

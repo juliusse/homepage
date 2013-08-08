@@ -32,6 +32,10 @@ h3 {
 	
 }
 
+table thead td {
+	font-weight: bold;
+}
+
 a {
 	border: 0px;
 	color: #9acb42;
@@ -327,4 +331,27 @@ table.contact td.detail {
 
 table.contact td.detail * {
 	margin-right: 20px;
+}
+
+/*
+ * Tracking
+ */
+ 
+div.rankingCard {
+	width: 90%;
+	float: left;
+}
+
+div.rankingRank {
+	float: left;
+	width: 70px;
+	font-size: 20pt;
+	font-weight: bold;
+	color: #666;
+	text-align: right;
+	margin-right: 20px;
+}
+
+div.rankingContent {
+	float: left;
 }

@@ -29,7 +29,6 @@ public class ProfileController extends Controller {
     
     
     public Result index(String langKey, String positionId) throws IOException {
-        Application.setSessionLang(langKey);
 
         final List<Employment> empl = databaseService.findAllEmployments();
         final List<Education> edus = databaseService.findAllEducations();

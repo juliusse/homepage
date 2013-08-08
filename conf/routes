@@ -33,6 +33,13 @@ GET		/:langKey/project/add			@controllers.ProjectsController.renderAdd(langKey:S
 GET		/:langKey/project/:projectId 	@controllers.ProjectsController.renderEdit(langKey:String, projectId: String)
 GET		/project/:projectId/image		@controllers.ProjectsController.getImage(projectId: String)
 
+#tracking
+GET		/:langKey/tracking					@controllers.TrackingsController.index(langKey)
+GET		/:langKey/tracking/list-sessions	@controllers.TrackingsController.listSessions(langKey,uaFilter ?= "", minRequests : Int ?= 0)
+POST	/:langKey/tracking/delete-by-ua	@controllers.TrackingsController.deleteTrackingsByUserAgent(langKey: String)
+
+GET		/:langKey/tracking/by-user-agent-appearance-count	@controllers.TrackingsController.uaByQuantityAndAppearance(langKey)
+
 GET		/:langKey/login				@controllers.UsersController.login(langKey)
 POST	/:langKey/login				@controllers.UsersController.login(langKey)
 GET		/logout						@controllers.UsersController.logout()

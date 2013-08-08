@@ -1,0 +1,19 @@
+@()
+
+@import controllers.Application
+@import services.database._
+
+@defining(Application.getSessionLang()) { langKey =>
+
+@layout("Tracking",Html.apply("Tracking")) {
+
+
+<h2>Options</h2>
+
+
+<div>
+<span class="sosa">ñ</span> <a href="@routes.TrackingsController.listSessions(langKey,"",0).toString()">list sessions</a><br>
+<span class="sosa">ñ</span> <a href="@routes.TrackingsController.uaByQuantityAndAppearance(langKey).toString()">user-agents by quantity and last appearance</a>
+</div>
+}
+}
