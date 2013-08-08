@@ -88,6 +88,10 @@ public class ProjectsController extends Controller {
 
     @TrackIgnore
     public Result getImage(String projectId) throws IOException {
+        final String referer = request().getHeader("Referer"); 
+        if(Play.isProd() && referer != null && !referer.contains("seltenheim") && !referer.contains("js")) {
+            return ok(Play.application().getFile("public/images/julius_seltenheim_logo.png"));
+        }
         final Project project = databaseService.findProjectById(projectId);
         final File image = fileSystemService.getImageAsFile(project.getMainImagePath());
         String hash = null;
