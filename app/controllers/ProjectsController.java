@@ -5,7 +5,9 @@ import info.seltenheim.play2.usertracking.actions.TrackIgnore;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -14,6 +16,7 @@ import javax.imageio.ImageIO;
 
 import models.forms.ProjectFormData;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +37,7 @@ import controllers.utils.ImageUtils;
 
 @Component
 public class ProjectsController extends Controller {
-    private final int maxImageWidth = Play.application().configuration().getInt("controllers.ProjectsController.images.maxWidth"); 
+    private final int maxImageWidth = Play.application().configuration().getInt("controllers.ProjectsController.images.maxWidth");
 
     @Autowired
     private DatabaseService databaseService;
@@ -46,7 +49,7 @@ public class ProjectsController extends Controller {
 
     public Result index(String langKey, String type) throws IOException {
         List<Project> projects = null;
-        if(!type.isEmpty()) {
+        if (!type.isEmpty()) {
             projects = databaseService.findProjectsOfType(ProjectType.valueOf(type));
         } else {
             projects = databaseService.findAllProjects();
@@ -86,7 +89,26 @@ public class ProjectsController extends Controller {
     @TrackIgnore
     public Result getImage(String projectId) throws IOException {
         final Project project = databaseService.findProjectById(projectId);
-        return ok(fileSystemService.getImage(project.getMainImagePath()));
+        final File image = fileSystemService.getImageAsFile(project.getMainImagePath());
+        String hash = null;
+        InputStream in = null;
+
+        try {
+            in = new FileInputStream(image);
+            hash = DigestUtils.sha256Hex(in);
+        } finally {
+            IOUtils.closeQuietly(in);
+        }
+
+        final String oldEtag = request().getHeader("If-None-Match");
+        if (oldEtag != null && oldEtag.equals(hash)) {
+            return status(NOT_MODIFIED);
+        }
+
+        response().setContentType("image/png");
+        response().setHeader("Etag", hash);
+
+        return ok(image);
     }
 
     // POST
@@ -116,7 +138,7 @@ public class ProjectsController extends Controller {
                 updateProject(data.getId(), project);
             }
 
-            return redirect(routes.ProjectsController.index(Application.getSessionLang(),""));
+            return redirect(routes.ProjectsController.index(Application.getSessionLang(), ""));
         }
 
     }
@@ -128,7 +150,7 @@ public class ProjectsController extends Controller {
         try {
             imageFile = Controller.request().body().asMultipartFormData().getFile("image").getFile();
         } catch (NullPointerException e) {
-            Logger.error("error scaling image!",e);
+            Logger.error("error scaling image!", e);
             return null;
         }
         byte[] output = null;
@@ -137,8 +159,8 @@ public class ProjectsController extends Controller {
             out = new ByteArrayOutputStream();
             BufferedImage image = ImageIO.read(imageFile);
             if (image != null) {
-                
-                if(image.getWidth() > 250) {
+
+                if (image.getWidth() > 250) {
                     image = ImageUtils.scaleImageKeepRelations(image, maxImageWidth);
                 }
                 ImageIO.write(image, "png", out);
@@ -167,7 +189,7 @@ public class ProjectsController extends Controller {
             project.setMainImagePath(newData.getMainImagePath());
         if (newData.getFilePath() != null)
             project.setMainImagePath(newData.getFilePath());
-        
+
         databaseService.upsertProject(project);
     }
 

@@ -31,7 +31,7 @@ GET		/:langKey/projects				@controllers.ProjectsController.index(langKey:String,
 GET		/:langKey/projects/:projectType	@controllers.ProjectsController.index(langKey:String,projectType:String)
 GET		/:langKey/project/add			@controllers.ProjectsController.renderAdd(langKey:String)
 GET		/:langKey/project/:projectId 	@controllers.ProjectsController.renderEdit(langKey:String, projectId: String)
-GET		/project/:projectId/image		@controllers.ProjectsController.getImage(projectId: String)
+GET		/project/image/:projectId				@controllers.ProjectsController.getImage(projectId: String)
 
 #tracking
 GET		/:langKey/tracking					@controllers.TrackingsController.index(langKey)

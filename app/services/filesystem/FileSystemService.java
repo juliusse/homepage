@@ -1,5 +1,6 @@
 package services.filesystem;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,5 +20,6 @@ public interface FileSystemService {
      * @param path the path to the given image
      * @return Do not forget to close the {@link InputStream}
      */
-    InputStream getImage(String path) throws FileNotFoundException;
+    InputStream getImageAsStream(String path) throws FileNotFoundException;
+    File getImageAsFile(String path) throws FileNotFoundException;
 }
