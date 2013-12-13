@@ -10,6 +10,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import play.api.http.ContentTypes;
 import play.api.templates.Html;
 import play.i18n.Lang;
 import play.i18n.Messages;
@@ -77,6 +78,60 @@ public class Application extends Controller {
         return index(langKey);
     }
 
+    public Result getSiteMap() {
+
+        response().setContentType("application/xml");
+        final StringBuilder xmlBuilder = new StringBuilder();
+        xmlBuilder.append("<?xml version='1.0' encoding='UTF-8'?>");
+        xmlBuilder.append(" <urlset xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
+        xmlBuilder.append(" xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\"");
+        xmlBuilder.append(" xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">");
+
+        // add main page
+        xmlBuilder.append("");
+        xmlBuilder.append("<url>");
+        xmlBuilder.append("<loc>http://julius-seltenheim.com</loc>");
+        xmlBuilder.append("<changefreq>monthly</changefreq>");
+        xmlBuilder.append("<priority>0.5</priority>");
+        xmlBuilder.append("</url>");
+
+        // add profile page
+        xmlBuilder.append("");
+        xmlBuilder.append("<url>");
+        xmlBuilder.append("<loc>http://julius-seltenheim.com/en/profile</loc>");
+        xmlBuilder.append("<changefreq>monthly</changefreq>");
+        xmlBuilder.append("<priority>0.8</priority>");
+        xmlBuilder.append("</url>");
+
+        // add skills page
+        xmlBuilder.append("");
+        xmlBuilder.append("<url>");
+        xmlBuilder.append("<loc>http://julius-seltenheim.com/en/skills</loc>");
+        xmlBuilder.append("<changefreq>monthly</changefreq>");
+        xmlBuilder.append("<priority>0.8</priority>");
+        xmlBuilder.append("</url>");
+
+        // add projects page
+        xmlBuilder.append("");
+        xmlBuilder.append("<url>");
+        xmlBuilder.append("<loc>http://julius-seltenheim.com/en/projects</loc>");
+        xmlBuilder.append("<changefreq>monthly</changefreq>");
+        xmlBuilder.append("<priority>0.8</priority>");
+        xmlBuilder.append("</url>");
+
+        // add contact page
+        xmlBuilder.append("");
+        xmlBuilder.append("<url>");
+        xmlBuilder.append("<loc>http://julius-seltenheim.com/en/contact</loc>");
+        xmlBuilder.append("<changefreq>monthly</changefreq>");
+        xmlBuilder.append("<priority>0.3</priority>");
+        xmlBuilder.append("</url>");
+
+        xmlBuilder.append("</urlset>");
+
+        return ok(xmlBuilder.toString());
+    }
+
     public static void setSessionLang(String langKey) {
         session(SESSION_LANGKEY, langKey);
     }
@@ -91,7 +146,7 @@ public class Application extends Controller {
 
     public static String getCurrentRouteWithOtherLang(String langKey) {
         // index page
-        if(request().uri().length() < 3) { //no language key present
+        if (request().uri().length() < 3) { // no language key present
             return routes.Application.index(langKey).toString();
         }
         return "/" + langKey + request().uri().substring(3);
