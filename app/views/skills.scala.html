@@ -12,7 +12,11 @@
 			@for(skill <- skillGroup.getSkills()) {
 				<div class="skillRow">
 					<div class="skillName">
+					@if(skill.getKnowledge() < 0.75) {
 						<span class="sosa">ñ</span>@skill.getName()
+					} else {
+						<span class="sosa">ñ</span><strong>@skill.getName()</strong>
+					}
 					</div>
 					<div class="skillLevel">
 						<div id="empty-@langKey-@skillGroup.getId()-@skill.getName()" class="emptyStars"></div>

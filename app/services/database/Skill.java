@@ -1,6 +1,6 @@
 package services.database;
 
-public class Skill {
+public class Skill implements Comparable<Skill> {
 
     private String name;
     private double knowledge;
@@ -31,4 +31,14 @@ public class Skill {
         this.knowledge = knowledge;
     }
 
+    @Override
+    public int compareTo(Skill o) {
+        if (this.getKnowledge() > o.getKnowledge()) {
+            return 1;
+        } else if (this.getKnowledge() < o.getKnowledge()) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 }
