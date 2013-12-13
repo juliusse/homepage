@@ -49,6 +49,7 @@ GET     /							@controllers.Application.indexWithLanguageAutoSelect()
 
 
 # Map static resources from the /public folder to the /assets URL path
+GET		/robots.txt					controllers.Assets.at(path="/public", file="robots.txt")
 GET		/google744df6fdcec26429.html controllers.Assets.at(path="/public", file="google744df6fdcec26429.html")
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
