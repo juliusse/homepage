@@ -1,4 +1,4 @@
-name := "js-homepage"
+name := "js_homepage"
 
 version := "3.0.0"
 
