@@ -48,6 +48,11 @@ public class ProjectsController extends Controller {
     public static final Form<ProjectFormData> projectForm = Form.form(ProjectFormData.class);
 
     public Result index(String langKey, String type) throws IOException {
+        if(!type.equals("")) {
+            //solution while filtered pages are disabled
+            return redirect(routes.ProjectsController.index(langKey, ""));
+        }
+        
         List<Project> projects = null;
         if (!type.isEmpty()) {
             projects = databaseService.findProjectsOfType(ProjectType.valueOf(type));
