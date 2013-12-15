@@ -1,0 +1,218 @@
+@(employments: List[info.seltenheim.homepage.services.database.Employment], educations: List[info.seltenheim.homepage.services.database.Education], idToUpdate : String)
+
+@import info.seltenheim.homepage.controllers._
+@import info.seltenheim.homepage.services.database._
+@import helper._
+
+@dateForJavaScript(dateTime : org.joda.time.DateTime) = {
+	@dateTime.getYear(),@(dateTime.getMonthOfYear()-1),@dateTime.getDayOfMonth()
+}
+
+@educationForm(education: info.seltenheim.homepage.services.database.Education) = {
+	@if(education == null) {
+	@form(routes.ProfileController.upsertEducation(Application.getSessionLang(),"-1")) {
+		<h3>New Education</h3>
+		<input name="titleDe" placeholder="German Title"> | <input name="titleEn" placeholder="English Title"><br>
+		<input name="degreeDe" placeholder="German Degree"> | <input name="degreeEn" placeholder="English Degree"><br>
+		<span class="sosa">o</span>
+		<input name="place" placeholder="where">
+		<input name="website" placeholder="website"><br>
+		<span class="sosa">[</span>
+		<input name="fromDate" placeholder="yyyy-mm-dd"> - <input name="toDate" placeholder="yyyy-mm-dd"><br>
+		<span class="sosa">G</span>
+		<input name="score" placeholder="score"><br>	
+		<button type="submit" name="create">Create</button>
+       }
+    } else {
+    	@form(routes.ProfileController.upsertEducation(Application.getSessionLang(),education.getId())) {
+    	<h3>Update Education</h3>
+		<input name="titleDe" placeholder="German Title" value="@education.getTitle("de")"> | <input name="titleEn" placeholder="English Title" value="@education.getTitle("en")"><br>
+		<input name="degreeDe" placeholder="German Degree" value="@education.getDegree("de")"> | <input name="degreeEn" placeholder="English Degree" value="@education.getDegree("en")"><br>
+		<span class="sosa">o</span>
+		<input name="place" placeholder="where" value="@education.getPlace()">
+		<input name="website" placeholder="website" value="@education.getWebsite()"><br>
+		<span class="sosa">[</span>
+		<input name="fromDate" placeholder="yyyy-mm-dd" value="@education.getFromDate().toString("yyyy-MM-dd")"> - 
+		<input name="toDate" placeholder="yyyy-mm-dd" @if(education.getToDate() != null) {value="@education.getToDate().toString("yyyy-MM-dd")"}><br>
+		<span class="sosa">G</span>
+		<input name="score" placeholder="score" value="@education.getScore()"><br>	
+		<button type="submit" name="create">Update</button>
+		}
+    }
+}
+
+@employmentForm(employment: info.seltenheim.homepage.services.database.Employment) = {
+	@if(employment == null) {
+		@form(routes.ProfileController.upsertEmployment(Application.getSessionLang(),"-1")) {
+			<h3>New Employment</h3>
+			<input name="titleDe" placeholder="German Title"> | <input name="titleEn" placeholder="English Title"><br>
+			<span class="sosa">o</span>
+			<input name="place" placeholder="where">
+			<input name="website" placeholder="website"><br>
+			<span class="sosa">[</span>
+			<input name="fromDate" placeholder="yyyy-mm-dd"> - <input name="toDate" placeholder="yyyy-mm-dd">
+			<br><br>
+			<textarea rows="5" cols="20" name="tasksDe" placeholder="One Task per row (German)"></textarea>
+			<textarea rows="5" cols="20" name="tasksEn" placeholder="One Task per row (English)"></textarea><br>	
+			<button type="submit" name="create">Create</button>
+        }
+    } else {
+    	@form(routes.ProfileController.upsertEmployment(Application.getSessionLang(),employment.getId())) {
+	    	<h3>Update Employment</h3>
+			<input name="titleDe" placeholder="German Title" value="@employment.getTitle("de")"> | <input name="titleEn" placeholder="English Title" value="@employment.getTitle("en")"><br>
+			<span class="sosa">o</span>
+			<input name="place" placeholder="where" value="@employment.getPlace()">
+			<input name="website" placeholder="website" value="@employment.getWebsite()"><br>
+			<span class="sosa">[</span>
+			<input name="fromDate" placeholder="yyyy-mm-dd" value="@employment.getFromDate().toString("yyyy-MM-dd")"> - 
+			<input name="toDate" placeholder="yyyy-mm-dd" @if(employment.getToDate() != null) {value="@employment.getToDate().toString("yyyy-MM-dd")"}>
+			<br><br>
+			<textarea rows="5" cols="20" name="tasksDe" placeholder="One Task per row (German)">@employment.getTasksAsString("de")</textarea>
+			<textarea rows="5" cols="20" name="tasksEn" placeholder="One Task per row (English)">@employment.getTasksAsString("en")</textarea><br>
+			<button type="submit" name="update">Update</button>
+		}
+    }
+}
+
+@defining(Application.getSessionLang()) { langKey =>
+
+
+@layout("menu_profile") {
+
+<div id="profileContainer">
+	<div class="profileTimelineContainer">
+		<div id="timeline" style="float:left;width: 90%;position: absolute; height: 100%;"></div>
+	</div>
+
+	<div class="profileListingContainer">
+		<h2>@Application.messages("menu_employment")</h2>
+		@if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
+		<div class="employmentCard">
+			@employmentForm(null)
+		</div>
+		}
+		@for(employment <- employments) {
+			<div id="@employment.getId()" class="employmentCard">
+			@if(employment.getId().equals(idToUpdate)) {
+				@employmentForm(employment)
+			} else {
+				<h3>@employment.getTitle()</h3>
+				@if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
+					<a href="@routes.ProfileController.index(langKey,employment.getId()).toString()#@employment.getId()">Edit</a><br>
+				}
+				<span class="sosa">o</span> 
+				@if(employment.getWebsite().isEmpty()) {
+					@employment.getPlace()
+				} else {
+					<a target="_blank" href="@employment.getWebsite()">@employment.getPlace()</a>
+				}<br>
+				<span class="sosa">[</span>
+				@employment.getFromDate().toString("MMM yyyy",Application.getCurrentLocale()) - 
+	            @if(employment.getToDate() != null) {
+	            	@employment.getToDate().toString("MMM yyyy",Application.getCurrentLocale())
+	            } else {
+	            	@Application.messages("ongoing")
+	            }<br><br>
+	            @for(task <- employment.getTasks()) {
+	            <div class="employmentDuty">
+	            	<span class="sosa">ñ</span> @task
+	            </div>	            
+	            }
+	        }
+			</div>
+		}
+
+	    <h2> @Application.messages("menu_education")</h2>
+	    @if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
+	    <div class="employmentCard">
+			@educationForm(null)
+		</div>
+		}
+	   	@for(education <- educations) {
+	   		<div id="@education.getId()" class="employmentCard">
+	   		
+		   	@if(education.getId().equals(idToUpdate)) {
+		   		@educationForm(education)
+		   	} else {
+			
+				<h3>@education.getDegree()</h3>
+				@if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
+					<a href="@routes.ProfileController.index(langKey,education.getId()).toString()#@education.getId()">Edit</a><br>
+				}
+				<span class="sosa">o</span> 
+				@if(education.getWebsite().isEmpty()) {
+					@education.getPlace()
+				} else {
+					<a target="_blank" href="@education.getWebsite()">@education.getPlace()</a>
+				}<br>
+				<span class="sosa">[</span> 
+				@education.getFromDate().getYear() - 
+	            @if(education.getToDate() != null) {
+	            	@education.getToDate().getYear()
+	            } else {
+	            	@Application.messages("ongoing")
+	            }<br>
+				<span class="sosa">G</span> @education.getScore()
+			
+			}
+			</div>
+		}
+	</div>
+</div> 
+
+<script type="text/javascript">
+	var eduEntryData = [
+	["undefined",new Date(2009,1,1),new Date(2009,1,1)]
+	@for(education <- educations) {
+		@if(education.getToDate() != null) {
+			,["@education.getPlace() - @education.getDegree()",new Date(@dateForJavaScript(education.getFromDate())),new Date(@dateForJavaScript(education.getToDate())),"@education.getId()"]
+		} else {
+			,["@education.getPlace() - @education.getDegree()",new Date(@dateForJavaScript(education.getFromDate())),new Date(),"@education.getId()"]
+		}
+	}
+	];
+	
+	var emplEntryData = [
+	                	["undefined",new Date(2009,1,1),new Date(2009,1,1),"idForHighlighting"]
+
+	                	@for(employment <- employments) {
+	                		@if(employment.getToDate != null) {
+	                		,["@employment.getPlace() - @employment.getTitle()",new Date(@dateForJavaScript(employment.getFromDate())),new Date(@dateForJavaScript(employment.getToDate())),"@employment.getId()"]
+	                		} else {
+	                			,["@employment.getPlace() - @employment.getTitle()",new Date(@dateForJavaScript(employment.getFromDate())),new Date(),"@employment.getId()"]	
+	                		}
+	                	}
+	                	];
+	
+	var profileContainer = document.getElementById("profileContainer");
+	profileContainer.style.height = (profileContainer.clientHeight) +"px";
+	
+	var timeline = new Timeline(2008)
+	var visu = timeline.addVisualisation(Timeline.Visualisations.VerticalMinimal, document.getElementById("timeline"));;
+	
+	visu.config.scale.numbersMarginRight = 25;
+	visu.repaint();
+	
+	for(var index in eduEntryData) {
+		if(index == 0) {
+			continue;
+		}
+		var entryData = eduEntryData[index];
+		var timelineEntry = new TimelineEntry(entryData[0],entryData[1],entryData[2],'bfe5bf');
+		timeline.addTimelineEntry(timelineEntry);
+		timelineEntry.addHTMLElementToTriggerHover(document.getElementById(entryData[3]));
+	}
+	
+	for(var index = (emplEntryData.length-1); index > 0; index--) {
+		if(index == 0) {
+			continue;
+		}
+		var entryData = emplEntryData[index];
+		var timelineEntry = new TimelineEntry(entryData[0],entryData[1],entryData[2],'fad8c7');
+		timeline.addTimelineEntry(timelineEntry);
+		timelineEntry.addHTMLElementToTriggerHover(document.getElementById(entryData[3]));
+	}
+</script> 
+
+}
+}

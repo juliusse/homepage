@@ -1,0 +1,30 @@
+@(ranking : List[info.seltenheim.homepage.controllers.TrackingsController.UserAgentQuantityAndLastAppearance])
+
+@import info.seltenheim.homepage.controllers._
+@import info.seltenheim.homepage.services.database._
+
+@defining(Application.getSessionLang()) { langKey =>
+
+@info.seltenheim.homepage.views.html.layout("Tracking",Html.apply("Tracking")) {
+
+
+<h2>By user-agent appearance</h2>
+
+@for((entry,index) <- ranking.zipWithIndex) {
+<div class="rankingCard">
+	<div class="rankingRank">@(index+1)</div>
+	<div class="rankingContent">
+
+		@entry.getUserAgent()<br>
+		<div style="width: 150px; float: left;"><span class="sosa">[</span> @entry.getLastAppearance()</div>
+		<span class="sosa">I</span> @entry.getQuantity()
+		<form action="@routes.TrackingsController.deleteTrackingsByUserAgent(langKey).toString()" method="POST">
+			<input type="hidden" value="@entry.getUserAgent()" name="uaFilter">
+			<input type="image" src="@routes.Assets.at("images/delete.png")">
+		</form>
+		
+	</div>
+</div>
+}
+}
+}
