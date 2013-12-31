@@ -2,7 +2,6 @@ package info.seltenheim.homepage.services.database;
 
 import static info.seltenheim.homepage.plugins.mongo.MongoPlugin.doc;
 import static info.seltenheim.homepage.plugins.mongo.MongoPlugin.getStringList;
-import static info.seltenheim.homepage.plugins.mongo.MongoPlugin.positions;
 import static info.seltenheim.homepage.plugins.mongo.MongoPlugin.presentFields;
 import static info.seltenheim.homepage.plugins.mongo.MongoPlugin.projects;
 import static info.seltenheim.homepage.plugins.mongo.MongoPlugin.queryById;
@@ -33,7 +32,7 @@ import com.mongodb.MongoException;
 @Profile("MongoDb")
 @Component
 public class MongoDatabaseService implements DatabaseService {
-    private static final DateTimeFormatter persistenceDateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+    protected static final DateTimeFormatter persistenceDateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     public static final BasicDBObject DEFAULT_PRESENT_FIELDS_PROJECT = presentFields("titleMap", "descriptionMap", "developmentStart", "developmentEnd", "displayOnStart", "projectTypes",
             "technologies", "mainImagePath", "filePath");
@@ -263,143 +262,6 @@ public class MongoDatabaseService implements DatabaseService {
         return upsertSkillGroup(skillGroup);
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends Position> T upsertPosition(T position) throws IOException {
-        final boolean isEmployment = position instanceof Employment;
-        try {
-            String id = position.getId();
-            BasicDBObject document = null;
-            if(isEmployment) {
-                document = convert((Employment)position);
-            } else {
-                document = convert((Education)position);
-            }
-            
-            if (id == null) { // insert
-                positions().insert(document);
-                id = document.get("_id").toString();
-            } else {
-                positions().update(queryById(id), document);
-            }
-
-            if(isEmployment) {
-                return (T) findEmploymentById(id);
-            } else {
-                return (T) findEducationById(id);
-            }
-
-        } catch (MongoException e) {
-            throw new IOException(e);
-        }
-    }
-
-    @Override
-    public Position findPositionById(String positionId) throws IOException {
-        try {
-            final BasicDBObject query = queryById(positionId);
-            final BasicDBObject positionJson = (BasicDBObject) positions().findOne(query);
-            return convertToPosition(positionJson);
-        } catch (MongoException e) {
-            throw new IOException(e);
-        }
-    }
-    
-    @Override
-    public List<Position> findCurrentPositions() throws IOException {
-        try {
-            final List<Position> positions = new ArrayList<Position>();
-            final BasicDBObject query = doc("toDate", null);
-            DBCursor cursor = null;
-            try {
-                cursor = positions().find(query);
-
-                for (DBObject dbObject : cursor) {
-                    if (dbObject instanceof BasicDBObject) {
-                        positions.add(convertToPosition((BasicDBObject) dbObject));
-                    }
-                }
-            } finally {
-                cursor.close();
-            }
-
-            return positions;
-        } catch (MongoException e) {
-            throw new IOException(e);
-        }
-    }
-
-    @Override
-    public List<Employment> findAllEmployments() throws IOException {
-        try {
-            final List<Employment> employments = new ArrayList<Employment>();
-            final BasicDBObject query = doc("type", "employment");
-            DBCursor cursor = null;
-            try {
-                cursor = positions().find(query);
-
-                for (DBObject dbObject : cursor) {
-                    if (dbObject instanceof BasicDBObject) {
-                        employments.add(convertToEmployment((BasicDBObject) dbObject));
-                    }
-                }
-            } finally {
-                cursor.close();
-            }
-
-            return employments;
-        } catch (MongoException e) {
-            throw new IOException(e);
-        }
-    }
-
-    @Override
-    public Employment findEmploymentById(String employmentId) throws IOException {
-        try {
-            final BasicDBObject query = queryById(employmentId);
-            final BasicDBObject employmentBson = (BasicDBObject) positions().findOne(query);
-            Logger.debug(employmentBson.toString());
-            return convertToEmployment(employmentBson);
-        } catch (MongoException e) {
-            throw new IOException(e);
-        }
-    }
-
-    @Override
-    public List<Education> findAllEducations() throws IOException {
-        try {
-            final List<Education> educations = new ArrayList<Education>();
-            final BasicDBObject query = doc("type", "education");
-            DBCursor cursor = null;
-            try {
-                cursor = positions().find(query).sort(doc("fromDate", -1));
-
-                for (DBObject dbObject : cursor) {
-                    if (dbObject instanceof BasicDBObject) {
-                        educations.add(convertToEducation((BasicDBObject) dbObject));
-                    }
-                }
-            } finally {
-                cursor.close();
-            }
-
-            return educations;
-        } catch (MongoException e) {
-            throw new IOException(e);
-        }
-    }
-
-    @Override
-    public Education findEducationById(String educationId) throws IOException {
-        try {
-            final BasicDBObject query = queryById(educationId);
-            final BasicDBObject employmentBson = (BasicDBObject) positions().findOne(query);
-            return convertToEducation(employmentBson);
-        } catch (MongoException e) {
-            throw new IOException(e);
-        }
-    }
-
     private BasicDBObject convert(SkillGroup skillGroup) {
 
         return doc("displayRank", skillGroup.getDisplayRank()).append("skills", convertSkillsListToSkillsJsonStrings(skillGroup.getSkills())).append("nameMap", skillGroup.getNameMap());
@@ -454,8 +316,7 @@ public class MongoDatabaseService implements DatabaseService {
         if (bson != null) {
             final String idFromBson = bson.get("_id").toString();
             final boolean displayOnStartPage = Boolean.parseBoolean(bson.get("displayOnStart").toString());
-            
-            
+
             DateTime developmentStart = null;
             try {
                 developmentStart = persistenceDateTimeFormatter.parseDateTime((bson.get("developmentStart").toString()));
@@ -512,68 +373,6 @@ public class MongoDatabaseService implements DatabaseService {
             stringList.add(type.toString());
         }
         return stringList;
-    }
-
-    private BasicDBObject convert(Position position) {
-        Logger.debug(position.getFromDate().toString());
-        final BasicDBObject document = 
-                doc("type", position instanceof Employment ? "employment" : "education")
-                .append("fromDate", position.getFromDate().toString(persistenceDateTimeFormatter))
-                .append("place", position.getPlace())
-                .append("website", position.getWebsite())
-                .append("titleMap", position.getTitleMap());
-        
-        if(position.getToDate() != null) {
-            document.append("toDate", position.getToDate().toString(persistenceDateTimeFormatter));
-        }
-        
-        return document;
-    }
-
-    @SuppressWarnings("unchecked")
-    private Position convertToPosition(BasicDBObject bson) {
-        Position result = null;
-        if (bson != null) {
-            final String idFromBson = bson.get("_id").toString();
-            final String type = bson.getString("type");
-            final String place = bson.getString("place");
-            final DateTime fromDate = persistenceDateTimeFormatter.parseDateTime((bson.getString("fromDate")));
-            
-            final String toDateString = bson.getString("toDate");
-            final DateTime toDate = toDateString == null ? null : persistenceDateTimeFormatter.parseDateTime(toDateString);
-            final String website = bson.getString("website");
-            final Map<String,String> titleMap = (Map<String,String>) bson.get("titleMap");
-            if (type.equals("employment")) {
-                final Map<String,List<String>> tasksMap = (Map<String,List<String>>)bson.get("tasksMap");
-                result = new Employment(fromDate, toDate, place, titleMap, website, tasksMap);
-            } else if (type.equals("education")) {
-                final Map<String,String> degreeMap = (Map<String,String>)bson.get("degreeMap");
-                final String degreeNote = bson.getString("degreeNote");
-                final String score = bson.getString("score");
-
-                result = new Education(fromDate, toDate, place, website, score, titleMap, degreeMap, degreeNote);
-            }
-
-            result.setId(idFromBson);
-        }
-        return result;
-    }
-
-    private Employment convertToEmployment(BasicDBObject bson) {
-        return (Employment) convertToPosition(bson);
-    }
-
-    private Education convertToEducation(BasicDBObject bson) {
-        return (Education) convertToPosition(bson);
-    }
-
-    private BasicDBObject convert(Employment employment) {
-        return convert((Position) employment).append("tasksMap", employment.getTasksMap());
-    }
-
-    private BasicDBObject convert(Education education) {
-        return convert((Position) education).append("degreeMap", education.getDegreeMap())
-                .append("score", education.getScore());
     }
 
 }

@@ -38,7 +38,7 @@ public abstract class Position {
         return id;
     }
 
-    void setId(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -83,7 +83,7 @@ public abstract class Position {
         this.titleMap.put(lang, title);
     }
 
-    Map<String, String> getTitleMap() {
+    public Map<String, String> getTitleMap() {
         return titleMap;
     }
     

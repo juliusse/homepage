@@ -5,6 +5,7 @@ import info.seltenheim.homepage.services.database.Education;
 import info.seltenheim.homepage.services.database.Employment;
 import info.seltenheim.homepage.services.database.Position;
 import info.seltenheim.homepage.services.database.Project;
+import info.seltenheim.homepage.services.positions.PositionsService;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -29,11 +30,14 @@ public class Application extends Controller {
     @Autowired
     private DatabaseService databaseService;
 
+    @Autowired
+    private PositionsService positionsService;
+
     public Result index(String langKey) throws IOException {
         final List<Project> spProjects = databaseService.findProjectsForStartPage();
         Collections.sort(spProjects, new NewestProjectsFirstComparator());
 
-        final List<Position> currentPositions = databaseService.findCurrentPositions();
+        final List<Position> currentPositions = positionsService.findCurrentPositions();
         Collections.sort(currentPositions, new Comparator<Position>() {
             @Override
             public int compare(Position o1, Position o2) {
