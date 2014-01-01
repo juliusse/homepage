@@ -27,7 +27,8 @@ profile_location=Location
 profile_score=Score
 profile_website=Website
 profile_degree=Degree
-profile_duties=Duties:
+profile_tasks=Tasks
+profile_technologies=Technologies
 
 home_welcome=Welcome to my Website!
 home_welcome_text=Here you will find information about me, my projects and my skills.<br>Feel free to contact me for any questions or requests!

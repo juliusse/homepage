@@ -13,9 +13,9 @@
 				<div class="skillRow">
 					<div class="skillName">
 					@if(skill.getKnowledge() < 0.75) {
-						<span class="sosa">ñ</span>@skill.getName()
+						<span aria-hidden="true" data-icon="ñ"></span>@skill.getName()
 					} else {
-						<span class="sosa">ñ</span><strong>@skill.getName()</strong>
+						<span aria-hidden="true" data-icon="ñ"></span><strong>@skill.getName()</strong>
 					}
 					</div>
 					<div class="skillLevel">

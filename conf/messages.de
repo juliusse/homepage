@@ -26,7 +26,8 @@ profile_location=Einrichtung
 profile_score=Note
 profile_website=Webseite
 profile_degree=akademischer Grad
-profile_duties=Aufgaben und Pflichten:
+profile_tasks=Aufgaben
+profile_technologies=Technologien
     
 home_welcome=Willkommen auf meiner Webseite!
 home_welcome_text=Neben meinem Portfolio finden Sie hier einen Auszug aus meinem Lebenslauf.
