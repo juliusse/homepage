@@ -4,13 +4,12 @@ import info.seltenheim.homepage.controllers.secured.OnlyLoggedIn;
 import info.seltenheim.homepage.models.forms.AddSkillData;
 import info.seltenheim.homepage.models.forms.AddSkillGroupData;
 import info.seltenheim.homepage.models.forms.SetSkillLevelData;
-import info.seltenheim.homepage.services.database.DatabaseService;
-import info.seltenheim.homepage.services.database.Skill;
-import info.seltenheim.homepage.services.database.SkillGroup;
+import info.seltenheim.homepage.services.skills.Skill;
+import info.seltenheim.homepage.services.skills.SkillGroup;
+import info.seltenheim.homepage.services.skills.SkillGroupService;
 
 import java.io.IOException;
 import java.util.List;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,10 +27,10 @@ public class SkillsController extends Controller {
     private final static Form<SetSkillLevelData> setSkillLevelForm = Form.form(SetSkillLevelData.class);
 
     @Autowired
-    private DatabaseService databaseService;
+    private SkillGroupService skillGroupService;
 
     public Result index(String langKey) throws IOException {
-        final List<SkillGroup> skillGroups = databaseService.findAllSkillGroups();
+        final List<SkillGroup> skillGroups = skillGroupService.findAllSkillGroups();
         final boolean isDe = langKey.equals("de");
 
         final String description = isDe ? "<p>" + "Hier finden sie einen Auszug aus der Liste meiner technischen Qualifikationen.<br>" + "Auf Soft Skills gehe ich an dieser Stelle nicht ein.<br>"
@@ -54,7 +53,7 @@ public class SkillsController extends Controller {
             skillGroup.setName("de", data.getNameDe());
             skillGroup.setName("en", data.getNameEn());
 
-            databaseService.upsertSkillGroup(skillGroup);
+            skillGroupService.upsertSkillGroup(skillGroup);
 
             return redirect(routes.SkillsController.index(Application.getSessionLang()));
         }
@@ -70,7 +69,7 @@ public class SkillsController extends Controller {
             final AddSkillData data = filledForm.get();
             final Skill skill = new Skill(data.getName(), 0.5);
 
-            databaseService.addSkillToGroup(skillGroupId, skill);
+            skillGroupService.addSkillToGroup(skillGroupId, skill);
 
             return redirect(routes.SkillsController.index(Application.getSessionLang()));
         }
@@ -85,7 +84,7 @@ public class SkillsController extends Controller {
         } else {
             final SetSkillLevelData data = filledForm.get();
 
-            final SkillGroup skillGroup = databaseService.findSkillGroupById(skillGroupId);
+            final SkillGroup skillGroup = skillGroupService.findSkillGroupById(skillGroupId);
             for (Skill skill : skillGroup.getSkills()) {
                 if (skill.getName().equals(skillName)) {
                     skill.setKnowledge(data.getLevel());
@@ -93,7 +92,7 @@ public class SkillsController extends Controller {
                 }
             }
 
-            databaseService.upsertSkillGroup(skillGroup);
+            skillGroupService.upsertSkillGroup(skillGroup);
 
             return redirect(routes.SkillsController.index(Application.getSessionLang()));
         }

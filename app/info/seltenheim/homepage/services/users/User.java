@@ -1,4 +1,4 @@
-package info.seltenheim.homepage.services.database;
+package info.seltenheim.homepage.services.users;
 
 public class User {
 

@@ -1,4 +1,4 @@
-package info.seltenheim.homepage.services.database;
+package info.seltenheim.homepage.services.positions;
 
 import info.seltenheim.homepage.controllers.Application;
 
@@ -51,7 +51,7 @@ public class Employment extends Position {
         tasksMap.put(lang, tasks);
     }
 
-    public Map<String, List<String>> getTasksMap() {
+    Map<String, List<String>> getTasksMap() {
         return tasksMap;
     }
 

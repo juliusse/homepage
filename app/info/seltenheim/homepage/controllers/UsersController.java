@@ -1,14 +1,12 @@
 package info.seltenheim.homepage.controllers;
 
 import static info.seltenheim.homepage.controllers.secured.OnlyLoggedIn.SESSION_KEY_USERNAME;
-
 import info.seltenheim.homepage.controllers.secured.OnlyLoggedIn;
 import info.seltenheim.homepage.models.forms.CredentialsFormData;
-import info.seltenheim.homepage.services.database.DatabaseService;
-import info.seltenheim.homepage.services.database.User;
+import info.seltenheim.homepage.services.users.User;
+import info.seltenheim.homepage.services.users.UserService;
 
 import java.io.IOException;
-
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -24,10 +22,10 @@ import play.mvc.Security;
 @Component
 public class UsersController extends Controller {
     private static final Form<CredentialsFormData> credentialsForm = Form.form(CredentialsFormData.class);
-    
+
     @Autowired
-    private DatabaseService databaseService;
-    
+    private UserService userService;
+
     @Security.Authenticated(OnlyLoggedIn.class)
     public Result logout() {
         Logger.debug("logout " + session(SESSION_KEY_USERNAME));
@@ -37,12 +35,12 @@ public class UsersController extends Controller {
 
     public User getLoggedInUser() throws IOException {
         String username = session(SESSION_KEY_USERNAME);
-        if(username != null) {
-            return databaseService.findUserByName(username);
+        if (username != null) {
+            return userService.findUserByName(username);
         } else
             return null;
     }
-    
+
     public Result login(String langKey) throws JsonGenerationException, JsonMappingException, IOException {
         final Form<CredentialsFormData> filledForm = credentialsForm.bindFromRequest();
 
@@ -73,14 +71,14 @@ public class UsersController extends Controller {
     }
 
     public User authenticate(String username, String password) throws IOException {
-        final User user = databaseService.findUserByName(username);
-        if(user != null && user.getPassword().equals(password)) {
+        final User user = userService.findUserByName(username);
+        if (user != null && user.getPassword().equals(password)) {
             return user;
         } else {
             return null;
         }
     }
-    
+
     public static boolean isLoggedIn() {
         String username = session(SESSION_KEY_USERNAME);
         return username != null;

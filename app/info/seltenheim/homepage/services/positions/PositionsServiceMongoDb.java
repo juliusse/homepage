@@ -1,8 +1,5 @@
 package info.seltenheim.homepage.services.positions;
 
-import info.seltenheim.homepage.services.database.Education;
-import info.seltenheim.homepage.services.database.Employment;
-import info.seltenheim.homepage.services.database.Position;
 
 import java.io.IOException;
 import java.util.ArrayList;

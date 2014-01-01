@@ -3,9 +3,8 @@ package info.seltenheim.homepage.controllers;
 import info.seltenheim.homepage.controllers.secured.OnlyLoggedIn;
 import info.seltenheim.homepage.models.forms.UpsertEducationData;
 import info.seltenheim.homepage.models.forms.UpsertEmploymentData;
-import info.seltenheim.homepage.services.database.DatabaseService;
-import info.seltenheim.homepage.services.database.Education;
-import info.seltenheim.homepage.services.database.Employment;
+import info.seltenheim.homepage.services.positions.Education;
+import info.seltenheim.homepage.services.positions.Employment;
 import info.seltenheim.homepage.services.positions.PositionsService;
 
 import java.io.IOException;
@@ -24,9 +23,6 @@ import play.mvc.Security;
 
 @Component
 public class ProfileController extends Controller {
-
-    @Autowired
-    private DatabaseService databaseService;
 
     @Autowired
     private PositionsService positionsService;

@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import play.Logger;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -38,25 +36,24 @@ public abstract class Mapper<T> {
     protected abstract DBCursor sortResults(DBCursor unsortedResults);
 
     public List<T> findAll() throws IOException {
-        return find(new HashMap<String, String>());
+        return find(new HashMap<String, Object>());
     }
 
     public T findById(String id) throws IOException {
         try {
             final BasicDBObject query = queryById(id);
             final BasicDBObject objectBson = (BasicDBObject) getCollection().findOne(query);
-            Logger.debug(objectBson.toString());
             return toObject(objectBson);
         } catch (MongoException e) {
             throw new IOException(e);
         }
     }
 
-    public List<T> find(Map<String, String> attributes) throws IOException {
+    public List<T> find(Map<String, Object> attributes) throws IOException {
         try {
             final List<T> objects = new ArrayList<T>();
             final BasicDBObject query = getDefaultSearchFilter();
-            for (Map.Entry<String, String> entry : attributes.entrySet()) {
+            for (Map.Entry<String, Object> entry : attributes.entrySet()) {
                 query.append(entry.getKey(), entry.getValue());
             }
 
@@ -78,6 +75,12 @@ public abstract class Mapper<T> {
         } catch (MongoException e) {
             throw new IOException(e);
         }
+    }
+
+    public List<T> find(String attribute, Object value) throws IOException {
+        final Map<String, Object> attributes = new HashMap<String, Object>();
+        attributes.put(attribute, value);
+        return find(attributes);
     }
 
     public T upsert(T object) throws IOException {

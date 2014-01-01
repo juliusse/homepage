@@ -1,4 +1,4 @@
-package info.seltenheim.homepage.services.database;
+package info.seltenheim.homepage.services.skills;
 
 import info.seltenheim.homepage.controllers.Application;
 

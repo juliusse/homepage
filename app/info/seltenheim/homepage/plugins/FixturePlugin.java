@@ -1,11 +1,12 @@
 package info.seltenheim.homepage.plugins;
 
 import info.seltenheim.homepage.configuration.SpringConfiguration;
-import info.seltenheim.homepage.services.database.DatabaseService;
-import info.seltenheim.homepage.services.database.Project;
-import info.seltenheim.homepage.services.database.User;
-import info.seltenheim.homepage.services.database.Project.ProjectType;
 import info.seltenheim.homepage.services.filesystem.FileSystemService;
+import info.seltenheim.homepage.services.projects.Project;
+import info.seltenheim.homepage.services.projects.Project.ProjectType;
+import info.seltenheim.homepage.services.projects.ProjectsService;
+import info.seltenheim.homepage.services.users.User;
+import info.seltenheim.homepage.services.users.UserService;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,10 +28,11 @@ import play.Plugin;
 
 import com.google.common.collect.Lists;
 
-
 /**
- * This plugin loads sample project that are listed at <strong>application.projects.fixtures</strong>.<br>
- * It also adds user that are given as key-value pairs at <strong>application.users.fixtures</strong>.
+ * This plugin loads sample project that are listed at
+ * <strong>application.projects.fixtures</strong>.<br>
+ * It also adds user that are given as key-value pairs at
+ * <strong>application.users.fixtures</strong>.
  */
 public final class FixturePlugin extends Plugin {
     private final Application application;
@@ -54,10 +56,10 @@ public final class FixturePlugin extends Plugin {
                 Logger.error("can't setup fixtures", e);
             }
         }
-        
-        //add user
-        final List<String> fixtureUsers = conf.getStringList("application.users.fixtures",Lists.<String> newArrayList());
-        for(String userAndPw : fixtureUsers) {
+
+        // add user
+        final List<String> fixtureUsers = conf.getStringList("application.users.fixtures", Lists.<String> newArrayList());
+        for (String userAndPw : fixtureUsers) {
             final String[] parts = userAndPw.split(":");
             try {
                 addUser(parts[0], parts[1]);
@@ -66,17 +68,17 @@ public final class FixturePlugin extends Plugin {
             }
         }
     }
-    
+
     private void addUser(String username, String password) throws IOException {
-        final DatabaseService service = SpringConfiguration.getBean(DatabaseService.class);
+        final UserService service = SpringConfiguration.getBean(UserService.class);
         service.upsertUser(new User(username, password));
     }
 
     private void addProject(String path) throws IOException {
         try {
-            final DatabaseService service = SpringConfiguration.getBean(DatabaseService.class);
+            final ProjectsService service = SpringConfiguration.getBean(ProjectsService.class);
             final FileSystemService fsService = SpringConfiguration.getBean(FileSystemService.class);
-            Logger.debug(service.getClass().getName()+"; "+fsService.getClass().getName());
+            Logger.debug(service.getClass().getName() + "; " + fsService.getClass().getName());
             final File projectFolder = new File(path);
             final JsonNode projectDefinition = new ObjectMapper().readTree(new File(projectFolder, "attributes.json"));
             final Map<String, String> titleMap = new HashMap<String, String>();

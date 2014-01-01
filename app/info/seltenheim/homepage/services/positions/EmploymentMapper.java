@@ -3,12 +3,9 @@ package info.seltenheim.homepage.services.positions;
 import static info.seltenheim.homepage.plugins.mongo.MongoPlugin.doc;
 import info.seltenheim.homepage.plugins.mongo.MongoPlugin;
 import info.seltenheim.homepage.services.Mapper;
-import info.seltenheim.homepage.services.database.Employment;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -42,8 +39,6 @@ public class EmploymentMapper extends Mapper<Employment> {
     }
 
     public List<Employment> findCurrentEmployments() throws IOException {
-        final Map<String, String> attributes = new HashMap<String, String>();
-        attributes.put("toDate", null);
-        return find(attributes);
+        return find("toDate", null);
     }
 }

@@ -1,14 +1,14 @@
-@(employments: List[info.seltenheim.homepage.services.database.Employment], educations: List[info.seltenheim.homepage.services.database.Education], idToUpdate : String)
+@(employments: List[info.seltenheim.homepage.services.positions.Employment], educations: List[info.seltenheim.homepage.services.positions.Education], idToUpdate : String)
 
 @import info.seltenheim.homepage.controllers._
-@import info.seltenheim.homepage.services.database._
+@import info.seltenheim.homepage.services.positions._
 @import helper._
 
 @dateForJavaScript(dateTime : org.joda.time.DateTime) = {
 	@dateTime.getYear(),@(dateTime.getMonthOfYear()-1),@dateTime.getDayOfMonth()
 }
 
-@educationForm(education: info.seltenheim.homepage.services.database.Education) = {
+@educationForm(education: Education) = {
 	@if(education == null) {
 	@form(routes.ProfileController.upsertEducation(Application.getSessionLang(),"-1")) {
 		<h3>New Education</h3>
@@ -41,7 +41,7 @@
     }
 }
 
-@employmentForm(employment: info.seltenheim.homepage.services.database.Employment) = {
+@employmentForm(employment: Employment) = {
 	@if(employment == null) {
 		@form(routes.ProfileController.upsertEmployment(Application.getSessionLang(),"-1")) {
 			<h3>New Employment</h3>

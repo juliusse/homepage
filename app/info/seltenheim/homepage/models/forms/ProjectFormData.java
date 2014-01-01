@@ -1,7 +1,7 @@
 package info.seltenheim.homepage.models.forms;
 
-import info.seltenheim.homepage.services.database.Project;
-import info.seltenheim.homepage.services.database.Project.ProjectType;
+import info.seltenheim.homepage.services.projects.Project;
+import info.seltenheim.homepage.services.projects.Project.ProjectType;
 
 import java.io.File;
 import java.util.ArrayList;

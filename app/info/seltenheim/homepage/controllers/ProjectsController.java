@@ -3,10 +3,10 @@ package info.seltenheim.homepage.controllers;
 import info.seltenheim.homepage.controllers.secured.OnlyLoggedIn;
 import info.seltenheim.homepage.controllers.utils.ImageUtils;
 import info.seltenheim.homepage.models.forms.ProjectFormData;
-import info.seltenheim.homepage.services.database.DatabaseService;
-import info.seltenheim.homepage.services.database.Project;
-import info.seltenheim.homepage.services.database.Project.ProjectType;
 import info.seltenheim.homepage.services.filesystem.FileSystemService;
+import info.seltenheim.homepage.services.projects.Project;
+import info.seltenheim.homepage.services.projects.Project.ProjectType;
+import info.seltenheim.homepage.services.projects.ProjectsService;
 import info.seltenheim.play2.plugins.usertracking.actions.TrackIgnore;
 
 import java.awt.image.BufferedImage;
@@ -20,7 +20,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
@@ -40,7 +39,7 @@ public class ProjectsController extends Controller {
     private final int maxImageWidth = Play.application().configuration().getInt("controllers.ProjectsController.images.maxWidth");
 
     @Autowired
-    private DatabaseService databaseService;
+    private ProjectsService projectsService;
 
     @Autowired
     private FileSystemService fileSystemService;
@@ -48,16 +47,16 @@ public class ProjectsController extends Controller {
     public static final Form<ProjectFormData> projectForm = Form.form(ProjectFormData.class);
 
     public Result index(String langKey, String type) throws IOException {
-        if(!type.equals("")) {
-            //solution while filtered pages are disabled
+        if (!type.equals("")) {
+            // solution while filtered pages are disabled
             return redirect(routes.ProjectsController.index(langKey, ""));
         }
-        
+
         List<Project> projects = null;
         if (!type.isEmpty()) {
-            projects = databaseService.findProjectsOfType(ProjectType.valueOf(type));
+            projects = projectsService.findProjectsOfType(ProjectType.valueOf(type));
         } else {
-            projects = databaseService.findAllProjects();
+            projects = projectsService.findAllProjects();
         }
         Collections.sort(projects, new Comparator<Project>() {
 
@@ -88,16 +87,16 @@ public class ProjectsController extends Controller {
     // GET
     @Security.Authenticated(OnlyLoggedIn.class)
     public Result renderEdit(String langKey, String projectId) throws IOException {
-        return ok(info.seltenheim.homepage.views.html.projectAdd.render(projectForm.fill(new ProjectFormData(databaseService.findProjectById(projectId)))));
+        return ok(info.seltenheim.homepage.views.html.projectAdd.render(projectForm.fill(new ProjectFormData(projectsService.findProjectById(projectId)))));
     }
 
     @TrackIgnore
     public Result getImage(String projectId) throws IOException {
-        final String referer = request().getHeader("Referer"); 
-        if(Play.isProd() && referer != null && !referer.contains("seltenheim") && !referer.contains("js")) {
+        final String referer = request().getHeader("Referer");
+        if (Play.isProd() && referer != null && !referer.contains("seltenheim") && !referer.contains("js")) {
             return ok(Play.application().getFile("public/images/julius_seltenheim_logo.png"));
         }
-        final Project project = databaseService.findProjectById(projectId);
+        final Project project = projectsService.findProjectById(projectId);
         final File image = fileSystemService.getImageAsFile(project.getMainImagePath());
         String hash = null;
         InputStream in = null;
@@ -142,7 +141,7 @@ public class ProjectsController extends Controller {
             // TODO save file
 
             if (data.getId().isEmpty()) { // insert
-                project = databaseService.upsertProject(project);
+                project = projectsService.upsertProject(project);
             } else {
                 updateProject(data.getId(), project);
             }
@@ -183,7 +182,7 @@ public class ProjectsController extends Controller {
     }
 
     private void updateProject(String projectId, Project newData) throws IOException {
-        final Project project = databaseService.findProjectById(projectId);
+        final Project project = projectsService.findProjectById(projectId);
         // title
         project.setTitle("de", newData.getTitle("de"));
         project.setTitle("en", newData.getTitle("en"));
@@ -199,7 +198,7 @@ public class ProjectsController extends Controller {
         if (newData.getFilePath() != null)
             project.setMainImagePath(newData.getFilePath());
 
-        databaseService.upsertProject(project);
+        projectsService.upsertProject(project);
     }
 
 }

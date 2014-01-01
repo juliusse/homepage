@@ -1,9 +1,6 @@
 package info.seltenheim.homepage.services.positions;
 
 import static info.seltenheim.homepage.plugins.mongo.MongoPlugin.doc;
-import info.seltenheim.homepage.services.database.Education;
-import info.seltenheim.homepage.services.database.Employment;
-import info.seltenheim.homepage.services.database.Position;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +16,7 @@ import play.Logger;
 import com.mongodb.BasicDBObject;
 
 public class PositionSerializer {
-    protected static final DateTimeFormatter persistenceDateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter persistenceDateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
     private static final int VERSION_EDUCATION = 1;
     private static final int VERSION_EMPLOYMENT = 2;
 

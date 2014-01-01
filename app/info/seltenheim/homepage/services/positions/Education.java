@@ -1,4 +1,4 @@
-package info.seltenheim.homepage.services.database;
+package info.seltenheim.homepage.services.positions;
 
 import info.seltenheim.homepage.controllers.Application;
 
@@ -49,7 +49,7 @@ public class Education extends Position {
         this.degreeMap.put(lang, degree);
     }
 
-    public Map<String, String> getDegreeMap() {
+    Map<String, String> getDegreeMap() {
         return degreeMap;
     }
 

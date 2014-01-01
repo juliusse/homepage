@@ -1,4 +1,4 @@
-package info.seltenheim.homepage.services.database;
+package info.seltenheim.homepage.services.positions;
 
 import info.seltenheim.homepage.controllers.Application;
 
@@ -9,7 +9,6 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-
 public abstract class Position {
     public static final DateTimeFormatter POSITION_DATETIME_FORMAT = DateTimeFormat.forPattern("yyyy-MM");
 
@@ -18,14 +17,14 @@ public abstract class Position {
     private DateTime fromDate;
     private DateTime toDate;
     private String place;
-    private Map<String,String> titleMap;
+    private Map<String, String> titleMap;
     private String website;
 
     public Position() {
         titleMap = new HashMap<String, String>();
     }
-    
-    public Position(DateTime fromDate, DateTime toDate, String place, Map<String,String> titleMap, String website) {
+
+    public Position(DateTime fromDate, DateTime toDate, String place, Map<String, String> titleMap, String website) {
         super();
         this.fromDate = fromDate;
         this.toDate = toDate;
@@ -38,7 +37,7 @@ public abstract class Position {
         return id;
     }
 
-    public void setId(String id) {
+    void setId(String id) {
         this.id = id;
     }
 
@@ -68,13 +67,13 @@ public abstract class Position {
 
     public String getTitle() {
         final String lang = Application.getSessionLang();
-        if(lang.equals("de")) {
+        if (lang.equals("de")) {
             return titleMap.get("de");
         } else {
             return titleMap.get("en");
         }
     }
-    
+
     public String getTitle(String langKey) {
         return titleMap.get(langKey);
     }
@@ -83,10 +82,10 @@ public abstract class Position {
         this.titleMap.put(lang, title);
     }
 
-    public Map<String, String> getTitleMap() {
+    Map<String, String> getTitleMap() {
         return titleMap;
     }
-    
+
     public String getWebsite() {
         return website;
     }

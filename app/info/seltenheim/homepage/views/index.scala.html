@@ -1,9 +1,10 @@
-@(currentProjects:List[info.seltenheim.homepage.services.database.Project] = scala.collection.immutable.List[info.seltenheim.homepage.services.database.Project](),
-  specialProjects:List[info.seltenheim.homepage.services.database.Project] = scala.collection.immutable.List[info.seltenheim.homepage.services.database.Project](),
-  currentPositions:List[info.seltenheim.homepage.services.database.Position] = scala.collection.immutable.List[info.seltenheim.homepage.services.database.Position]())
+@(currentProjects:List[info.seltenheim.homepage.services.projects.Project],
+  specialProjects:List[info.seltenheim.homepage.services.projects.Project],
+  currentPositions:List[info.seltenheim.homepage.services.positions.Position])
 
 @import info.seltenheim.homepage.controllers._
-@import info.seltenheim.homepage.services.database._
+@import info.seltenheim.homepage.services.positions._
+@import info.seltenheim.homepage.services.projects._
 
 @defining(Application.getSessionLang()) { langKey =>
 

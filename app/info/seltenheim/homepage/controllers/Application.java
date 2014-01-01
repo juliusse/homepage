@@ -1,11 +1,11 @@
 package info.seltenheim.homepage.controllers;
 
-import info.seltenheim.homepage.services.database.DatabaseService;
-import info.seltenheim.homepage.services.database.Education;
-import info.seltenheim.homepage.services.database.Employment;
-import info.seltenheim.homepage.services.database.Position;
-import info.seltenheim.homepage.services.database.Project;
+import info.seltenheim.homepage.services.positions.Education;
+import info.seltenheim.homepage.services.positions.Employment;
+import info.seltenheim.homepage.services.positions.Position;
 import info.seltenheim.homepage.services.positions.PositionsService;
+import info.seltenheim.homepage.services.projects.Project;
+import info.seltenheim.homepage.services.projects.ProjectsService;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -28,13 +28,13 @@ public class Application extends Controller {
     public final static String SESSION_LANGKEY = "langkey";
 
     @Autowired
-    private DatabaseService databaseService;
-
-    @Autowired
     private PositionsService positionsService;
 
+    @Autowired
+    private ProjectsService projectsService;
+
     public Result index(String langKey) throws IOException {
-        final List<Project> spProjects = databaseService.findProjectsForStartPage();
+        final List<Project> spProjects = projectsService.findProjectsForStartPage();
         Collections.sort(spProjects, new NewestProjectsFirstComparator());
 
         final List<Position> currentPositions = positionsService.findCurrentPositions();
@@ -51,7 +51,7 @@ public class Application extends Controller {
             }
         });
 
-        return ok(info.seltenheim.homepage.views.html.index.render(databaseService.findProjectsForCurrent(), spProjects, currentPositions));
+        return ok(info.seltenheim.homepage.views.html.index.render(projectsService.findProjectsForCurrent(), spProjects, currentPositions));
     }
 
     public Result contact(String langKey) {
