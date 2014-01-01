@@ -1,6 +1,8 @@
 package info.seltenheim.homepage.services.users;
 
-public class User {
+import info.seltenheim.homepage.services.PersistentModel;
+
+public class User implements PersistentModel {
 
     private String id;
     private String username;

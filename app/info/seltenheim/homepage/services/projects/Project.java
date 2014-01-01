@@ -1,6 +1,7 @@
 package info.seltenheim.homepage.services.projects;
 
 import info.seltenheim.homepage.controllers.Application;
+import info.seltenheim.homepage.services.PersistentModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import play.api.templates.Html;
 
-public class Project {
+public class Project implements PersistentModel {
     public enum ProjectType {
         Application, Website, Game
     };
@@ -45,8 +46,8 @@ public class Project {
         descriptionMap = new HashMap<String, String>();
     }
 
-    public Project(Map<String, String> titleMap, Map<String, String> descriptionMap, Boolean displayOnStartPage, List<String> technologyList, DateTime developmentStart,
-            DateTime developmentEnd, String mainImagePath, String filePath, List<ProjectType> typeOf) {
+    public Project(Map<String, String> titleMap, Map<String, String> descriptionMap, Boolean displayOnStartPage, List<String> technologyList, DateTime developmentStart, DateTime developmentEnd,
+            String mainImagePath, String filePath, List<ProjectType> typeOf) {
         super();
         this.id = null;
         this.titleMap = titleMap;
@@ -80,7 +81,6 @@ public class Project {
             return null;
     }
 
-    
     Map<String, String> getTitleMap() {
         return titleMap;
     }
@@ -123,7 +123,6 @@ public class Project {
     // this.titleLangMap.remove(lang);
     // }
 
-    
     /**
      * 
      * @return description for current language, default is english

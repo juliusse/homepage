@@ -20,10 +20,8 @@ POST	/:langKey/skillgroup/:skillGroupId/:skillName/setLevel	@info.seltenheim.hom
 
 # profile
 GET		/:langKey/profile							@info.seltenheim.homepage.controllers.ProfileController.index(langKey:String,positionId = "")
-POST	/:langKey/profile/employment 				@info.seltenheim.homepage.controllers.ProfileController.upsertEmployment(langKey:String, employmentId = "-1")
-POST	/:langKey/profile/employment/:employmentId 	@info.seltenheim.homepage.controllers.ProfileController.upsertEmployment(langKey:String, employmentId:String)
-POST	/:langKey/profile/education 				@info.seltenheim.homepage.controllers.ProfileController.upsertEducation(langKey:String, educationId = "-1")
-POST	/:langKey/profile/education/:educationId 	@info.seltenheim.homepage.controllers.ProfileController.upsertEducation(langKey:String, educationId:String)
+POST	/:langKey/profile/employment 				@info.seltenheim.homepage.controllers.ProfileController.upsertEmployment(langKey:String)
+POST	/:langKey/profile/education 				@info.seltenheim.homepage.controllers.ProfileController.upsertEducation(langKey:String)
 GET		/:langKey/profile/:positionId				@info.seltenheim.homepage.controllers.ProfileController.index(langKey:String,positionId :String)
 
 #projects

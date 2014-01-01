@@ -53,13 +53,14 @@ public class ProfileController extends Controller {
     }
 
     @Security.Authenticated(OnlyLoggedIn.class)
-    public Result upsertEmployment(String langKey, String employmentId) throws IOException {
+    public Result upsertEmployment(String langKey) throws IOException {
         Form<EmploymentData> filledForm = Form.form(EmploymentData.class).bindFromRequest();
 
         if (filledForm.hasErrors()) {
             return badRequest(filledForm.errorsAsJson());
         } else {
-            EmploymentData data = filledForm.get();
+            final EmploymentData data = filledForm.get();
+            final String employmentId = data.getId();
             final Employment employment = employmentId != "-1" ? positionsService.findEmploymentById(employmentId) : new Employment();
 
             employment.setFromDate(data.getFromDateObject());
@@ -70,6 +71,7 @@ public class ProfileController extends Controller {
             employment.setWebsite(data.getWebsite());
             employment.setTasks("de", data.getTasksDeList());
             employment.setTasks("en", data.getTasksEnList());
+            employment.setTechnologies(data.getTechnologiesList());
 
             positionsService.upsertPosition(employment);
             return redirect(routes.ProfileController.index(langKey, ""));
@@ -77,13 +79,15 @@ public class ProfileController extends Controller {
     }
 
     @Security.Authenticated(OnlyLoggedIn.class)
-    public Result upsertEducation(String langKey, String educationId) throws IOException {
+    public Result upsertEducation(String langKey) throws IOException {
         Form<EducationData> filledForm = Form.form(EducationData.class).bindFromRequest();
 
         if (filledForm.hasErrors()) {
             return badRequest(filledForm.errorsAsJson());
         } else {
-            EducationData data = filledForm.get();
+            final EducationData data = filledForm.get();
+            final String educationId = data.getId();
+
             final Education education = educationId != "-1" ? positionsService.findEducationById(educationId) : new Education();
 
             education.setFromDate(data.getFromDateObject());

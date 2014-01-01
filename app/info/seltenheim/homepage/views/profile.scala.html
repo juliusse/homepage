@@ -2,77 +2,17 @@
 
 @import info.seltenheim.homepage.controllers._
 @import info.seltenheim.homepage.services.positions._
+@import info.seltenheim.homepage.services.positions.formdata._
+@import info.seltenheim.homepage.views.html.forms._
 @import helper._
 
 @dateForJavaScript(dateTime : org.joda.time.DateTime) = {
 	@dateTime.getYear(),@(dateTime.getMonthOfYear()-1),@dateTime.getDayOfMonth()
 }
 
-@educationForm(education: Education) = {
-	@if(education == null) {
-	@form(routes.ProfileController.upsertEducation(Application.getSessionLang(),"-1")) {
-		<h3>New Education</h3>
-		<input name="titleDe" placeholder="German Title"> | <input name="titleEn" placeholder="English Title"><br>
-		<input name="degreeDe" placeholder="German Degree"> | <input name="degreeEn" placeholder="English Degree"><br>
-		<span aria-hidden="true" data-icon="o"></span>
-		<input name="place" placeholder="where">
-		<input name="website" placeholder="website"><br>
-		<span aria-hidden="true" data-icon="["></span>
-		<input name="fromDate" placeholder="yyyy-mm-dd"> - <input name="toDate" placeholder="yyyy-mm-dd"><br>
-		<span aria-hidden="true" data-icon="G"></span>
-		<input name="score" placeholder="score"><br>	
-		<button type="submit" name="create">Create</button>
-       }
-    } else {
-    	@form(routes.ProfileController.upsertEducation(Application.getSessionLang(),education.getId())) {
-    	<h3>Update Education</h3>
-		<input name="titleDe" placeholder="German Title" value="@education.getTitle("de")"> | <input name="titleEn" placeholder="English Title" value="@education.getTitle("en")"><br>
-		<input name="degreeDe" placeholder="German Degree" value="@education.getDegree("de")"> | <input name="degreeEn" placeholder="English Degree" value="@education.getDegree("en")"><br>
-		<span aria-hidden="true" data-icon="o"></span>
-		<input name="place" placeholder="where" value="@education.getPlace()">
-		<input name="website" placeholder="website" value="@education.getWebsite()"><br>
-		<span aria-hidden="true" data-icon="["></span>
-		<input name="fromDate" placeholder="yyyy-mm-dd" value="@education.getFromDate().toString("yyyy-MM-dd")"> - 
-		<input name="toDate" placeholder="yyyy-mm-dd" @if(education.getToDate() != null) {value="@education.getToDate().toString("yyyy-MM-dd")"}><br>
-		<span aria-hidden="true" data-icon="G"></span>
-		<input name="score" placeholder="score" value="@education.getScore()"><br>	
-		<button type="submit" name="create">Update</button>
-		}
-    }
-}
 
-@employmentForm(employment: Employment) = {
-	@if(employment == null) {
-		@form(routes.ProfileController.upsertEmployment(Application.getSessionLang(),"-1")) {
-			<h3>New Employment</h3>
-			<input name="titleDe" placeholder="German Title"> | <input name="titleEn" placeholder="English Title"><br>
-			<span aria-hidden="true" data-icon="o"></span>
-			<input name="place" placeholder="where">
-			<input name="website" placeholder="website"><br>
-			<span aria-hidden="true" data-icon="["></span>
-			<input name="fromDate" placeholder="yyyy-mm-dd"> - <input name="toDate" placeholder="yyyy-mm-dd">
-			<br><br>
-			<textarea rows="5" cols="20" name="tasksDe" placeholder="One Task per row (German)"></textarea>
-			<textarea rows="5" cols="20" name="tasksEn" placeholder="One Task per row (English)"></textarea><br>	
-			<button type="submit" name="create">Create</button>
-        }
-    } else {
-    	@form(routes.ProfileController.upsertEmployment(Application.getSessionLang(),employment.getId())) {
-	    	<h3>Update Employment</h3>
-			<input name="titleDe" placeholder="German Title" value="@employment.getTitle("de")"> | <input name="titleEn" placeholder="English Title" value="@employment.getTitle("en")"><br>
-			<span aria-hidden="true" data-icon="o"></span>
-			<input name="place" placeholder="where" value="@employment.getPlace()">
-			<input name="website" placeholder="website" value="@employment.getWebsite()"><br>
-			<span aria-hidden="true" data-icon="["></span>
-			<input name="fromDate" placeholder="yyyy-mm-dd" value="@employment.getFromDate().toString("yyyy-MM-dd")"> - 
-			<input name="toDate" placeholder="yyyy-mm-dd" @if(employment.getToDate() != null) {value="@employment.getToDate().toString("yyyy-MM-dd")"}>
-			<br><br>
-			<textarea rows="5" cols="20" name="tasksDe" placeholder="One Task per row (German)">@employment.getTasksAsString("de")</textarea>
-			<textarea rows="5" cols="20" name="tasksEn" placeholder="One Task per row (English)">@employment.getTasksAsString("en")</textarea><br>
-			<button type="submit" name="update">Update</button>
-		}
-    }
-}
+
+
 
 @defining(Application.getSessionLang()) { langKey =>
 
@@ -88,13 +28,15 @@
 		<h2>@Application.messages("menu_employment")</h2>
 		@if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
 		<div class="employmentCard">
-			@employmentForm(null)
+			<h3>New Employment</h3>
+			@info.seltenheim.homepage.views.html.forms.employmentForm(new EmploymentData())
 		</div>
 		}
 		@for(employment <- employments) {
 			<div id="@employment.getId()" class="employmentCard">
 			@if(employment.getId().equals(idToUpdate)) {
-				@employmentForm(employment)
+				<h3>Update Employment</h3>
+				@info.seltenheim.homepage.views.html.forms.employmentForm(new EmploymentData(employment))
 			} else {
 				<h3>@employment.getTitle()</h3>
 				<div>
@@ -137,14 +79,14 @@
 	    <h2> @Application.messages("menu_education")</h2>
 	    @if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
 	    <div class="employmentCard">
-			@educationForm(null)
+			@educationForm(new EducationData())
 		</div>
 		}
 	   	@for(education <- educations) {
 	   		<div id="@education.getId()" class="employmentCard">
 	   		
 		   	@if(education.getId().equals(idToUpdate)) {
-		   		@educationForm(education)
+		   		@educationForm(new EducationData(education))
 		   	} else {
 			
 				<h3>@education.getDegree()</h3>

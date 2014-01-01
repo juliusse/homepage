@@ -1,6 +1,7 @@
 package info.seltenheim.homepage.services.skills;
 
 import info.seltenheim.homepage.controllers.Application;
+import info.seltenheim.homepage.services.PersistentModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,9 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
-public class SkillGroup {
+public class SkillGroup implements PersistentModel {
 
     private String id;
     private Map<String, String> nameMap;

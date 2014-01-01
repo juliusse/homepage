@@ -14,7 +14,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
 
-public abstract class Mapper<T> {
+public abstract class Mapper<T extends PersistentModel> {
 
     /**
      * The collection where the results should be searched in
@@ -87,7 +87,8 @@ public abstract class Mapper<T> {
         try {
             final DBCollection collection = getCollection();
             final BasicDBObject document = toBson(object);
-            String id = document.getString("_id", "");
+
+            String id = object.getId();
 
             if (id.isEmpty()) { // insert
                 collection.insert(document);

@@ -1,5 +1,6 @@
 package info.seltenheim.homepage.services.positions.formdata;
 
+import info.seltenheim.homepage.services.positions.Education;
 import play.data.validation.Constraints.Required;
 
 public class EducationData extends PositionData {
@@ -10,6 +11,18 @@ public class EducationData extends PositionData {
     private String degreeEn;
     @Required
     private String score;
+
+    public EducationData() {
+        super();
+    }
+
+    public EducationData(Education education) {
+        super(education);
+
+        degreeDe = education.getDegree("de");
+        degreeEn = education.getDegree("en");
+        score = education.getScore();
+    }
 
     public String getDegreeDe() {
         return degreeDe;

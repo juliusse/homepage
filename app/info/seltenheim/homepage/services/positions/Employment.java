@@ -1,6 +1,7 @@
 package info.seltenheim.homepage.services.positions;
 
 import info.seltenheim.homepage.controllers.Application;
+import info.seltenheim.homepage.services.PersistentModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +10,7 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 
-public class Employment extends Position {
+public class Employment extends Position implements PersistentModel {
 
     private Map<String, List<String>> tasksMap;
     private List<String> technologies;
@@ -57,6 +58,14 @@ public class Employment extends Position {
 
     public List<String> getTechnologies() {
         return technologies;
+    }
+
+    public String getTechnologiesAsString() {
+        String result = "";
+        for (String s : technologies) {
+            result += s + "\n";
+        }
+        return result;
     }
 
     public void setTechnologies(List<String> technologies) {
