@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -72,7 +71,6 @@ public class Project implements PersistentModel {
     /**
      * @return title for current language, default is english
      */
-    @JsonIgnore
     public String getTitle() {
         String lang = Application.getSessionLang();
         if (titleMap.containsKey(lang))
@@ -105,29 +103,15 @@ public class Project implements PersistentModel {
         titleMap.put(langKey, title);
     }
 
-    @JsonIgnore
     public Html getTitleAsHtml() {
 
         return Html.apply(getTitle().replace("\n", "<br>"));
     }
 
-    // public Map<String, String> getTitleLangMap() {
-    // return titleLangMap;
-    // }
-    //
-    // public void setTitleForLang(String lang, String title) {
-    // this.titleLangMap.put(lang, title);
-    // }
-    //
-    // public void removeTitleForLang(String lang) {
-    // this.titleLangMap.remove(lang);
-    // }
-
     /**
      * 
      * @return description for current language, default is english
      */
-    @JsonIgnore
     public String getDescription() {
         String lang = Application.getSessionLang();
         if (descriptionMap.containsKey(lang)) {
@@ -145,7 +129,6 @@ public class Project implements PersistentModel {
         descriptionMap.put(langKey, description);
     }
 
-    @JsonIgnore
     public Html getDescriptionAsHtml() {
         return Html.apply(getDescription().replace("\n", "<br>"));
     }
@@ -162,7 +145,6 @@ public class Project implements PersistentModel {
         return developmentStart;
     }
 
-    @JsonIgnore
     public String getDevelopmentStartString() {
         return PROJECT_DATETIME_FORMAT.print(developmentStart);
     }
@@ -175,7 +157,6 @@ public class Project implements PersistentModel {
         return developmentEnd;
     }
 
-    @JsonIgnore
     public String getDevelopmentEndString() {
         if (developmentEnd != null)
             return PROJECT_DATETIME_FORMAT.print(developmentEnd);

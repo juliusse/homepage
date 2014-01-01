@@ -8,8 +8,6 @@ import info.seltenheim.homepage.services.users.UserService;
 
 import java.io.IOException;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -41,10 +39,8 @@ public class UsersController extends Controller {
             return null;
     }
 
-    public Result login(String langKey) throws JsonGenerationException, JsonMappingException, IOException {
+    public Result login(String langKey) throws IOException {
         final Form<CredentialsFormData> filledForm = credentialsForm.bindFromRequest();
-
-        // Logger.debug(filledForm.toString());
 
         Result result;
         if (getLoggedInUser() != null) {

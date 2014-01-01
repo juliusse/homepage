@@ -17,8 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.joda.time.DateTime;
 
 import play.Application;
@@ -26,6 +24,8 @@ import play.Configuration;
 import play.Logger;
 import play.Plugin;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 
 /**
@@ -82,23 +82,23 @@ public final class FixturePlugin extends Plugin {
             final File projectFolder = new File(path);
             final JsonNode projectDefinition = new ObjectMapper().readTree(new File(projectFolder, "attributes.json"));
             final Map<String, String> titleMap = new HashMap<String, String>();
-            titleMap.put("de", projectDefinition.get("titleDe").getTextValue());
-            titleMap.put("en", projectDefinition.get("titleEn").getTextValue());
+            titleMap.put("de", projectDefinition.get("titleDe").textValue());
+            titleMap.put("en", projectDefinition.get("titleEn").textValue());
             final Map<String, String> descriptionMap = new HashMap<String, String>();
-            descriptionMap.put("de", projectDefinition.get("descrDe").getTextValue());
-            descriptionMap.put("en", projectDefinition.get("descrEn").getTextValue());
+            descriptionMap.put("de", projectDefinition.get("descrDe").textValue());
+            descriptionMap.put("en", projectDefinition.get("descrEn").textValue());
 
             final boolean displayOnStartPage = projectDefinition.get("displayOnStartPage").asBoolean();
-            final List<String> technologyList = Arrays.asList(projectDefinition.get("techs").getTextValue().split(","));
-            final DateTime developmentStart = Project.PROJECT_DATETIME_FORMAT.parseDateTime(projectDefinition.get("devStart").getTextValue());
-            final DateTime developmentEnd = Project.PROJECT_DATETIME_FORMAT.parseDateTime(projectDefinition.get("devEnd").getTextValue());
+            final List<String> technologyList = Arrays.asList(projectDefinition.get("techs").textValue().split(","));
+            final DateTime developmentStart = Project.PROJECT_DATETIME_FORMAT.parseDateTime(projectDefinition.get("devStart").textValue());
+            final DateTime developmentEnd = Project.PROJECT_DATETIME_FORMAT.parseDateTime(projectDefinition.get("devEnd").textValue());
 
             final String filePath = null;
             byte[] imageBytes = FileUtils.readFileToByteArray(new File(projectFolder, "image.jpg"));
             final String mainImagePath = fsService.saveImage(imageBytes, "jpg");
 
             final List<ProjectType> typeOf = new ArrayList<ProjectType>();
-            for (String type : projectDefinition.get("ofType").getTextValue().split(",")) {
+            for (String type : projectDefinition.get("ofType").textValue().split(",")) {
                 typeOf.add(ProjectType.valueOf(type));
             }
 
