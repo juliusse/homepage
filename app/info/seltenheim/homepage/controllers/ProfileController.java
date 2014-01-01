@@ -1,11 +1,11 @@
 package info.seltenheim.homepage.controllers;
 
 import info.seltenheim.homepage.controllers.secured.OnlyLoggedIn;
-import info.seltenheim.homepage.models.forms.UpsertEducationData;
-import info.seltenheim.homepage.models.forms.UpsertEmploymentData;
 import info.seltenheim.homepage.services.positions.Education;
 import info.seltenheim.homepage.services.positions.Employment;
 import info.seltenheim.homepage.services.positions.PositionsService;
+import info.seltenheim.homepage.services.positions.formdata.EmploymentData;
+import info.seltenheim.homepage.services.positions.formdata.EducationData;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -54,12 +54,12 @@ public class ProfileController extends Controller {
 
     @Security.Authenticated(OnlyLoggedIn.class)
     public Result upsertEmployment(String langKey, String employmentId) throws IOException {
-        Form<UpsertEmploymentData> filledForm = Form.form(UpsertEmploymentData.class).bindFromRequest();
+        Form<EmploymentData> filledForm = Form.form(EmploymentData.class).bindFromRequest();
 
         if (filledForm.hasErrors()) {
             return badRequest(filledForm.errorsAsJson());
         } else {
-            UpsertEmploymentData data = filledForm.get();
+            EmploymentData data = filledForm.get();
             final Employment employment = employmentId != "-1" ? positionsService.findEmploymentById(employmentId) : new Employment();
 
             employment.setFromDate(data.getFromDateObject());
@@ -78,12 +78,12 @@ public class ProfileController extends Controller {
 
     @Security.Authenticated(OnlyLoggedIn.class)
     public Result upsertEducation(String langKey, String educationId) throws IOException {
-        Form<UpsertEducationData> filledForm = Form.form(UpsertEducationData.class).bindFromRequest();
+        Form<EducationData> filledForm = Form.form(EducationData.class).bindFromRequest();
 
         if (filledForm.hasErrors()) {
             return badRequest(filledForm.errorsAsJson());
         } else {
-            UpsertEducationData data = filledForm.get();
+            EducationData data = filledForm.get();
             final Education education = educationId != "-1" ? positionsService.findEducationById(educationId) : new Education();
 
             education.setFromDate(data.getFromDateObject());

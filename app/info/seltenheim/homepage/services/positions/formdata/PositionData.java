@@ -1,4 +1,4 @@
-package info.seltenheim.homepage.models.forms;
+package info.seltenheim.homepage.services.positions.formdata;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -6,7 +6,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import play.data.validation.Constraints.Required;
 
-public class UpsertPositionData {
+public class PositionData {
     protected final static DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
 
     @Required

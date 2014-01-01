@@ -1,7 +1,6 @@
 @()
 
 @import info.seltenheim.homepage.controllers._
-@import info.seltenheim.homepage.services.database._
 
 @defining(Application.getSessionLang()) { langKey =>
 
@@ -12,8 +11,9 @@
 
 
 <div>
-<span class="sosa">ñ</span> <a href="@routes.TrackingsController.listSessions(langKey,"",0).toString()">list sessions</a><br>
-<span class="sosa">ñ</span> <a href="@routes.TrackingsController.uaByQuantityAndAppearance(langKey).toString()">user-agents by quantity and last appearance</a>
+
+<span aria-hidden="true" data-icon="ñ"></span> <a href="@routes.TrackingsController.listSessions(langKey,"",0).toString()">list sessions</a><br>
+<span aria-hidden="true" data-icon="ñ"></span> <a href="@routes.TrackingsController.uaByQuantityAndAppearance(langKey).toString()">user-agents by quantity and last appearance</a>
 </div>
 }
 }

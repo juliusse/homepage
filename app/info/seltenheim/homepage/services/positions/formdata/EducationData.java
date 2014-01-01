@@ -1,8 +1,8 @@
-package info.seltenheim.homepage.models.forms;
+package info.seltenheim.homepage.services.positions.formdata;
 
 import play.data.validation.Constraints.Required;
 
-public class UpsertEducationData extends UpsertPositionData {
+public class EducationData extends PositionData {
 
     @Required
     private String degreeDe;

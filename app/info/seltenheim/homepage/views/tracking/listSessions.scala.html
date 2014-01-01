@@ -1,7 +1,6 @@
 @(sessions : List[info.seltenheim.homepage.services.usertracking.Tracking])
 
 @import info.seltenheim.homepage.controllers._
-@import info.seltenheim.homepage.services.database._
 
 @defining(Application.getSessionLang()) { langKey =>
 
@@ -22,9 +21,9 @@
 	<div class="rankingRank">@(index+1)</div>
 	<div class="rankingContent">
 		<code>@entry.getUserAgentString()</code><br>
-		<span class="sosa">[</span> @entry.getLastAppearance()<br>
+		<span aria-hidden="true" data-icon="["></span> @entry.getLastAppearance()<br>
 		@for(vp <- entry.getVisitedPages()) {
-		<span class="sosa">ñ</span> @vp.getController => @vp.getAction()<br> 
+		<span aria-hidden="true" data-icon="ñ"></span> @vp.getController => @vp.getAction()<br> 
 		}
 	</div>
 </div>

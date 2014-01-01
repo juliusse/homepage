@@ -32,7 +32,7 @@ h3 {
 }
 
 h4 {
-	margin-top: 0px;
+	margin-top: 10px;
 	margin-bottom: 5px;
 	color: #666;
 }
@@ -69,6 +69,11 @@ a img {
 	font-weight: normal;
 	speak: none;
 	color: #666;
+}
+
+div.halfWidth {
+	float: left;
+	width: 50%;
 }
 
 /* site skeleton */

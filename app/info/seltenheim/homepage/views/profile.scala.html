@@ -14,12 +14,12 @@
 		<h3>New Education</h3>
 		<input name="titleDe" placeholder="German Title"> | <input name="titleEn" placeholder="English Title"><br>
 		<input name="degreeDe" placeholder="German Degree"> | <input name="degreeEn" placeholder="English Degree"><br>
-		<span class="sosa">o</span>
+		<span aria-hidden="true" data-icon="o"></span>
 		<input name="place" placeholder="where">
 		<input name="website" placeholder="website"><br>
-		<span class="sosa">[</span>
+		<span aria-hidden="true" data-icon="["></span>
 		<input name="fromDate" placeholder="yyyy-mm-dd"> - <input name="toDate" placeholder="yyyy-mm-dd"><br>
-		<span class="sosa">G</span>
+		<span aria-hidden="true" data-icon="G"></span>
 		<input name="score" placeholder="score"><br>	
 		<button type="submit" name="create">Create</button>
        }
@@ -28,13 +28,13 @@
     	<h3>Update Education</h3>
 		<input name="titleDe" placeholder="German Title" value="@education.getTitle("de")"> | <input name="titleEn" placeholder="English Title" value="@education.getTitle("en")"><br>
 		<input name="degreeDe" placeholder="German Degree" value="@education.getDegree("de")"> | <input name="degreeEn" placeholder="English Degree" value="@education.getDegree("en")"><br>
-		<span class="sosa">o</span>
+		<span aria-hidden="true" data-icon="o"></span>
 		<input name="place" placeholder="where" value="@education.getPlace()">
 		<input name="website" placeholder="website" value="@education.getWebsite()"><br>
-		<span class="sosa">[</span>
+		<span aria-hidden="true" data-icon="["></span>
 		<input name="fromDate" placeholder="yyyy-mm-dd" value="@education.getFromDate().toString("yyyy-MM-dd")"> - 
 		<input name="toDate" placeholder="yyyy-mm-dd" @if(education.getToDate() != null) {value="@education.getToDate().toString("yyyy-MM-dd")"}><br>
-		<span class="sosa">G</span>
+		<span aria-hidden="true" data-icon="G"></span>
 		<input name="score" placeholder="score" value="@education.getScore()"><br>	
 		<button type="submit" name="create">Update</button>
 		}
@@ -46,10 +46,10 @@
 		@form(routes.ProfileController.upsertEmployment(Application.getSessionLang(),"-1")) {
 			<h3>New Employment</h3>
 			<input name="titleDe" placeholder="German Title"> | <input name="titleEn" placeholder="English Title"><br>
-			<span class="sosa">o</span>
+			<span aria-hidden="true" data-icon="o"></span>
 			<input name="place" placeholder="where">
 			<input name="website" placeholder="website"><br>
-			<span class="sosa">[</span>
+			<span aria-hidden="true" data-icon="["></span>
 			<input name="fromDate" placeholder="yyyy-mm-dd"> - <input name="toDate" placeholder="yyyy-mm-dd">
 			<br><br>
 			<textarea rows="5" cols="20" name="tasksDe" placeholder="One Task per row (German)"></textarea>
@@ -60,10 +60,10 @@
     	@form(routes.ProfileController.upsertEmployment(Application.getSessionLang(),employment.getId())) {
 	    	<h3>Update Employment</h3>
 			<input name="titleDe" placeholder="German Title" value="@employment.getTitle("de")"> | <input name="titleEn" placeholder="English Title" value="@employment.getTitle("en")"><br>
-			<span class="sosa">o</span>
+			<span aria-hidden="true" data-icon="o"></span>
 			<input name="place" placeholder="where" value="@employment.getPlace()">
 			<input name="website" placeholder="website" value="@employment.getWebsite()"><br>
-			<span class="sosa">[</span>
+			<span aria-hidden="true" data-icon="["></span>
 			<input name="fromDate" placeholder="yyyy-mm-dd" value="@employment.getFromDate().toString("yyyy-MM-dd")"> - 
 			<input name="toDate" placeholder="yyyy-mm-dd" @if(employment.getToDate() != null) {value="@employment.getToDate().toString("yyyy-MM-dd")"}>
 			<br><br>
@@ -97,6 +97,7 @@
 				@employmentForm(employment)
 			} else {
 				<h3>@employment.getTitle()</h3>
+				<div>
 				@if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
 					<a href="@routes.ProfileController.index(langKey,employment.getId()).toString()#@employment.getId()">Edit</a><br>
 				}
@@ -112,11 +113,22 @@
 	            	@employment.getToDate().toString("MMM yyyy",Application.getCurrentLocale())
 	            } else {
 	            	@Application.messages("ongoing")
-	            }<br><br>
+	            }
+	            </div>
+	            <div class="halfWidth">
+		            <h4>@Messages("profile_tasks"):</h4>
+		            @for(task <- employment.getTasks()) {
+		            <span aria-hidden="true" data-icon="ñ"></span> @task<br>
+		            }
+	            </div>
 	            
-	            <h4>@Messages("profile_tasks"):</h4>
-	            @for(task <- employment.getTasks()) {
-	            <span aria-hidden="true" data-icon="ñ"></span> @task<br>
+	            @if(employment.getTechnologies().size() > 0) {
+	            <div class="halfWidth">
+		            <h4>@Messages("profile_technologies"):</h4>
+		            @for(technology <- employment.getTechnologies()) {
+		            <span aria-hidden="true" data-icon="ñ"></span> @technology<br>
+		            }
+	            </div>
 	            }
 	        }
 			</div>

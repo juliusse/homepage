@@ -1,7 +1,6 @@
 @(ranking : List[info.seltenheim.homepage.controllers.TrackingsController.UserAgentQuantityAndLastAppearance])
 
 @import info.seltenheim.homepage.controllers._
-@import info.seltenheim.homepage.services.database._
 
 @defining(Application.getSessionLang()) { langKey =>
 
@@ -17,7 +16,7 @@
 
 		@entry.getUserAgent()<br>
 		<div style="width: 150px; float: left;"><span class="sosa">[</span> @entry.getLastAppearance()</div>
-		<span class="sosa">I</span> @entry.getQuantity()
+		<span aria-hidden="true" data-icon="I"></span> @entry.getQuantity()
 		<form action="@routes.TrackingsController.deleteTrackingsByUserAgent(langKey).toString()" method="POST">
 			<input type="hidden" value="@entry.getUserAgent()" name="uaFilter">
 			<input type="image" src="@routes.Assets.at("images/delete.png")">
