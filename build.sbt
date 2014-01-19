@@ -1,6 +1,17 @@
+import de.johoop.jacoco4sbt.JacocoPlugin._
+import com.typesafe.config._
+import aether.Aether._
+
+val conf = ConfigFactory.parseFile(new File("conf/app.version")).resolve()
+val appVersion = conf.getString("application.version")
+
 name := "js_homepage"
 
-version := "3.0.0"
+organization := "info.seltenheim"
+
+organizationName  := "Julius Seltenheim"
+
+version := appVersion
 
 libraryDependencies ++= Seq(
 	//misc
@@ -13,6 +24,17 @@ libraryDependencies ++= Seq(
 	//mongo  
 	, "info.schleichardt" %% "play-embed-mongo" % "0.2.1"
 	, "org.mongodb" % "mongo-java-driver" % "2.10.1"
+	//jacoco
+    , "org.jacoco" % "org.jacoco.core" % "0.6.3.201306030806" artifacts(Artifact("org.jacoco.core", "jar", "jar"))
+	, "org.jacoco" % "org.jacoco.report" % "0.6.3.201306030806" artifacts(Artifact("org.jacoco.report", "jar", "jar"))
 )     
 
-play.Project.playJavaSettings
+seq(aetherSettings: _*)
+
+seq(aetherPublishSettings: _*)
+
+play.Project.playJavaSettings ++ Seq(jacoco.settings:_*)
+
+parallelExecution in jacoco.Config := false
+
+jacoco.excludes in jacoco.Config := Seq("views*","*Routes*","*Reverse*") 
