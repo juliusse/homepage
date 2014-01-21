@@ -61,7 +61,7 @@ public class ProfileController extends Controller {
         } else {
             final EmploymentData data = filledForm.get();
             final String employmentId = data.getId();
-            final Employment employment = employmentId != "-1" ? positionsService.findEmploymentById(employmentId) : new Employment();
+            final Employment employment = !employmentId.equals("-1") ? positionsService.findEmploymentById(employmentId) : new Employment();
 
             employment.setFromDate(data.getFromDateObject());
             employment.setToDate(data.getToDateObject());
