@@ -90,7 +90,7 @@ public abstract class Mapper<T extends PersistentModel> {
 
             String id = object.getId();
 
-            if (id.isEmpty()) { // insert
+            if (id == null || id.isEmpty()) { // insert
                 collection.insert(document);
                 id = document.get("_id").toString();
 

@@ -2,6 +2,8 @@ package info.seltenheim.homepage.plugins;
 
 import info.seltenheim.homepage.configuration.SpringConfiguration;
 import info.seltenheim.homepage.services.filesystem.FileSystemService;
+import info.seltenheim.homepage.services.positions.Employment;
+import info.seltenheim.homepage.services.positions.PositionsService;
 import info.seltenheim.homepage.services.projects.Project;
 import info.seltenheim.homepage.services.projects.Project.ProjectType;
 import info.seltenheim.homepage.services.projects.ProjectsService;
@@ -66,6 +68,26 @@ public final class FixturePlugin extends Plugin {
             } catch (IOException e) {
                 Logger.error("can't setup fixtures", e);
             }
+        }
+        
+        // add an employment
+        final Map<String, String> map = new HashMap<String, String>();
+        map.put("de","de");
+        map.put("en", "en");
+        final List<String> list = new ArrayList<String>();
+        list.add("play");
+        
+        final Map<String, List<String>> map2 = new HashMap<String, List<String>>();
+        map2.put("en", list);
+        map2.put("de", list);
+        final PositionsService positionsService = SpringConfiguration.getBean(PositionsService.class);
+        try {
+            positionsService.upsertPosition(new Employment(DateTime.parse("2013-10-01"), 
+                    DateTime.parse("2014-02-01"), 
+                    "R&S", map, "http://r-s.com", map2, list));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 

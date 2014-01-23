@@ -4,7 +4,7 @@ import info.seltenheim.homepage.services.PersistentModel;
 
 public class User implements PersistentModel {
 
-    private String id;
+    private String id = "";
     private String username;
     private String password;
 
