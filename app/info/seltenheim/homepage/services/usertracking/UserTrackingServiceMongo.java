@@ -10,13 +10,16 @@ import play.mvc.Http.Context;
 
 public class UserTrackingServiceMongo extends UserTrackingServiceConsole implements UserTrackingService {
 
+    @Override
     public void track(Context context, String controller) {
         this.track(context, controller, "");
     }
 
+    @Override
     public void track(Context context, String controller, String action) {
         final String session = session(context);
-        this.track(session, controller, action);
+        super.track(context, controller, action);
+        
         final String userAgentString = context.request().getHeader("user-agent");
 
         try {

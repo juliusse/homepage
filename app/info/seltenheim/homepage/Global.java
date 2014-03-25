@@ -6,7 +6,6 @@ import info.seltenheim.play2.plugins.usertracking.actions.TrackAsAction;
 
 import java.lang.reflect.Method;
 
-import org.joda.time.DateTime;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import play.Application;
