@@ -1,13 +1,13 @@
 package info.seltenheim.homepage.services.positions;
 
-import info.seltenheim.homepage.controllers.Application;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
+import play.mvc.Controller;
 
 public abstract class Position {
     public static final DateTimeFormatter POSITION_DATETIME_FORMAT = DateTimeFormat.forPattern("yyyy-MM");
@@ -66,7 +66,7 @@ public abstract class Position {
     }
 
     public String getTitle() {
-        final String lang = Application.getSessionLang();
+        final String lang = Controller.lang().language();
         if (lang.equals("de")) {
             return titleMap.get("de");
         } else {

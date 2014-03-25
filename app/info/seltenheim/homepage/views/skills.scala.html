@@ -2,7 +2,7 @@
 
 @import info.seltenheim.homepage.controllers._ 
 
-@defining(Application.getSessionLang()) { langKey => 
+@defining(Controller.lang().language()) { langKey => 
 	@layout("menu_skills") {
 		@description
 		
@@ -26,7 +26,7 @@
 			}
 			@if(UsersController.isLoggedIn()) {
 				<div class="skillRow">
-					<form action="@routes.SkillsController.addSkill(Application.getSessionLang(),skillGroup.getId())" method="POST">
+					<form action="@routes.SkillsController.addSkill(Controller.lang().language(),skillGroup.getId())" method="POST">
 						<input name="name" placeholder="Name">
 						<button type="submit">Hinzufügen</button>
 					</form>
@@ -38,7 +38,7 @@
 		@if(UsersController.isLoggedIn()) {
 		<div class="skillGroupCard">
 			<h2>Neue Skill Gruppe</h2>
-			<form action="@routes.SkillsController.addSkillGroup(Application.getSessionLang())" method="POST">
+			<form action="@routes.SkillsController.addSkillGroup(Controller.lang().language())" method="POST">
 				<input name="nameDe" placeholder="Deutscher Titel"><br>
 				<input name="nameEn" placeholder="Englischer Titel"><br>
 				<button type="submit">Hinzufügen</button>

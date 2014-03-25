@@ -1,4 +1,4 @@
-@(title: String, metaDescription: Html = Html.apply(""))(content: Html)
+@(title: String, subtitle: String = "", metaDescription: String = "")(content: Html)
 
 @import info.seltenheim.homepage.controllers._
 
@@ -8,14 +8,16 @@
     </li>
 }
 
-@defining(Application.getSessionLang()) { langKey =>
+@defining(Controller.lang().language()) { langKey =>
 
 <!DOCTYPE html>
 
 <html>
 	<head>
-		<title>@Application.messages(title) - Julius Seltenheim</title>
-		<meta name="Description" content="@metaDescription">
+		<title>@Messages(title) - Julius Seltenheim</title>
+		@if(metaDescription != null && !metaDescription.isEmpty) {
+			<meta name="Description" content="@metaDescription">
+		}
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/site.css")" />
 		<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")" />
 		<link rel="apple-touch-icon" sizes="114x114" href="@routes.Assets.at("images/favicon.png")" />
@@ -29,15 +31,15 @@
 			<div class="header"></div>
 			<div class="navbarTop">
 				<ul class="navigation-inline">
-					@menuItem(routes.Application.index(langKey).toString,Application.messages("menu_home").toString)
-					@menuItem(routes.ProfileController.index(langKey,"").toString,Application.messages("menu_profile").toString)
-					@menuItem(routes.SkillsController.index(langKey).toString,Application.messages("menu_skills").toString)
-					@menuItem(routes.ProjectsController.index(langKey,"").toString,Application.messages("menu_projects").toString)
-					@menuItem(routes.Application.contact(langKey).toString,Application.messages("menu_contact").toString)
+					@menuItem(routes.Application.index(langKey).toString,Messages("menu_home"))
+					@menuItem(routes.ProfileController.index(langKey,"").toString,Messages("menu_profile"))
+					@menuItem(routes.SkillsController.index(langKey).toString,Messages("menu_skills"))
+					@menuItem(routes.ProjectsController.index(langKey,"").toString,Messages("menu_projects"))
+					@menuItem(routes.Application.contact(langKey).toString,Messages("menu_contact"))
 				</ul>
 				
 				<div class="navbarTop-flags">
-					@if(Application.getSessionLang().equals("de")) {
+					@if(langKey.equals("de")) {
 						<a href="#"> <img src="@routes.Assets.at("images/de_g.png")" /></a>
 						<a href="@Application.getCurrentRouteWithOtherLang("en")"> <img src="@routes.Assets.at("images/en.png")" />
 					} else {
@@ -48,15 +50,18 @@
 				</div>
 			</div>
 		<h1>
-			 @Application.messages(title) 
+			 @Messages(title)
+			 @if(subtitle != null && !subtitle.isEmpty()) { 
+			 	<span class="subtitle">@subtitle</span>
+			 } 
 		</h1>
 		<div class="content">
 			@content
 		</div>
 		<div class="footer">
-			&copy; Julius Seltenheim 2013 | 
-			<a href='@routes.Application.contact(Application.getSessionLang())'>  
-				@Application.messages("menu_contact") 
+			&copy; Julius Seltenheim @org.joda.time.DateTime.now().year().getAsText() | 
+			<a href='@routes.Application.contact(Controller.lang().language())'>  
+				@Messages("menu_contact") 
 			</a>
 		</div>
 		</div>

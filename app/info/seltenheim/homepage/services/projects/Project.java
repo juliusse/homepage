@@ -1,6 +1,5 @@
 package info.seltenheim.homepage.services.projects;
 
-import info.seltenheim.homepage.controllers.Application;
 import info.seltenheim.homepage.services.PersistentModel;
 
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import play.api.templates.Html;
+import play.mvc.Controller;
 
 public class Project implements PersistentModel {
     public enum ProjectType {
@@ -72,7 +72,7 @@ public class Project implements PersistentModel {
      * @return title for current language, default is english
      */
     public String getTitle() {
-        String lang = Application.getSessionLang();
+        String lang = Controller.lang().language();
         if (titleMap.containsKey(lang))
             return titleMap.get(lang);
         else
@@ -113,7 +113,7 @@ public class Project implements PersistentModel {
      * @return description for current language, default is english
      */
     public String getDescription() {
-        String lang = Application.getSessionLang();
+        String lang = Controller.lang().language();
         if (descriptionMap.containsKey(lang)) {
             return descriptionMap.get(lang);
         } else {
@@ -162,6 +162,7 @@ public class Project implements PersistentModel {
             return PROJECT_DATETIME_FORMAT.print(developmentEnd);
         else
             return "";
+        
     }
 
     public void setDevelopmentEnd(DateTime developmentEnd) {

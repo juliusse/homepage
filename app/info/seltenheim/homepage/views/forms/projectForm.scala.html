@@ -5,9 +5,6 @@
 @import helper.twitterBootstrap._
 @implicitField = @{ FieldConstructor(info.seltenheim.homepage.views.html.forms.horizontalFieldConstructor.f) }
 
-@defining(Application.getSessionLang()) { langKey => 
-
-
 @helper.form(action = routes.ProjectsController.changeProject(), args = 'id -> "project-form",'enctype -> "multipart/form-data") {
 	<input type="hidden" value="@projectForm("id").value" name="id">
     @helper.inputText(projectForm("title_de"), '_label -> "Titel (de)")
@@ -32,7 +29,3 @@
 
     <button type="submit">Submit</button>
 }
-
-
-
-} 

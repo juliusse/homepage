@@ -2,7 +2,7 @@
 
 @import info.seltenheim.homepage.controllers._ 
 
-@defining(Application.getSessionLang()) { langKey => 
+@defining(Controller.lang()) { lang => 
 
 @layout("menu_projects") {
 	@for(project <- projects) {
@@ -12,7 +12,7 @@
             	@project.getTitleAsHtml()
             	@if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
 	             
-                <a href="@routes.ProjectsController.renderEdit(langKey,project.getId())">Edit</a>
+                <a href="@routes.ProjectsController.renderEdit(lang.language,project.getId())">Edit</a>
                 &nbsp; 
                 <a href="/en/Project/id/delete">
                     Delete
@@ -26,9 +26,9 @@
 
             <span aria-hidden="true" data-icon="Y"></span>
             @if(project.getDevelopmentEnd() != null) {
-		        @Application.messages("develope_finished") @project.getDevelopmentEnd().toString("MMM yyyy",Application.getCurrentLocale())
+		        @Messages("develope_finished") @project.getDevelopmentEnd().toString("MMM yyyy",lang.toLocale)
 		    } else {
-		        @Application.messages("develope_ongoing")
+		        @Messages("develope_ongoing")
 		    }   
                 
             <div class="projectDescription">

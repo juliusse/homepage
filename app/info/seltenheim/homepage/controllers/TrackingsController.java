@@ -27,7 +27,6 @@ import play.mvc.Security;
 public class TrackingsController extends Controller {
 
     public Result index(String langKey) {
-        Application.setSessionLang(langKey);
         return ok(info.seltenheim.homepage.views.html.tracking.index.render());
     }
 

@@ -28,7 +28,7 @@ public class UsersController extends Controller {
     public Result logout() {
         Logger.debug("logout " + session(SESSION_KEY_USERNAME));
         session().remove(SESSION_KEY_USERNAME);
-        return redirect(routes.Application.index(Application.getSessionLang()));
+        return redirect(routes.Application.index(lang().language()));
     }
 
     public User getLoggedInUser() throws IOException {

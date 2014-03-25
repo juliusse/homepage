@@ -11,7 +11,7 @@
 }
 
 
-@defining(Application.getSessionLang()) { langKey =>
+@defining(Controller.lang()) { lang =>
 
 
 @layout("menu_profile") {
@@ -22,7 +22,7 @@
 	</div>
 
 	<div class="profileListingContainer">
-		<h2>@Application.messages("menu_employment")</h2>
+		<h2>@Messages("menu_employment")</h2>
 		@if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
 		<div class="employmentCard">
 			<h3>New Employment</h3>
@@ -38,7 +38,7 @@
 				<h3>@employment.getTitle()</h3>
 				<div>
 				@if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
-					<a href="@routes.ProfileController.index(langKey,employment.getId()).toString()#@employment.getId()">Edit</a><br>
+					<a href="@routes.ProfileController.index(lang.language,employment.getId()).toString()#@employment.getId()">Edit</a><br>
 				}
 				<span aria-hidden="true" data-icon="o"></span>
 				@if(employment.getWebsite().isEmpty()) {
@@ -47,11 +47,11 @@
 					<a target="_blank" href="@employment.getWebsite()">@employment.getPlace()</a>
 				}<br>
 				<span aria-hidden="true" data-icon="["></span>
-				@employment.getFromDate().toString("MMM yyyy",Application.getCurrentLocale()) - 
+				@employment.getFromDate().toString("MMM yyyy",lang.toLocale) - 
 	            @if(employment.getToDate() != null) {
-	            	@employment.getToDate().toString("MMM yyyy",Application.getCurrentLocale())
+	            	@employment.getToDate().toString("MMM yyyy",lang.toLocale)
 	            } else {
-	            	@Application.messages("ongoing")
+	            	@Messages("ongoing")
 	            }
 	            </div>
 	            <div class="halfWidth">
@@ -73,7 +73,7 @@
 			</div>
 		}
 
-	    <h2> @Application.messages("menu_education")</h2>
+	    <h2> @Messages("menu_education")</h2>
 	    @if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
 	    <div class="employmentCard">
 			@educationForm(new EducationData())
@@ -88,7 +88,7 @@
 			
 				<h3>@education.getDegree()</h3>
 				@if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
-					<a href="@routes.ProfileController.index(langKey,education.getId()).toString()#@education.getId()">Edit</a><br>
+					<a href="@routes.ProfileController.index(lang.language,education.getId()).toString()#@education.getId()">Edit</a><br>
 				}
 				<span aria-hidden="true" data-icon="o"></span>
 				@if(education.getWebsite().isEmpty()) {
@@ -101,7 +101,7 @@
 	            @if(education.getToDate() != null) {
 	            	@education.getToDate().getYear()
 	            } else {
-	            	@Application.messages("ongoing")
+	            	@Messages("ongoing")
 	            }<br>
 	            <span aria-hidden="true" data-icon="G"></span> @education.getScore()
 			

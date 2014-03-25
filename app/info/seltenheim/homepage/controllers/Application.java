@@ -11,22 +11,17 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import play.api.templates.Html;
 import play.i18n.Lang;
-import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 @Component
 public class Application extends Controller {
-    public final static String SESSION_LANGKEY = "langkey";
-
     @Autowired
     private PositionsService positionsService;
 
@@ -136,32 +131,12 @@ public class Application extends Controller {
         return ok(xmlBuilder.toString());
     }
 
-    public static void setSessionLang(String langKey) {
-        session(SESSION_LANGKEY, langKey);
-    }
-
-    public static String getSessionLang() {
-        return session(SESSION_LANGKEY);
-    }
-
-    public static Locale getCurrentLocale() {
-        return Lang.forCode(getSessionLang()).toLocale();
-    }
-
     public static String getCurrentRouteWithOtherLang(String langKey) {
         // index page
         if (request().uri().length() < 3) { // no language key present
             return routes.Application.index(langKey).toString();
         }
         return "/" + langKey + request().uri().substring(3);
-    }
-
-    public static Html messages(String key) {
-        return Html.apply(Messages.get(Lang.forCode(getSessionLang()), key));
-    }
-
-    public static String toLower(String string) {
-        return string.toLowerCase();
     }
 
     private static final class NewestProjectsFirstComparator implements Comparator<Project> {

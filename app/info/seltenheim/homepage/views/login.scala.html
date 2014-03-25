@@ -2,7 +2,7 @@
 
 @import info.seltenheim.homepage.controllers._ 
 
-@defining(Application.getSessionLang()) { langKey => 
+
 @layout("Login") {
 <form method="POST" action="">
 Username: <input type="text" name="username" placeholder="Username" ><br>
@@ -10,4 +10,4 @@ Passwort: <input type="password" name="password" placeholder="Password"><br>
 <button type="submit">Login</button>
 </form>
 
-} }
+}

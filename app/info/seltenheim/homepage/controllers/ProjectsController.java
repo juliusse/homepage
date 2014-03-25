@@ -145,8 +145,8 @@ public class ProjectsController extends Controller {
             } else {
                 updateProject(data.getId(), project);
             }
-
-            return redirect(routes.ProjectsController.index(Application.getSessionLang(), ""));
+            
+            return redirect(routes.ProjectsController.index(lang().language(), ""));
         }
 
     }

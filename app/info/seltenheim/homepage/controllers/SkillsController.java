@@ -55,7 +55,7 @@ public class SkillsController extends Controller {
 
             skillGroupService.upsertSkillGroup(skillGroup);
 
-            return redirect(routes.SkillsController.index(Application.getSessionLang()));
+            return redirect(routes.SkillsController.index(lang().language()));
         }
     }
 
@@ -71,7 +71,7 @@ public class SkillsController extends Controller {
 
             skillGroupService.addSkillToGroup(skillGroupId, skill);
 
-            return redirect(routes.SkillsController.index(Application.getSessionLang()));
+            return redirect(routes.SkillsController.index(lang().language()));
         }
     }
 
@@ -94,7 +94,7 @@ public class SkillsController extends Controller {
 
             skillGroupService.upsertSkillGroup(skillGroup);
 
-            return redirect(routes.SkillsController.index(Application.getSessionLang()));
+            return redirect(routes.SkillsController.index(lang().language()));
         }
     }
 }

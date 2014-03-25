@@ -17,6 +17,13 @@ h1 {
 	margin: 0px 0px;
 }
 
+h1 .subtitle {
+	float: left;
+	font-size: 12px;
+	width: 100%;
+	margin-top: -10px;
+}
+
 h2 {
 	font-size: 1.7em;
 	color: #666;
@@ -44,12 +51,12 @@ table thead td {
 a {
 	border: 0px;
 	color: #9acb42;
+	text-decoration: none;
 }
 
 h1 a,h2 a,h3 a,.footer a {
 	text-decoration: none;
 }
-
 
 a img {
 	border: 0px;
@@ -119,7 +126,7 @@ div.header {
 		linear-gradient(to right, #ffffff 0%, #ffffff 33%, #9acb42 97%, #9acb42
 		100%);
 	background-position: 0px 5px;
-	filter: progid:DXImageTransform.Microsoft.gradient(    startColorstr='#ffffff',
+	filter: progid:DXImageTransform.Microsoft.gradient(     startColorstr='#ffffff',
 		endColorstr='#9acb42', GradientType=1);
 }
 
@@ -199,7 +206,7 @@ div.footer {
 		100%);
 	background: linear-gradient(to right, #ffffff 0%, #ffffff 33%, #9acb42 97%, #9acb42
 		100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(    startColorstr='#ffffff',
+	filter: progid:DXImageTransform.Microsoft.gradient(     startColorstr='#ffffff',
 		endColorstr='#9acb42', GradientType=1);
 }
 
@@ -215,10 +222,8 @@ table.projectList {
 }
 
 div.groupCard {
-	width: 47%;
-	margin-right: 3%;
-	float: left;
-	min-height: 300px;
+	overflow:hidden;
+	margin-bottom: 40px;
 }
 
 div.groupCard .projectTechnologies {
@@ -229,6 +234,13 @@ div.groupCard .projectTechnology {
 	width: 47%;
 	margin-right: 3%;
 	font-size: 0.7em;
+}
+
+div.groupCard .projectCard {
+	width: 47%;
+	margin-right: 3%;
+	float: left;
+	height: 220px;
 }
 
 /*
@@ -298,6 +310,7 @@ div.employmentCard {
 
 div.employmentCard a {
 	color: black;
+	text-decoration: underline;
 }
 
 div.employmentDuty {

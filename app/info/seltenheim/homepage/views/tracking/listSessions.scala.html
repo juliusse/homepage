@@ -2,9 +2,9 @@
 
 @import info.seltenheim.homepage.controllers._
 
-@defining(Application.getSessionLang()) { langKey =>
+@defining(Controller.lang().language()) { langKey =>
 
-@info.seltenheim.homepage.views.html.layout("Tracking",Html.apply("Tracking")) {
+@info.seltenheim.homepage.views.html.layout("Tracking","","Tracking") {
 
 
 <h2>By user-agent appearance</h2>

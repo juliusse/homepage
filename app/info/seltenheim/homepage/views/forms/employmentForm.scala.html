@@ -2,7 +2,7 @@
 
 @import info.seltenheim.homepage.controllers._
 
-<form action="@routes.ProfileController.upsertEmployment(Application.getSessionLang())" method="POST">
+<form action="@routes.ProfileController.upsertEmployment(Controller.lang().language())" method="POST">
 	@positionFormPart(employmentData)
 	<br>
 	

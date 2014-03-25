@@ -6,22 +6,31 @@
 @import info.seltenheim.homepage.services.positions._
 @import info.seltenheim.homepage.services.projects._
 
-@defining(Application.getSessionLang()) { langKey =>
+@defining(Controller.lang()) { lang =>
 
-@info.seltenheim.homepage.views.html.layout("menu_home",Application.messages("home_welcome_text")) {
-
-
-<p> 
-	<strong>@Application.messages("home_welcome")</strong><br>
-	@Application.messages("home_welcome_text") 
-</p>
+@info.seltenheim.homepage.views.html.layout("menu_home",Messages("home_subtitle"), Messages("meta_description")) {
 
 <div class="groupCard">
-	<h2>@Application.messages("home_projects")</h2>
+	<h2>@Messages("home_about_title")</h2>
+	
+	<div style="float: left;">
+		<img alt="Julius Seltenheim" src="@routes.Assets.at("images/julius-seltenheim2.jpg")" style="height: 130px;">
+	</div>
+	<div style="float: left; margin-left: 10px;">
+		<span aria-hidden="true" data-icon="ñ" style="font-size: 13pt;"></span> @Html.apply(Messages("home_about_who"))<br>
+		<span aria-hidden="true" data-icon="ñ" style="font-size: 13pt;"></span> @Html.apply(Messages("home_about_degree"))<br>
+		<span aria-hidden="true" data-icon="ñ" style="font-size: 13pt;"></span> @Html.apply(Messages("home_about_skills"))<br>
+		<span aria-hidden="true" data-icon="ñ" style="font-size: 13pt;"></span> @Html.apply(Messages("home_about_skills2"))<br>
+		<span aria-hidden="true" data-icon="ñ" style="font-size: 13pt;"></span> @Html.apply(Messages("home_about_work"))
+	</div>	
+</div>
+
+<div class="groupCard" style="width: 100%; overflow: hidden;">
+	<h2>@Messages("home_projects")</h2>
 	@for(project <- (currentProjects ++ specialProjects)) {
 		<div class="projectCard">
             <h3>
-            	<a href="@routes.ProjectsController.index(langKey,"").toString()#@project.getId()">@project.getTitleAsHtml()</a>
+            	<a href="@routes.ProjectsController.index(lang.language,"").toString()#@project.getId()">@project.getTitleAsHtml()</a>
             </h3>
             <div class="projectImage">
                 <img src="@routes.ProjectsController.getImage(project.getId())"/>
@@ -30,9 +39,9 @@
 
 			<span aria-hidden="true" data-icon="Y"></span>
             @if(project.getDevelopmentEnd() != null) {
-		        @Application.messages("develope_finished") @project.getDevelopmentEnd().toString("MMM yyyy",Application.getCurrentLocale())
+		        @Messages("develope_finished") @project.getDevelopmentEnd().toString("MMM yyyy",lang.toLocale)
 		    } else {
-		        @Application.messages("develope_ongoing")
+		        @Messages("develope_ongoing")
 		    }   
 
 			<div class="projectTechnologies">
@@ -44,24 +53,6 @@
 			</div>
 		</div>
     }
-</div>
-<div class="groupCard">
-	<h2>@Application.messages("home_positions")</h2>
-	@for(position <- currentPositions) {
-		<div id="@position.getId()" class="employmentCard">
-			<h3>@position.getTitle() @if(position.isInstanceOf[Education]) {- @position.asInstanceOf[Education].getDegree()}</h3>
-			<span aria-hidden="true" data-icon="o"></span>
-			@if(position.getWebsite().isEmpty()) {
-				@position.getPlace()
-			} else {
-				<a target="_blank" href="@position.getWebsite()">@position.getPlace()</a>
-			}<br>
-			<span aria-hidden="true" data-icon="["></span>
-			@Application.messages("home_since") 
-			@position.getFromDate().toString("MMM yyyy",Application.getCurrentLocale()) 
-		</div>
-	}
-	
 </div>
 }
 }

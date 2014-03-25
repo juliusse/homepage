@@ -1,6 +1,5 @@
 package info.seltenheim.homepage.services.skills;
 
-import info.seltenheim.homepage.controllers.Application;
 import info.seltenheim.homepage.services.PersistentModel;
 
 import java.util.ArrayList;
@@ -8,6 +7,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import play.mvc.Controller;
 
 public class SkillGroup implements PersistentModel {
 
@@ -37,7 +38,7 @@ public class SkillGroup implements PersistentModel {
     }
 
     public String getName() {
-        String lang = Application.getSessionLang();
+        String lang = Controller.lang().language();
         if (nameMap.containsKey(lang))
             return nameMap.get(lang);
         else

@@ -1,12 +1,13 @@
 package info.seltenheim.homepage.services.positions;
 
-import info.seltenheim.homepage.controllers.Application;
 import info.seltenheim.homepage.services.PersistentModel;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.joda.time.DateTime;
+
+import play.mvc.Controller;
 
 public class Education extends Position implements PersistentModel {
 
@@ -34,7 +35,7 @@ public class Education extends Position implements PersistentModel {
     }
 
     public String getDegree() {
-        final String lang = Application.getSessionLang();
+        final String lang = Controller.lang().language();
         if (lang.equals("de")) {
             return degreeMap.get("de");
         } else {

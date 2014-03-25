@@ -2,7 +2,7 @@
 
 @import info.seltenheim.homepage.controllers._
 
-<form action="@routes.ProfileController.upsertEducation(Application.getSessionLang())" method="POST">
+<form action="@routes.ProfileController.upsertEducation(Controller.lang().language())" method="POST">
 	<input name="degreeDe" placeholder="German Degree" value="@educationData.getDegreeDe()"> | 
 	<input name="degreeEn" placeholder="English Degree" value="@educationData.getDegreeEn()"><br>
 	

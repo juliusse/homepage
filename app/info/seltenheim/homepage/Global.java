@@ -6,6 +6,7 @@ import info.seltenheim.play2.plugins.usertracking.actions.TrackAsAction;
 
 import java.lang.reflect.Method;
 
+import org.joda.time.DateTime;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import play.Application;
@@ -13,6 +14,7 @@ import play.GlobalSettings;
 import play.Logger;
 import play.libs.F.Promise;
 import play.mvc.Action;
+import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Http.Context;
 import play.mvc.SimpleResult;
@@ -47,15 +49,11 @@ public class Global extends GlobalSettings {
             public Promise<SimpleResult> call(Context ctx) throws Throwable {
                 if (request.uri().length() > 3) {
                     final String langKey = request.uri().substring(1, 3);
-                    if (langKey.equals("de") || langKey.equals("en"))
-                        info.seltenheim.homepage.controllers.Application.setSessionLang(langKey);
-                    else {
-                        info.seltenheim.homepage.controllers.Application.setSessionLang("en");
+                    if (langKey.equals("de") || langKey.equals("en")) {
+                        Controller.changeLang(langKey);
                     }
-                } else if (info.seltenheim.homepage.controllers.Application.getSessionLang() == null) {
-                    info.seltenheim.homepage.controllers.Application.setSessionLang("en");
                 }
-
+                
                 final Promise<SimpleResult> result = delegate.call(ctx);
                 TrackAsAction.call(ctx, controller, action);
                 return result;
