@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,30 +22,13 @@ import play.mvc.Result;
 @Component
 public class Application extends Controller {
     @Autowired
-    private PositionsService positionsService;
-
-    @Autowired
     private ProjectsService projectsService;
 
     public Result index(String langKey) throws IOException {
         final List<Project> spProjects = projectsService.findProjectsForStartPage();
-        Collections.sort(spProjects, new NewestProjectsFirstComparator());
+        Collections.sort(spProjects, Project::compareEndDate);
 
-        final List<Position> currentPositions = positionsService.findCurrentPositions();
-        Collections.sort(currentPositions, new Comparator<Position>() {
-            @Override
-            public int compare(Position o1, Position o2) {
-                if (o1 instanceof Employment && o2 instanceof Education) {
-                    return -1;
-                } else if (o1 instanceof Education && o2 instanceof Employment) {
-                    return 1;
-                } else {
-                    return 0;
-                }
-            }
-        });
-
-        return ok(info.seltenheim.homepage.views.html.index.render(projectsService.findProjectsForCurrent(), spProjects, currentPositions));
+        return ok(info.seltenheim.homepage.views.html.index.render(projectsService.findProjectsForCurrent(), spProjects));
     }
 
     public Result contact(String langKey) {
@@ -137,22 +119,5 @@ public class Application extends Controller {
             return routes.Application.index(langKey).toString();
         }
         return "/" + langKey + request().uri().substring(3);
-    }
-
-    private static final class NewestProjectsFirstComparator implements Comparator<Project> {
-        @Override
-        public int compare(Project o1, Project o2) {
-            final DateTime end1 = o1.getDevelopmentEnd();
-            final DateTime end2 = o2.getDevelopmentEnd();
-            if (end1 == null && end2 == null) {
-                return 0;
-            } else if (end1 == null) {
-                return 1;
-            } else if (end2 == null) {
-                return -1;
-            } else {
-                return -end1.compareTo(end2);
-            }
-        }
     }
 }

@@ -2,7 +2,6 @@ package info.seltenheim.homepage;
 
 import info.seltenheim.homepage.configuration.SpringConfiguration;
 import info.seltenheim.homepage.services.filesystem.FileSystemService;
-import info.seltenheim.play2.plugins.usertracking.actions.TrackAsAction;
 
 import java.lang.reflect.Method;
 
@@ -16,7 +15,7 @@ import play.mvc.Action;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Http.Context;
-import play.mvc.SimpleResult;
+import play.mvc.Result;
 
 public class Global extends GlobalSettings {
 
@@ -39,22 +38,22 @@ public class Global extends GlobalSettings {
     public Action onRequest(final Http.Request request, Method method) {
         logRequest(request, method);
 
-        final String action = method.getName();
-        final String controller = method.getDeclaringClass().getSimpleName();
+//        final String action = method.getName();
+//        final String controller = method.getDeclaringClass().getSimpleName();
 
         return new Action.Simple() {
 
             @Override
-            public Promise<SimpleResult> call(Context ctx) throws Throwable {
+            public Promise<Result> call(Context ctx) throws Throwable {
                 if (request.uri().length() > 3) {
                     final String langKey = request.uri().substring(1, 3);
                     if (langKey.equals("de") || langKey.equals("en")) {
                         Controller.changeLang(langKey);
                     }
                 }
-                
-                final Promise<SimpleResult> result = delegate.call(ctx);
-                TrackAsAction.call(ctx, controller, action);
+
+                final Promise<Result> result = delegate.call(ctx);
+                //TrackAsAction.call(ctx, controller, action);
                 return result;
             }
         };

@@ -200,5 +200,19 @@ public class Project implements PersistentModel {
     public void setDisplayOnStartPage(Boolean displayOnStartPage) {
         this.displayOnStartPage = displayOnStartPage;
     }
+    
+    public static int compareEndDate(Project p1, Project p2) {
+        final DateTime end1 = p1.getDevelopmentEnd();
+        final DateTime end2 = p2.getDevelopmentEnd();
+        if (end1 == null && end2 == null) {
+            return 0;
+        } else if (end1 == null) {
+            return 1;
+        } else if (end2 == null) {
+            return -1;
+        } else {
+            return -end1.compareTo(end2);
+        }
+    }
 
 }

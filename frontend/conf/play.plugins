@@ -1,5 +1,5 @@
 
 380:info.schleichardt.play.embed.mongo.EmbedMongoPlugin
 400:info.seltenheim.homepage.plugins.mongo.MongoPlugin
-10000:info.seltenheim.play2.plugins.usertracking.UserTrackingPlugin
+#10000:info.seltenheim.play2.plugins.usertracking.UserTrackingPlugin
 50000:info.seltenheim.homepage.plugins.FixturePlugin

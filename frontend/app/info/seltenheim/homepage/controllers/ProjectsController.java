@@ -91,7 +91,7 @@ public class ProjectsController extends Controller {
         return ok(info.seltenheim.homepage.views.html.projectAdd.render(projectForm.fill(new ProjectFormData(projectsService.findProjectById(projectId)))));
     }
 
-    @TrackIgnore
+//    @TrackIgnore
     public Result getImage(String projectId) throws IOException {
         final String referer = request().getHeader("Referer");
         if (Play.isProd() && referer != null && !referer.contains("seltenheim") && !referer.contains("js")) {
