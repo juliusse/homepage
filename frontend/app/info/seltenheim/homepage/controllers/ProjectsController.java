@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -97,7 +98,13 @@ public class ProjectsController extends Controller {
             return ok(Play.application().getFile("public/images/julius_seltenheim_logo.png"));
         }
         final Project project = projectsService.findProjectById(projectId);
-        final File image = fileSystemService.getImageAsFile(project.getMainImagePath());
+        File image = null;
+        try {
+            image = fileSystemService.getImageAsFile(project.getMainImagePath());
+        } catch (FileNotFoundException e) {
+            Logger.error("Image for project '" + projectId + "' not found!");
+            return notFound();
+        }
         String hash = null;
         InputStream in = null;
 
@@ -145,7 +152,7 @@ public class ProjectsController extends Controller {
             } else {
                 updateProject(data.getId(), project);
             }
-            
+
             return redirect(routes.ProjectsController.index(lang().language(), ""));
         }
 

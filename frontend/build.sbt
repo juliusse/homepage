@@ -19,7 +19,7 @@ libraryDependencies ++= Seq(
 	, "commons-io" % "commons-io" % "2.4"
 	, "commons-codec" % "commons-codec" % "1.10"
 	//belongs together
-	, "org.springframework" % "spring-context" % "3.2.5.RELEASE"
+	, "org.springframework" % "spring-context" % "4.0.3.RELEASE"
 	, "cglib" % "cglib" % "2.2.2"
 	//mongo  
 	, "info.schleichardt" %% "play-embed-mongo" % "0.2.1"

@@ -1,10 +1,8 @@
 package info.seltenheim.homepage.services.filesystem;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
@@ -44,17 +42,7 @@ public class LocalFileSystemService implements FileSystemService {
         FileUtils.writeByteArrayToFile(file, imageBytes);
         return resource;
     }
-
-    @Override
-    public InputStream getImageAsStream(String path) throws FileNotFoundException {
-        final File file = new File(basePath, path);
-        if (!file.exists()) {
-            throw new FileNotFoundException("File '"+file.getAbsolutePath()+"' not found!");
-        }
-
-        return new FileInputStream(file);
-    }
-
+    
     @Override
     public File getImageAsFile(String path) throws FileNotFoundException {
         final File file = new File(basePath, path);
