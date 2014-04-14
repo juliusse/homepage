@@ -1,5 +1,8 @@
 package info.seltenheim.homepage.services.positions;
 
+import info.seltenheim.homepage.services.DateRangeModel;
+import info.seltenheim.homepage.services.PersistentModel;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +12,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import play.mvc.Controller;
 
-public abstract class Position {
+public abstract class Position implements PersistentModel, DateRangeModel {
     public static final DateTimeFormatter POSITION_DATETIME_FORMAT = DateTimeFormat.forPattern("yyyy-MM");
 
     private String id;

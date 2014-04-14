@@ -1,5 +1,6 @@
 package info.seltenheim.homepage.services.projects;
 
+import info.seltenheim.homepage.services.DateRangeModel;
 import info.seltenheim.homepage.services.PersistentModel;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import org.joda.time.format.DateTimeFormatter;
 import play.api.templates.Html;
 import play.mvc.Controller;
 
-public class Project implements PersistentModel {
+public class Project implements PersistentModel, DateRangeModel {
     public enum ProjectType {
         Application, Website, Game
     };
@@ -162,7 +163,7 @@ public class Project implements PersistentModel {
             return PROJECT_DATETIME_FORMAT.print(developmentEnd);
         else
             return "";
-        
+
     }
 
     public void setDevelopmentEnd(DateTime developmentEnd) {
@@ -200,19 +201,14 @@ public class Project implements PersistentModel {
     public void setDisplayOnStartPage(Boolean displayOnStartPage) {
         this.displayOnStartPage = displayOnStartPage;
     }
-    
-    public static int compareEndDate(Project p1, Project p2) {
-        final DateTime end1 = p1.getDevelopmentEnd();
-        final DateTime end2 = p2.getDevelopmentEnd();
-        if (end1 == null && end2 == null) {
-            return 0;
-        } else if (end1 == null) {
-            return 1;
-        } else if (end2 == null) {
-            return -1;
-        } else {
-            return -end1.compareTo(end2);
-        }
+
+    @Override
+    public DateTime getFromDate() {
+        return getDevelopmentStart();
     }
 
+    @Override
+    public DateTime getToDate() {
+        return getDevelopmentEnd();
+    }
 }

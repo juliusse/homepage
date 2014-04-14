@@ -32,8 +32,9 @@ public class TrackingsController extends Controller {
 
     public Result uaByQuantityAndAppearance(String langKey) throws IOException {
         final List<Tracking> trackings = DatabaseActions.findAllTrackings();
-        final Map<String, UserAgentQuantityAndLastAppearance> uaMap = new HashMap<String, TrackingsController.UserAgentQuantityAndLastAppearance>();
+        final Map<String, UserAgentQuantityAndLastAppearance> uaMap = Collections.synchronizedMap(new HashMap<String, TrackingsController.UserAgentQuantityAndLastAppearance>());
 
+        
         for (Tracking tracking : trackings) {
             final String ua = tracking.getUserAgentString();
             if (!uaMap.containsKey(ua)) {
@@ -92,19 +93,16 @@ public class TrackingsController extends Controller {
             }
         }
 
-        Collections.sort(trackings, new Comparator<Tracking>() {
-            @Override
-            public int compare(Tracking o1, Tracking o2) {
-                final DateTime last1 = DateTime.parse(o1.getLastAppearance(), VisitedPage.DATETIME_FORMATTER);
-                final DateTime last2 = DateTime.parse(o2.getLastAppearance(), VisitedPage.DATETIME_FORMATTER);
+        Collections.sort(trackings, (o1, o2) -> {
+            final DateTime last1 = DateTime.parse(o1.getLastAppearance(), VisitedPage.DATETIME_FORMATTER);
+            final DateTime last2 = DateTime.parse(o2.getLastAppearance(), VisitedPage.DATETIME_FORMATTER);
 
-                if (last1.isAfter(last2)) {
-                    return -1;
-                } else if (last2.isAfter(last1)) {
-                    return 1;
-                } else
-                    return 0;
-            }
+            if (last1.isAfter(last2)) {
+                return -1;
+            } else if (last2.isAfter(last1)) {
+                return 1;
+            } else
+                return 0;
         });
 
         return ok(info.seltenheim.homepage.views.html.tracking.listSessions.render(trackings));

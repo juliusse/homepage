@@ -1,7 +1,5 @@
 package info.seltenheim.homepage.services.positions;
 
-import info.seltenheim.homepage.services.PersistentModel;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +7,7 @@ import org.joda.time.DateTime;
 
 import play.mvc.Controller;
 
-public class Education extends Position implements PersistentModel {
+public class Education extends Position {
 
     private Map<String, String> degreeMap;
     private String score;

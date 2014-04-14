@@ -1,7 +1,5 @@
 package info.seltenheim.homepage.services.positions;
 
-import info.seltenheim.homepage.services.PersistentModel;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +9,7 @@ import org.joda.time.DateTime;
 
 import play.mvc.Controller;
 
-public class Employment extends Position implements PersistentModel {
+public class Employment extends Position {
 
     private Map<String, List<String>> tasksMap;
     private List<String> technologies;

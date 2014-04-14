@@ -1,15 +1,11 @@
 package info.seltenheim.homepage.controllers;
 
-import info.seltenheim.homepage.services.positions.Education;
-import info.seltenheim.homepage.services.positions.Employment;
-import info.seltenheim.homepage.services.positions.Position;
-import info.seltenheim.homepage.services.positions.PositionsService;
+import info.seltenheim.homepage.comparators.DateRangeComparators;
 import info.seltenheim.homepage.services.projects.Project;
 import info.seltenheim.homepage.services.projects.ProjectsService;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +21,12 @@ public class Application extends Controller {
     private ProjectsService projectsService;
 
     public Result index(String langKey) throws IOException {
-        final List<Project> spProjects = projectsService.findProjectsForStartPage();
-        Collections.sort(spProjects, Project::compareEndDate);
+        final List<Project> allProjects = projectsService.findProjectsForStartPage();
+        allProjects.addAll(projectsService.findProjectsForCurrent());
 
-        return ok(info.seltenheim.homepage.views.html.index.render(projectsService.findProjectsForCurrent(), spProjects));
+        Collections.sort(allProjects, DateRangeComparators::compareEndDateTimes);
+
+        return ok(info.seltenheim.homepage.views.html.index.render(allProjects));
     }
 
     public Result contact(String langKey) {

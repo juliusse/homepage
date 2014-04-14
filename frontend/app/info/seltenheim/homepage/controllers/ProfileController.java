@@ -1,18 +1,17 @@
 package info.seltenheim.homepage.controllers;
 
+import info.seltenheim.homepage.comparators.DateRangeComparators;
 import info.seltenheim.homepage.controllers.secured.OnlyLoggedIn;
 import info.seltenheim.homepage.services.positions.Education;
 import info.seltenheim.homepage.services.positions.Employment;
 import info.seltenheim.homepage.services.positions.PositionsService;
-import info.seltenheim.homepage.services.positions.formdata.EmploymentData;
 import info.seltenheim.homepage.services.positions.formdata.EducationData;
+import info.seltenheim.homepage.services.positions.formdata.EmploymentData;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,22 +31,7 @@ public class ProfileController extends Controller {
         final List<Employment> empl = positionsService.findAllEmployments();
         final List<Education> edus = positionsService.findAllEducations();
 
-        Collections.sort(empl, new Comparator<Employment>() {
-            @Override
-            public int compare(Employment o1, Employment o2) {
-                final DateTime end1 = o1.getToDate();
-                final DateTime end2 = o2.getToDate();
-                if (end1 == null && end2 == null) {
-                    return 0;
-                } else if (end1 == null) {
-                    return -1;
-                } else if (end2 == null) {
-                    return 1;
-                } else {
-                    return -end1.compareTo(end2);
-                }
-            }
-        });
+        Collections.sort(empl, DateRangeComparators::compareEndDateTimes);
 
         return ok(info.seltenheim.homepage.views.html.profile.render(empl, edus, positionId));
     }

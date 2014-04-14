@@ -1,5 +1,4 @@
-@(currentProjects:List[info.seltenheim.homepage.services.projects.Project],
-  specialProjects:List[info.seltenheim.homepage.services.projects.Project])
+@(allProjects:List[info.seltenheim.homepage.services.projects.Project])
 
 @import info.seltenheim.homepage.controllers._
 @import info.seltenheim.homepage.services.positions._
@@ -26,7 +25,7 @@
 
 <div class="groupCard" style="width: 100%; overflow: hidden;">
 	<h2>@Messages("home_projects")</h2>
-	@for(project <- (currentProjects ++ specialProjects)) {
+	@for(project <- (allProjects)) {
 		<div class="projectCard">
             <h3>
             	<a href="@routes.ProjectsController.index(lang.language,"").toString()#@project.getId()">@project.getTitleAsHtml()</a>
