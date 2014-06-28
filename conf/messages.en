@@ -18,8 +18,8 @@ meta_description=Software Developer based in Berlin, Germany
 
 home_subtitle		=A quick Overview
 home_about_title	=About Me
-home_about_who		=<strong>Software developer</strong> from <strong>Berlin, Germany</strong>
-home_about_degree	=Has a <strong>bachelor of science</strong> in <strong>International Media and Computing</strong> with a <strong>very good</strong> (1.3) score
+home_about_who		=<strong>Software developer</strong> and <strong>certified ScrumMaster</strong> from <strong>Berlin, Germany</strong>
+home_about_degree	=Has a <strong>master of science</strong> in <strong>International Media and Computing</strong> with a <strong>very good</strong> (1.1) score
 home_about_skills	=Knows how to use <strong>Java</strong>, the <strong>Play Framework 2</strong>, build tools like <strong>Gradle</strong>, the IDE <strong>Eclipse</strong> <a href="@routes.SkillsController.index(lang.language)">and more</a>
 home_about_skills2	=Is actively using <strong>Jenkins CI</strong> and <strong>Redmine</strong> in an <strong>agile</strong> environment based on <strong>Scrum</strong>
 home_about_work		=Works at <strong>Rohde & Schwarz SIT GmbH</strong> since <strong>1 August 2013</strong> 
