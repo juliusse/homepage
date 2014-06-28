@@ -19,7 +19,7 @@ home_subtitle		=Das Wichtigste auf einem Blick
 home_about_title	=Über Mich
 home_about_who		=<strong>Softwareentwickler</strong> und <strong>zertifizierter ScrumMaster</strong> aus <strong>Berlin, Deutschland</strong>
 home_about_degree	=Hat das Studium<strong> Internationale Medieninformatik</strong> zum <strong>Master of Science</strong> mit <strong>sehr gut </strong>(1,1) abgeschlossen
-home_about_skills	=Erfahren im Umgang mit <strong>Java</strong>, dem <strong>Play Framework 2</strong>, Build-Tools wie <strong>Gradle</strong>, der IDE <strong>Eclipse</strong> <a href="@routes.SkillsController.index(lang.language)">u.v.m.</a>
+home_about_skills	=Erfahren im Umgang mit <strong>Java</strong>, dem <strong>Play Framework 2</strong>, Build-Tools wie <strong>Gradle</strong>, der IDE <strong>Eclipse</strong> <a href="/de/skills">u.v.m.</a>
 home_about_skills2	=Setzt aktiv <strong>Jenkins CI</strong> und <strong>Redmine</strong> in einer <strong>agilen</strong> Umgebung basierend auf <strong>Scrum</strong> ein
 home_about_work		=Arbeitet seit <strong>1. August 2013</strong> bei der <strong>Rohde & Schwarz SIT GmbH</strong>
     
