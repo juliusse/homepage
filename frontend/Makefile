@@ -15,6 +15,7 @@ check_version:
 	@test ! ".$(VERSION)" = "." || exit 1
 
 build:
+	chmod +x $(SBT)
 	$(SBT) $(SBT_ARGS) clean jacoco:cover dist
 	
 install: check_version
