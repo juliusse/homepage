@@ -1,7 +1,7 @@
 SBT=./sbt.make
 SBT_ARGS=-Dsbt.log.noformat=true
 
-INSTALL_DIR=$(DESTDIR)/js-homepage/frontend
+INSTALL_DIR=$(DESTDIR)/usr/share/js-homepage/frontend
 
 VERSION_FILE=conf/app.version
 VERSION_STRING=application.version=
