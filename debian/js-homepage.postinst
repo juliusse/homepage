@@ -37,6 +37,8 @@ case "$1" in
 	mkdir -p /var/log/js-homepage/frontend
 	chown -R ${FRONTEND_USER} /var/log/js-homepage/frontend
 
+	;;
+	
     abort-upgrade|abort-remove|abort-deconfigure)
     ;;
 
