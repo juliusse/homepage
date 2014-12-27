@@ -1,6 +1,6 @@
 TARGET: build
 
-PROJECTS=python_system base_frontend base_backend
+PROJECTS=frontend
 
 build:
 	for project in $(PROJECTS); do \

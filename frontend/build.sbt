@@ -5,7 +5,7 @@ import aether.Aether._
 val conf = ConfigFactory.parseFile(new File("conf/app.version")).resolve()
 val appVersion = conf.getString("application.version")
 
-name := "js_homepage"
+name := "js-homepage-frontend"
 
 organization := "info.seltenheim"
 
