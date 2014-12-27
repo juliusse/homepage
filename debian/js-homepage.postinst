@@ -20,14 +20,14 @@ set -e
 
 case "$1" in
     configure)
-	mkdir -p /var/rus-server/persistent/base
+	mkdir -p /var/js-homepage
 
     FRONTEND_USER=js-homepage
 	# add frontend user
 	if ! getent passwd ${FRONTEND_USER} > /dev/null ; then
-		echo 'Adding system user for server backups' 1>&2
+		echo 'Adding frontend user' 1>&2
 		adduser --system --quiet \
-			--home /var/rus-server \
+			--home /var/js-homepage \
 			--no-create-home --disabled-login \
 			--gecos 'Server Frontend' \
 			${FRONTEND_USER}
