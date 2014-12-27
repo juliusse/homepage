@@ -22,7 +22,7 @@ install: check_version
 	mkdir -p $(INSTALL_DIR)/frontend
 	cd target/universal/ && unzip -o js-homepage-frontend-$(VERSION).zip && \
 		mv js-homepage-frontend-$(VERSION)/lib $(INSTALL_DIR)/frontend/ && \
-		mkdir -p $(INSTALL_DIR)/frontend/conf && \
+		mkdir mkdir -p $(INSTALL_DIR)/frontend/conf && \
 		cp js-homepage-frontend-$(VERSION)/conf/logger.xml $(INSTALL_DIR)/frontend/conf
 
 clean:
