@@ -18,7 +18,7 @@ NAME=java             # Introduce the short server's name here
 DAEMON=/usr/share/js-homepage/bin/js-homepage-frontend # Introduce the server's location here
 PIDFILE_PLAY=/tmp/play-js-homepage-frontend.pid
 DAEMON_ARGS="-Dpidfile.path=${PIDFILE_PLAY} -Dlogger.file=conf/logger.xml" # Arguments to run the daemon with
-PIDFILE=/var/run/ts-js-homepage-frontend.pid
+PIDFILE=/var/run/js-homepage-frontend.pid
 SCRIPTNAME=js-homepage-frontend
 SCRIPTNAME_LONG=/etc/init.d/${SCRIPTNAME}
 FRONTEND_USER=js-homepage
