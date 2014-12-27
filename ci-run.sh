@@ -14,7 +14,7 @@ mkdir -p jenkins/jacoco
 dpkg-buildpackage -uc -us -b
 
 #move debian package
-mv ../js-homhepage_*.deb jenkins/builds/
+mv ../js-homepage_*.deb jenkins/builds/
 
 
 # move frontend files
