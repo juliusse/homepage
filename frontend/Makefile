@@ -19,11 +19,9 @@ build:
 	$(SBT) $(SBT_ARGS) clean jacoco:cover dist
 	
 install: check_version
-	mkdir -p $(INSTALL_DIR)/js-homepage/frontend
+	mkdir -p $(INSTALL_DIR)
 	cd target/universal/ && unzip -o js-homepage-frontend-$(VERSION).zip && \
-		mv js-homepage-frontend-$(VERSION)/lib $(INSTALL_DIR)/frontend/ && \
-		mkdir -p $(INSTALL_DIR)/frontend/conf && \
-		cp js-homepage-frontend-$(VERSION)/conf/logger.xml $(INSTALL_DIR)/frontend/conf
+		mv js-homepage-frontend-$(VERSION)/* $(INSTALL_DIR)/
 
 clean:
 	#clean is called by dpkg-buildpackage with fakeroot, does not work
