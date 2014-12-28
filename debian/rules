@@ -16,7 +16,7 @@ revision=$(shell git log --pretty=format:"%H" -n1)
 
 override_dh_installinit:
 	dh_installinit
-	dh_installinit -p js-homepage --name js-homepage-frontend
+	dh_installinit -p js-homepage --name js-homepage
 
 override_dh_auto_install:
 	dh_auto_install
