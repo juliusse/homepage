@@ -7,6 +7,6 @@ Standards-Version: 3.9.4
 
 Package: js-homepage
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, openjdk-7-jre-headless
+Depends: ${shlibs:Depends}, ${misc:Depends}, openjdk-7-jre-headless, mongodb-server
 Recommends: apache2
 Description: Homepage of Julius Seltenheim
