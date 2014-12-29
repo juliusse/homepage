@@ -16,12 +16,14 @@ PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="Julius Seltenheim Homepage frontend"      # Introduce a short description here
 NAME=js-homepage             # Introduce the short server's name here
 DAEMON=/usr/share/js-homepage/frontend/bin/js-homepage-frontend # Introduce the server's location here
+PLAY_SECRET=$(cat /var/js-homepage/secret)
 PIDFILE_PLAY=/tmp/js-homepage-play.pid
-DAEMON_ARGS="-Dpidfile.path=${PIDFILE_PLAY} -Dlogger.file=conf/logger.xml" # Arguments to run the daemon with
+DAEMON_ARGS="-Dapplication.secret=${PLAY_SECRET} -Dconfig.file=conf/live.conf -Dpidfile.path=${PIDFILE_PLAY} -Dlogger.file=conf/logger.xml" # Arguments to run the daemon with
 PIDFILE=/var/run/js-homepage.pid
 SCRIPTNAME=js-homepage
 SCRIPTNAME_LONG=/etc/init.d/${SCRIPTNAME}
 FRONTEND_USER=js-homepage
+
 
 # Exit if the package is not installed
 [ -x $DAEMON ] || exit 0
