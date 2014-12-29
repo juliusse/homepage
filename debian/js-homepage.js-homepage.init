@@ -18,7 +18,7 @@ NAME=js-homepage             # Introduce the short server's name here
 DAEMON=/usr/share/js-homepage/frontend/bin/js-homepage-frontend # Introduce the server's location here
 PLAY_SECRET=$(cat /var/js-homepage/secret)
 PIDFILE_PLAY=/tmp/js-homepage-play.pid
-DAEMON_ARGS="-Dapplication.secret=${PLAY_SECRET} -Dconfig.resource=live.conf -Dpidfile.path=${PIDFILE_PLAY} -Dlogger.file=conf/logger.xml" # Arguments to run the daemon with
+DAEMON_ARGS="-Dapplication.secret=${PLAY_SECRET} -Dconfig.resource=live.conf -Dpidfile.path=${PIDFILE_PLAY} -Dlogger.file=conf/logger.xml -Dhttp.address=127.0.0.1" # Arguments to run the daemon with
 PIDFILE=/var/run/js-homepage.pid
 SCRIPTNAME=js-homepage
 SCRIPTNAME_LONG=/etc/init.d/${SCRIPTNAME}
