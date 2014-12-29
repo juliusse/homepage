@@ -23,12 +23,12 @@ mv frontend/target/scala-2.10/jacoco/jacoco.exec jenkins/jacoco/frontend.exec
 # remove MVC-classes that should be ignored
 rm -rf frontend/target/*/classes/system
 rm -rf frontend/target/*/classes/Routes*.class
-rm -rf frontend/target/*/classes/com/rohdeschwarz/sit/base/frontend/views
-rm -rf frontend/target/*/classes/com/rohdeschwarz/sit/base/frontend/controllers/javascript
-rm -rf frontend/target/*/classes/com/rohdeschwarz/sit/base/frontend/controllers/ref
-rm -rf frontend/target/*/classes/com/rohdeschwarz/sit/base/frontend/controllers/routes*
-rm -rf frontend/target/*/classes/com/rohdeschwarz/sit/base/frontend/controllers/Reverse*.class
-rm -rf frontend/target/*/classes/com/rohdeschwarz/sit/base/frontend/controllers/system/javascript
-rm -rf frontend/target/*/classes/com/rohdeschwarz/sit/base/frontend/controllers/system/ref
-rm -rf frontend/target/*/classes/com/rohdeschwarz/sit/base/frontend/controllers/system/routes*
-rm -rf frontend/target/*/classes/com/rohdeschwarz/sit/base/frontend/controllers/system/Reverse*.class
+rm -rf frontend/target/*/classes/info/seltenheim/homepage/views
+rm -rf frontend/target/*/classes/info/seltenheim/homepage/controllers/javascript
+rm -rf frontend/target/*/classes/info/seltenheim/homepage/controllers/ref
+rm -rf frontend/target/*/classes/info/seltenheim/homepage/controllers/routes*
+rm -rf frontend/target/*/classes/info/seltenheim/homepage/controllers/Reverse*.class
+rm -rf frontend/target/*/classes/info/seltenheim/homepage/controllers/system/javascript
+rm -rf frontend/target/*/classes/info/seltenheim/homepage/controllers/system/ref
+rm -rf frontend/target/*/classes/info/seltenheim/homepage/controllers/system/routes*
+rm -rf frontend/target/*/classes/info/seltenheim/homepage/controllers/system/Reverse*.class
