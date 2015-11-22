@@ -3,7 +3,7 @@ SBT_ARGS=-Dsbt.log.noformat=true
 
 INSTALL_DIR=$(DESTDIR)/usr/share/js-homepage/frontend
 
-VERSION_FILE=conf/app.version
+VERSION_FILE=src/main/resources/app.version
 VERSION_STRING=application.version=
 
 VERSION=$(shell grep "$(VERSION_STRING)" $(VERSION_FILE) | sed -e "s/$(VERSION_STRING)\"\(.*\)\"/\1/")
