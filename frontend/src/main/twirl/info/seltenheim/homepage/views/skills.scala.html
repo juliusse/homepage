@@ -6,7 +6,7 @@
     @layout("menu_skills") {
         @description
 
-        <div ng-controller="skillPageController as ctrl" ng-init="init(@UsersController.isLoggedIn(),'@langKey')" ng-cloak>
+        <div ng-controller="skillPageController as ctrl" ng-init="init(@UsersController.isLoggedIn(),'@langKey')">
             <div ng-repeat="group in skillGroups" ng-cloak>
                 <div class="skillGroupCard">
                     <h2 ng-hide="isEditModeEnabled(group.id)"

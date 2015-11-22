@@ -398,3 +398,7 @@ div.rankingRank {
 div.rankingContent {
 	float: left;
 }
+
+[ng\:cloak], [ng-cloak], .ng-cloak {
+	display: none !important;
+}
