@@ -1,6 +1,5 @@
 package info.seltenheim.homepage.services.skills;
 
-import info.seltenheim.homepage.plugins.mongo.MongoPlugin;
 import info.seltenheim.homepage.services.Mapper;
 
 import com.mongodb.BasicDBObject;

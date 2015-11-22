@@ -1,0 +1,13 @@
+@(educationData: info.seltenheim.homepage.services.positions.formdata.EducationData)
+
+@import info.seltenheim.homepage.controllers._
+
+<form action="@routes.ProfileController.upsertEducation(Controller.lang().language())" method="POST">
+	<input name="degreeDe" placeholder="German Degree" value="@educationData.getDegreeDe()"> | 
+	<input name="degreeEn" placeholder="English Degree" value="@educationData.getDegreeEn()"><br>
+	
+	@positionFormPart(educationData)
+	
+	<span aria-hidden="true" data-icon="G"></span>
+	<input name="score" placeholder="score" value="@educationData.getScore()"><br>
+</form>

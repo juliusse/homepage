@@ -6,7 +6,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 
-import info.seltenheim.homepage.plugins.mongo.MongoPlugin;
 import info.seltenheim.homepage.services.Mapper;
 
 public class UserMapper extends Mapper<User> {

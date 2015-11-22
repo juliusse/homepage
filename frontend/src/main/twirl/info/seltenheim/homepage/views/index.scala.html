@@ -1,0 +1,56 @@
+@(allProjects:List[info.seltenheim.homepage.services.projects.Project])
+
+@import info.seltenheim.homepage.controllers._
+@import info.seltenheim.homepage.services.positions._
+@import info.seltenheim.homepage.services.projects._
+
+@defining(Controller.lang()) { lang =>
+
+@info.seltenheim.homepage.views.html.layout("menu_home",Messages("home_subtitle"), Messages("meta_description")) {
+
+<div class="groupCard">
+	<h2>@Messages("home_about_title")</h2>
+	
+	<div style="float: left;">
+		<img alt="Julius Seltenheim" src="@routes.Assets.at("images/julius-seltenheim2.jpg")" style="height: 130px;">
+	</div>
+	<div style="float: left; margin-left: 10px;">
+		<span aria-hidden="true" data-icon="ñ" style="font-size: 13pt;"></span> @Html.apply(Messages("home_about_who"))<br>
+		<span aria-hidden="true" data-icon="ñ" style="font-size: 13pt;"></span> @Html.apply(Messages("home_about_degree"))<br>
+		<span aria-hidden="true" data-icon="ñ" style="font-size: 13pt;"></span> @Html.apply(Messages("home_about_skills"))<br>
+		<span aria-hidden="true" data-icon="ñ" style="font-size: 13pt;"></span> @Html.apply(Messages("home_about_skills2"))<br>
+		<span aria-hidden="true" data-icon="ñ" style="font-size: 13pt;"></span> @Html.apply(Messages("home_about_work"))
+	</div>	
+</div>
+
+<div class="groupCard" style="width: 100%; overflow: hidden;">
+	<h2>@Messages("home_projects")</h2>
+	@for(project <- (allProjects)) {
+		<div class="projectCard">
+            <h3>
+            	<a href="@routes.ProjectsController.index(lang.language,"").toString()#@project.getId()">@project.getTitleAsHtml()</a>
+            </h3>
+            <div class="projectImage">
+                <img src="@routes.ProjectsController.getImage(project.getId())"/>
+            </div>
+            
+
+			<span aria-hidden="true" data-icon="Y"></span>
+            @if(project.getDevelopmentEnd() != null) {
+		        @Messages("develope_finished") @project.getDevelopmentEnd().toString("MMM yyyy",lang.toLocale)
+		    } else {
+		        @Messages("develope_ongoing")
+		    }   
+
+			<div class="projectTechnologies">
+			@for(tech <- project.getTechnologies()) {
+				<div class="projectTechnology">
+				<span aria-hidden="true" data-icon="å"></span> @tech
+				</div>		
+				}
+			</div>
+		</div>
+    }
+</div>
+}
+}

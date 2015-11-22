@@ -1,7 +1,7 @@
 package info.seltenheim.homepage.services.positions;
 
 import static info.seltenheim.homepage.plugins.mongo.MongoPlugin.doc;
-import info.seltenheim.homepage.plugins.mongo.MongoPlugin;
+
 import info.seltenheim.homepage.services.Mapper;
 
 import java.io.IOException;

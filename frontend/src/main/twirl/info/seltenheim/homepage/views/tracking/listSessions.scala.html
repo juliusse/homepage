@@ -1,0 +1,32 @@
+@(sessions : List[info.seltenheim.homepage.services.usertracking.Tracking])
+
+@import info.seltenheim.homepage.controllers._
+
+@defining(Controller.lang().language()) { langKey =>
+
+@info.seltenheim.homepage.views.html.layout("Tracking","","Tracking") {
+
+
+<h2>By user-agent appearance</h2>
+<strong>Filter:</strong>
+<div style="display: inline;">
+	<form action="" method="GET">
+		user-agent contains: <input type="text" name="uaFilter"> || min requests <input type="text" name="minRequests">
+		<button type="submit">filter</button>		 
+	</form>
+</div>
+
+@for((entry,index) <- sessions.zipWithIndex) {
+<div class="rankingCard">
+	<div class="rankingRank">@(index+1)</div>
+	<div class="rankingContent">
+		<code>@entry.getUserAgentString()</code><br>
+		<span aria-hidden="true" data-icon="["></span> @entry.getLastAppearance()<br>
+		@for(vp <- entry.getVisitedPages()) {
+		<span aria-hidden="true" data-icon="ñ"></span> @vp.getController => @vp.getAction()<br> 
+		}
+	</div>
+</div>
+}
+}
+}
