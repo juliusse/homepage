@@ -52,5 +52,3 @@ javaOptions in Test += "-Dlogger.resource=logger-test.xml"
 parallelExecution in jacoco.Config := false
 
 jacoco.excludes in jacoco.Config := Seq("*views*","*Routes*","*Reverse*")
-
-pipelineStages := Seq(rjs)
