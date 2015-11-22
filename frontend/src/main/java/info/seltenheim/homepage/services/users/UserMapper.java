@@ -1,7 +1,7 @@
 package info.seltenheim.homepage.services.users;
 
 import com.mongodb.BasicDBObject;
-import info.seltenheim.homepage.plugins.mongo.MongoService;
+import info.seltenheim.homepage.modules.mongo.MongoService;
 import info.seltenheim.homepage.services.Mapper;
 
 import javax.inject.Inject;

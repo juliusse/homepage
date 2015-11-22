@@ -1,1 +1,0 @@
-sbt clean update compile eclipse

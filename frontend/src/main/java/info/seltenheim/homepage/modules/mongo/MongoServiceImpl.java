@@ -1,4 +1,4 @@
-package info.seltenheim.homepage.plugins.mongo;
+package info.seltenheim.homepage.modules.mongo;
 
 import com.mongodb.*;
 import org.apache.commons.lang3.Validate;

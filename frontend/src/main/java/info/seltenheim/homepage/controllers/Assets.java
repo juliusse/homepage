@@ -8,7 +8,7 @@ import play.api.http.HttpErrorHandler;
 import play.api.mvc.*;
 
 public class Assets extends AssetsBuilder {
-    
+
     @Inject
     public Assets(HttpErrorHandler errorHandler) {
         super(errorHandler);
@@ -16,7 +16,6 @@ public class Assets extends AssetsBuilder {
 
     @Override
     public Action<AnyContent> at(String path, String file, boolean aggressiveCaching) {
-        play.Logger.info(path+file);
         return super.at("/public/" + path, file, aggressiveCaching);
     }
 

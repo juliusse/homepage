@@ -2,7 +2,7 @@ package info.seltenheim.homepage.services.skills;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.BasicDBObject;
-import info.seltenheim.homepage.plugins.mongo.MongoService;
+import info.seltenheim.homepage.modules.mongo.MongoService;
 import play.Logger;
 
 import javax.inject.Inject;

@@ -1,7 +1,7 @@
 package info.seltenheim.homepage.services.usertracking;
 
 import com.mongodb.*;
-import info.seltenheim.homepage.plugins.mongo.MongoService;
+import info.seltenheim.homepage.modules.mongo.MongoService;
 
 import javax.inject.Inject;
 import java.io.IOException;

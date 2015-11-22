@@ -1,7 +1,7 @@
 package info.seltenheim.homepage.services.projects;
 
 import com.mongodb.BasicDBObject;
-import info.seltenheim.homepage.plugins.mongo.MongoService;
+import info.seltenheim.homepage.modules.mongo.MongoService;
 import info.seltenheim.homepage.services.projects.Project.ProjectType;
 import org.apache.commons.lang3.Validate;
 import org.joda.time.DateTime;
@@ -10,7 +10,6 @@ import org.joda.time.format.DateTimeFormatter;
 import play.Logger;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

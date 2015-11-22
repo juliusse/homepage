@@ -12,7 +12,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoException;
-import info.seltenheim.homepage.plugins.mongo.MongoService;
+import info.seltenheim.homepage.modules.mongo.MongoService;
 
 public abstract class Mapper<T extends PersistentModel> {
 

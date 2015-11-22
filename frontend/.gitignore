@@ -16,3 +16,4 @@ dist
 /.settings
 files/
 /bin/
+.cache-main

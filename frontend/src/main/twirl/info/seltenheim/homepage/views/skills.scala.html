@@ -60,35 +60,6 @@
         </div>
         }
 
-        @if(UsersController.isLoggedIn()) {
-        <script type="text/javascript">
-        $('.emptyStars').click(function(e) {
-        var posX = $(this).offset().left;
-        updateKnowledge($(this).attr("id"), (e.pageX - posX)/90.0);
-        });
-
-        $('.fullStars').click(function(e) {
-        var posX = $(this).offset().left;
-        updateKnowledge($(this).attr("id"), (e.pageX - posX)/90.0);
-        });
-
-        var updateKnowledge = function(id, value) {
-        var langKey, skillGroupId, skillName;
-        var parts = id.split("-");
-        langKey = parts[1];
-        skillGroupId = parts[2];
-        skillName = parts[3];
-
-        $.ajax({
-        type: "POST",
-        url: "/"+langKey+"/skillgroup/"+skillGroupId+"/"+encodeURIComponent(skillName)+"/setLevel",
-        data: "level="+value,
-        success: function() {location.reload();},
-        });
-        }
-        </script>
-        }
-
         *@
     }
 }

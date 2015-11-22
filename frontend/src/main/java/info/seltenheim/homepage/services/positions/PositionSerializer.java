@@ -1,7 +1,7 @@
 package info.seltenheim.homepage.services.positions;
 
 import com.mongodb.BasicDBObject;
-import info.seltenheim.homepage.plugins.mongo.MongoService;
+import info.seltenheim.homepage.modules.mongo.MongoService;
 import org.apache.commons.lang3.Validate;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;

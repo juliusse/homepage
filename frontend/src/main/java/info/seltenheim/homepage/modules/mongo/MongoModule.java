@@ -1,4 +1,4 @@
-package info.seltenheim.homepage.plugins.mongo;
+package info.seltenheim.homepage.modules.mongo;
 
 import play.api.Configuration;
 import play.api.Environment;

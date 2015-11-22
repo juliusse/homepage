@@ -1,4 +1,4 @@
-package info.seltenheim.homepage.plugins.mongo;
+package info.seltenheim.homepage.modules.mongo;
 
 import com.google.inject.ImplementedBy;
 import com.mongodb.BasicDBObject;
