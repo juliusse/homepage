@@ -11,7 +11,7 @@ public class ProjectMapper extends Mapper<Project> {
 
     @Inject
     public ProjectMapper(MongoService mongoService, ProjectsSerializer projectsSerializer) {
-        super(mongoService, mongoService.projects(), mongoService.doc(), mongoService.doc("developmentEnd", -1));
+        super(mongoService, mongoService.projects(), mongoService.doc(), mongoService.doc("developmentStart", -1));
         this.projectsSerializer = projectsSerializer;
     }
 

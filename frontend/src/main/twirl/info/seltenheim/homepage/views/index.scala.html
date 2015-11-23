@@ -9,12 +9,10 @@
 @info.seltenheim.homepage.views.html.layout("menu_home",Messages("home_subtitle"), Messages("meta_description")) {
 
 <div class="groupCard">
-	<h2>@Messages("home_about_title")</h2>
-	
 	<div style="float: left;">
-		<img alt="Julius Seltenheim" src="@routes.Assets.at("images/julius-seltenheim2.jpg")" style="height: 130px;">
+		<img alt="Julius Seltenheim" src="@routes.Assets.at("images/julius-seltenheim2.jpg")" style="height: 140px;">
 	</div>
-	<div style="float: left; margin-left: 10px;">
+	<div style="float: left; min-width: 660px; margin-left: 10px;">
 		<span aria-hidden="true" data-icon="ñ" style="font-size: 13pt;"></span> @Html.apply(Messages("home_about_who"))<br>
 		<span aria-hidden="true" data-icon="ñ" style="font-size: 13pt;"></span> @Html.apply(Messages("home_about_degree"))<br>
 		<span aria-hidden="true" data-icon="ñ" style="font-size: 13pt;"></span> @Html.apply(Messages("home_about_skills"))<br>

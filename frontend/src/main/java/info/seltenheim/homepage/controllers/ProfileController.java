@@ -1,12 +1,5 @@
 package info.seltenheim.homepage.controllers;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-
-import javax.inject.Inject;
-
-import info.seltenheim.homepage.comparators.DateRangeComparators;
 import info.seltenheim.homepage.controllers.secured.OnlyLoggedIn;
 import info.seltenheim.homepage.services.positions.Education;
 import info.seltenheim.homepage.services.positions.Employment;
@@ -18,6 +11,10 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 
+import javax.inject.Inject;
+import java.io.IOException;
+import java.util.List;
+
 public class ProfileController extends Controller {
 
     @Inject
@@ -27,8 +24,6 @@ public class ProfileController extends Controller {
 
         final List<Employment> empl = positionsService.findAllEmployments();
         final List<Education> edus = positionsService.findAllEducations();
-
-        Collections.sort(empl, DateRangeComparators::compareEndDateTimes);
 
         return ok(info.seltenheim.homepage.views.html.profile.render(empl, edus, positionId));
     }

@@ -1,6 +1,5 @@
 package info.seltenheim.homepage.controllers;
 
-import info.seltenheim.homepage.comparators.DateRangeComparators;
 import info.seltenheim.homepage.controllers.secured.OnlyLoggedIn;
 import info.seltenheim.homepage.controllers.utils.ImageUtils;
 import info.seltenheim.homepage.models.forms.ProjectFormData;
@@ -8,31 +7,21 @@ import info.seltenheim.homepage.services.filesystem.FileSystemService;
 import info.seltenheim.homepage.services.projects.Project;
 import info.seltenheim.homepage.services.projects.Project.ProjectType;
 import info.seltenheim.homepage.services.projects.ProjectsService;
-
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collections;
-import java.util.List;
-
-import javax.imageio.ImageIO;
-import javax.inject.Inject;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import play.Logger;
 import play.Play;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+
+import javax.imageio.ImageIO;
+import javax.inject.Inject;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.util.List;
 
 @Component
 public class ProjectsController extends Controller {
@@ -58,7 +47,7 @@ public class ProjectsController extends Controller {
         } else {
             projects = projectsService.findAllProjects();
         }
-        Collections.sort(projects, DateRangeComparators::compareEndDateTimes);
+
         Logger.debug("number of Projects: " + projects.size());
         return ok(info.seltenheim.homepage.views.html.projects.render(projects));
     }

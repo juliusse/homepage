@@ -2,6 +2,7 @@ package info.seltenheim.homepage;
 
 import play.Logger;
 import play.http.DefaultHttpRequestHandler;
+import play.i18n.Lang;
 import play.libs.F;
 import play.mvc.Action;
 import play.mvc.Controller;
@@ -24,19 +25,23 @@ public class DefaultRequestHandler extends DefaultHttpRequestHandler {
             public F.Promise<Result> call(Http.Context ctx) throws Throwable {
                 if (request.uri().length() > 3) {
                     final String langKey = request.uri().substring(1, 3);
-                    if (langKey.equals("de") || langKey.equals("en")) {
-                        Controller.changeLang(langKey);
+                    final String currentLang = ctx.lang().language();
+                    if (!langKey.equals(currentLang) && (langKey.equals("de") || langKey.equals("en"))) {
+                        ctx.changeLang(langKey);
+                        return F.Promise.pure(Controller.redirect(ctx.request().path()));
                     }
                 }
 
-                final F.Promise<Result> result = delegate.call(ctx);
                 // TrackAsAction.call(ctx, controller, action);
-                return result;
+                return delegate.call(ctx);
             }
         };
     }
 
-
+    @Override
+    public Action wrapAction(Action action) {
+        return super.wrapAction(action);
+    }
 
     private void logRequest(Http.Request request, Method method) {
         if (Logger.isDebugEnabled() && !request.path().startsWith("/assets")) {
