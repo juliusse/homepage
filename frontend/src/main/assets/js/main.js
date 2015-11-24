@@ -5,11 +5,14 @@ require.config({
         angular : '../lib/angularjs/angular',
         ngResource : '../lib/angularjs/angular-resource.min',
         ngRoute : '../lib/angularjs/angular-route.min',
-        app: 'info/seltenheim/homepage/angular/app'
+        app: 'info/seltenheim/homepage/angular/app',
+        timeline: 'timeline'
     },
     shim : {
+        'timeline': {export: 'timeline'},
         'angular' : {
-            exports : 'angular'
+            exports : 'angular',
+            depends : 'timeline'
         },
         'ngResource' : [ 'angular' ],
         'ngRoute' : [ 'angular' ]

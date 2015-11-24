@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 public class PositionSerializer {
-    private static final DateTimeFormatter persistenceDateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd");
     private static final int VERSION_EDUCATION = 1;
     private static final int VERSION_EMPLOYMENT = 2;
 
@@ -32,11 +31,11 @@ public class PositionSerializer {
 
     private BasicDBObject serializePosition(Position position) {
         Logger.debug(position.getFromDate().toString());
-        final BasicDBObject document = mongoService.doc("type", position instanceof Employment ? "employment" : "education").append("fromDate", position.getFromDate().toString(persistenceDateTimeFormatter))
+        final BasicDBObject document = mongoService.doc("type", position instanceof Employment ? "employment" : "education").append("fromDate", position.getFromDate())
                 .append("place", position.getPlace()).append("website", position.getWebsite()).append("titleMap", position.getTitleMap());
 
         if (position.getToDate() != null) {
-            document.append("toDate", position.getToDate().toString(persistenceDateTimeFormatter));
+            document.append("toDate", position.getToDate());
         }
 
         return document;
@@ -60,10 +59,10 @@ public class PositionSerializer {
         final String idFromBson = bson.get("_id").toString();
 
         final String place = bson.getString("place");
-        final DateTime fromDate = persistenceDateTimeFormatter.parseDateTime((bson.getString("fromDate")));
+        final String fromDate = bson.getString("fromDate");
 
         final String toDateString = bson.getString("toDate");
-        final DateTime toDate = toDateString == null ? null : persistenceDateTimeFormatter.parseDateTime(toDateString);
+        final String toDate = toDateString == null ? null : toDateString;
         final String website = bson.getString("website");
         final Map<String, String> titleMap = (Map<String, String>) bson.get("titleMap");
 
@@ -88,10 +87,10 @@ public class PositionSerializer {
         final int version = bson.getInt("version", 1);
 
         final String place = bson.getString("place");
-        final DateTime fromDate = persistenceDateTimeFormatter.parseDateTime((bson.getString("fromDate")));
+        final String fromDate = bson.getString("fromDate");
 
         final String toDateString = bson.getString("toDate");
-        final DateTime toDate = toDateString == null ? null : persistenceDateTimeFormatter.parseDateTime(toDateString);
+        final String toDate = toDateString == null ? null : toDateString;
         final String website = bson.getString("website");
         final Map<String, String> titleMap = (Map<String, String>) bson.get("titleMap");
 

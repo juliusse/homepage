@@ -20,7 +20,7 @@ public class Employment extends Position {
         technologies = new ArrayList<String>();
     }
 
-    public Employment(DateTime fromDate, DateTime toDate, String place, Map<String, String> titleMap, String website, Map<String, List<String>> tasksMap, List<String> technologies) {
+    public Employment(String fromDate, String toDate, String place, Map<String, String> titleMap, String website, Map<String, List<String>> tasksMap, List<String> technologies) {
         super(fromDate, toDate, place, titleMap, website);
         this.tasksMap = tasksMap;
         this.technologies = technologies;

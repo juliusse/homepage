@@ -3,54 +3,58 @@
 # ~~~~
 
 # async api
-POST	/rest/project				@info.seltenheim.homepage.controllers.ProjectsController.changeProject()
+POST        /rest/project                                            @info.seltenheim.homepage.controllers.ProjectsController.changeProject()
 
 # Home page
 
-GET		/:langKey/home				@info.seltenheim.homepage.controllers.Application.index(langKey:String)
+GET         /:langKey/home                                           @info.seltenheim.homepage.controllers.Application.index(langKey:String)
 
 
-GET		/:langKey/contact			@info.seltenheim.homepage.controllers.Application.contact(langKey:String)
+GET         /:langKey/contact                                        @info.seltenheim.homepage.controllers.Application.contact(langKey:String)
 
 # skills
-GET		/:langKey/skills			@info.seltenheim.homepage.controllers.SkillsController.index(langKey:String)
-POST	/:langKey/skillgroup/add	@info.seltenheim.homepage.controllers.SkillsController.addSkillGroup(langKey:String)
-POST	/:langKey/skillgroup/:skillGroupId/addSkill				@info.seltenheim.homepage.controllers.SkillsController.addSkill(langKey:String,skillGroupId:String)
-GET     /api/skillgroups            @info.seltenheim.homepage.controllers.SkillsController.getSkillGroups()
-POST    /api/skillgroups/:id        @info.seltenheim.homepage.controllers.SkillsController.updateSkillGroup(id: String)
+GET         /:langKey/skills                                         @info.seltenheim.homepage.controllers.SkillsController.index(langKey:String)
+POST        /:langKey/skillgroup/add                                 @info.seltenheim.homepage.controllers.SkillsController.addSkillGroup(langKey:String)
+POST        /:langKey/skillgroup/:skillGroupId/addSkill              @info.seltenheim.homepage.controllers.SkillsController.addSkill(langKey:String,skillGroupId:String)
+GET         /api/skillgroups                                         @info.seltenheim.homepage.controllers.SkillsController.getSkillGroups()
+POST        /api/skillgroups/:id                                     @info.seltenheim.homepage.controllers.SkillsController.updateSkillGroup(id: String)
 
 # profile
-GET		/:langKey/profile							@info.seltenheim.homepage.controllers.ProfileController.index(langKey:String,positionId = "")
-POST	/:langKey/profile/employment 				@info.seltenheim.homepage.controllers.ProfileController.upsertEmployment(langKey:String)
-POST	/:langKey/profile/education 				@info.seltenheim.homepage.controllers.ProfileController.upsertEducation(langKey:String)
-GET		/:langKey/profile/:positionId				@info.seltenheim.homepage.controllers.ProfileController.index(langKey:String,positionId :String)
+GET         /:langKey/profile                                        @info.seltenheim.homepage.controllers.ProfileController.index(langKey:String,positionId = "")
+#POST        /:langKey/profile/employment                             @info.seltenheim.homepage.controllers.ProfileController.upsertEmployment2(langKey:String)
+#POST        /:langKey/profile/education                              @info.seltenheim.homepage.controllers.ProfileController.upsertEducation2(langKey:String)
+GET         /:langKey/profile/:positionId                            @info.seltenheim.homepage.controllers.ProfileController.index(langKey:String,positionId :String)
+GET         /api/employment                                          @info.seltenheim.homepage.controllers.ProfileController.getEmployments()
+POST        /api/employment                                          @info.seltenheim.homepage.controllers.ProfileController.upsertEmployment()
+GET         /api/education                                           @info.seltenheim.homepage.controllers.ProfileController.getEducations()
+POST        /api/education                                           @info.seltenheim.homepage.controllers.ProfileController.upsertEducation()
 
 #projects
-GET		/:langKey/projects				@info.seltenheim.homepage.controllers.ProjectsController.index(langKey:String,projectType:String = "")
-GET		/:langKey/projects/:projectType	@info.seltenheim.homepage.controllers.ProjectsController.index(langKey:String,projectType:String)
-GET		/:langKey/project/add			@info.seltenheim.homepage.controllers.ProjectsController.renderAdd(langKey:String)
-GET		/:langKey/project/:projectId 	@info.seltenheim.homepage.controllers.ProjectsController.renderEdit(langKey:String, projectId: String)
-GET		/project/image/:projectId		@info.seltenheim.homepage.controllers.ProjectsController.getImage(projectId: String)
+GET         /:langKey/projects                                       @info.seltenheim.homepage.controllers.ProjectsController.index(langKey:String,projectType:String = "")
+GET         /:langKey/projects/:projectType                          @info.seltenheim.homepage.controllers.ProjectsController.index(langKey:String,projectType:String)
+GET         /:langKey/project/add                                    @info.seltenheim.homepage.controllers.ProjectsController.renderAdd(langKey:String)
+GET         /:langKey/project/:projectId                             @info.seltenheim.homepage.controllers.ProjectsController.renderEdit(langKey:String, projectId: String)
+GET         /project/image/:projectId                                @info.seltenheim.homepage.controllers.ProjectsController.getImage(projectId: String)
 
 #tracking
-GET		/:langKey/tracking					@info.seltenheim.homepage.controllers.TrackingsController.index(langKey)
-GET		/:langKey/tracking/list-sessions	@info.seltenheim.homepage.controllers.TrackingsController.listSessions(langKey,uaFilter ?= "", minRequests : Int ?= 0)
-POST	/:langKey/tracking/delete-by-ua		@info.seltenheim.homepage.controllers.TrackingsController.deleteTrackingsByUserAgent(langKey: String)
+GET         /:langKey/tracking                                       @info.seltenheim.homepage.controllers.TrackingsController.index(langKey)
+GET         /:langKey/tracking/list-sessions                         @info.seltenheim.homepage.controllers.TrackingsController.listSessions(langKey,uaFilter ?= "", minRequests : Int ?= 0)
+POST        /:langKey/tracking/delete-by-ua                          @info.seltenheim.homepage.controllers.TrackingsController.deleteTrackingsByUserAgent(langKey: String)
 
-GET		/:langKey/tracking/by-user-agent-appearance-count	@info.seltenheim.homepage.controllers.TrackingsController.uaByQuantityAndAppearance(langKey)
+GET         /:langKey/tracking/by-user-agent-appearance-count        @info.seltenheim.homepage.controllers.TrackingsController.uaByQuantityAndAppearance(langKey)
 
-GET		/:langKey/login				@info.seltenheim.homepage.controllers.UsersController.login(langKey)
-POST	/:langKey/login				@info.seltenheim.homepage.controllers.UsersController.login(langKey)
-GET		/logout						@info.seltenheim.homepage.controllers.UsersController.logout()
-GET     /							@info.seltenheim.homepage.controllers.Application.indexWithLanguageAutoSelect()
+GET         /:langKey/login                                          @info.seltenheim.homepage.controllers.UsersController.login(langKey)
+POST        /:langKey/login                                          @info.seltenheim.homepage.controllers.UsersController.login(langKey)
+GET         /logout                                                  @info.seltenheim.homepage.controllers.UsersController.logout()
+GET         /                                                        @info.seltenheim.homepage.controllers.Application.indexWithLanguageAutoSelect()
 
 
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET		/robots.txt					@info.seltenheim.homepage.controllers.Assets.at(file="robots.txt")
-GET		/sitemap.xml				@info.seltenheim.homepage.controllers.Application.getSiteMap()
+GET         /robots.txt                                              @info.seltenheim.homepage.controllers.Assets.at(file="robots.txt")
+GET         /sitemap.xml                                             @info.seltenheim.homepage.controllers.Application.getSiteMap()
 
-GET		/google744df6fdcec26429.html 	@info.seltenheim.homepage.controllers.Assets.at(file="google744df6fdcec26429.html")
-GET     /assets/*file               	@info.seltenheim.homepage.controllers.Assets.at(file)
+GET         /google744df6fdcec26429.html                             @info.seltenheim.homepage.controllers.Assets.at(file="google744df6fdcec26429.html")
+GET         /assets/*file                                            @info.seltenheim.homepage.controllers.Assets.at(file)
 

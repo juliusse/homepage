@@ -17,7 +17,7 @@ public class Education extends Position {
         degreeMap = new HashMap<String, String>();
     }
 
-    public Education(DateTime fromDate, DateTime toDate, String place, String website, String score, Map<String, String> titleMap, Map<String, String> degreeMap, String degreeNote) {
+    public Education(String fromDate, String toDate, String place, String website, String score, Map<String, String> titleMap, Map<String, String> degreeMap, String degreeNote) {
         super(fromDate, toDate, place, titleMap, website);
 
         this.degreeMap = degreeMap;

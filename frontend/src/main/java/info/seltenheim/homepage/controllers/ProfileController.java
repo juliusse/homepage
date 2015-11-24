@@ -1,15 +1,11 @@
 package info.seltenheim.homepage.controllers;
 
-import info.seltenheim.homepage.controllers.secured.OnlyLoggedIn;
 import info.seltenheim.homepage.services.positions.Education;
 import info.seltenheim.homepage.services.positions.Employment;
 import info.seltenheim.homepage.services.positions.PositionsService;
-import info.seltenheim.homepage.services.positions.formdata.EducationData;
-import info.seltenheim.homepage.services.positions.formdata.EmploymentData;
-import play.data.Form;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Security;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -20,6 +16,7 @@ public class ProfileController extends Controller {
     @Inject
     private PositionsService positionsService;
 
+
     public Result index(String langKey, String positionId) throws IOException {
 
         final List<Employment> empl = positionsService.findAllEmployments();
@@ -28,8 +25,28 @@ public class ProfileController extends Controller {
         return ok(info.seltenheim.homepage.views.html.profile.render(empl, edus, positionId));
     }
 
+    public Result getEmployments() throws IOException {
+        return ok(Json.toJson(positionsService.findAllEmployments()));
+    }
+
+    public Result getEducations() throws IOException {
+        return ok(Json.toJson(positionsService.findAllEducations()));
+    }
+
+    public Result upsertEmployment() throws IOException {
+        final Employment employment = Json.fromJson(request().body().asJson(), Employment.class);
+        positionsService.upsertPosition(employment);
+        return ok();
+    }
+
+    public Result upsertEducation() throws IOException {
+        final Education education = Json.fromJson(request().body().asJson(), Education.class);
+        positionsService.upsertPosition(education);
+        return ok();
+    }
+/*
     @Security.Authenticated(OnlyLoggedIn.class)
-    public Result upsertEmployment(String langKey) throws IOException {
+    public Result upsertEmployment2(String langKey) throws IOException {
         Form<EmploymentData> filledForm = Form.form(EmploymentData.class).bindFromRequest();
 
         if (filledForm.hasErrors()) {
@@ -55,7 +72,7 @@ public class ProfileController extends Controller {
     }
 
     @Security.Authenticated(OnlyLoggedIn.class)
-    public Result upsertEducation(String langKey) throws IOException {
+    public Result upsertEducation2(String langKey) throws IOException {
         Form<EducationData> filledForm = Form.form(EducationData.class).bindFromRequest();
 
         if (filledForm.hasErrors()) {
@@ -79,6 +96,8 @@ public class ProfileController extends Controller {
             positionsService.upsertPosition(education);
             return redirect(routes.ProfileController.index(langKey, ""));
         }
-    }
 
+
+    }
+    */
 }

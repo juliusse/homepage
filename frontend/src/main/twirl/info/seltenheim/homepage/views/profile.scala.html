@@ -1,169 +1,149 @@
-@(employments: List[info.seltenheim.homepage.services.positions.Employment], educations: List[info.seltenheim.homepage.services.positions.Education], idToUpdate : String)
+@(employments: List[info.seltenheim.homepage.services.positions.Employment], educations: List[info.seltenheim.homepage.services.positions.Education], idToUpdate: String)
 
 @import info.seltenheim.homepage.controllers._
 @import info.seltenheim.homepage.services.positions._
-@import info.seltenheim.homepage.services.positions.formdata._
 @import info.seltenheim.homepage.views.html.forms._
 @import helper._
 
-@dateForJavaScript(dateTime : org.joda.time.DateTime) = {
-	@dateTime.getYear(),@(dateTime.getMonthOfYear()-1),@dateTime.getDayOfMonth()
+@dateForJavaScript(dateTime: org.joda.time.DateTime) = {
+@dateTime.getYear(),@(dateTime.getMonthOfYear() - 1),@dateTime.getDayOfMonth()
 }
 
 
-@defining(Controller.lang()) { lang =>
+@defining(Controller.lang().language()) { langKey =>
 
 
-@layout("menu_profile") {
+    @layout("menu_profile") {
 
-<div id="profileContainer">
-	<div class="profileTimelineContainer">
-		<div id="timeline" style="float:left;width: 90%;position: absolute; height: 100%;"></div>
-	</div>
+        <div id="profileContainer" ng-controller="ProfileController" ng-init="init(@UsersController.isLoggedIn(),'@langKey','profileTimelineContainer','content')" ng-cloak>
+            <div id="profileTimelineContainer" class="profileTimelineContainer">
+            </div>
 
-	<div class="profileListingContainer">
-		<h2>@Messages("menu_employment")</h2>
-		@if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
-		<div class="employmentCard">
-			<h3>New Employment</h3>
-			@info.seltenheim.homepage.views.html.forms.employmentForm(new EmploymentData())
-		</div>
-		}
-		@for(employment <- employments) {
-			<div id="@employment.getId()" class="employmentCard">
-			@if(employment.getId().equals(idToUpdate)) {
-				<h3>Update Employment</h3>
-				@info.seltenheim.homepage.views.html.forms.employmentForm(new EmploymentData(employment))
-			} else {
-				<h3>@employment.getTitle()</h3>
-				<div>
-				@if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
-					<a href="@routes.ProfileController.index(lang.language,employment.getId()).toString()#@employment.getId()">Edit</a><br>
-				}
-				<span aria-hidden="true" data-icon="o"></span>
-				@if(employment.getWebsite().isEmpty()) {
-					@employment.getPlace()
-				} else {
-					<a target="_blank" href="@employment.getWebsite()">@employment.getPlace()</a>
-				}<br>
-				<span aria-hidden="true" data-icon="["></span>
-				@employment.getFromDate().toString("MMM yyyy",lang.toLocale) - 
-	            @if(employment.getToDate() != null) {
-	            	@employment.getToDate().toString("MMM yyyy",lang.toLocale)
-	            } else {
-	            	@Messages("ongoing")
-	            }
-	            </div>
-	            <div class="halfWidth">
-		            <h4>@Messages("profile_tasks"):</h4>
-		            @for(task <- employment.getTasks()) {
-		            <span aria-hidden="true" data-icon="ñ"></span> @task<br>
-		            }
-	            </div>
-	            
-	            @if(employment.getTechnologies().size() > 0) {
-	            <div class="halfWidth">
-		            <h4>@Messages("profile_technologies"):</h4>
-		            @for(technology <- employment.getTechnologies()) {
-		            <span aria-hidden="true" data-icon="å"></span> @technology<br>
-		            }
-	            </div>
-	            }
-	        }
-			</div>
-		}
+            <div class="profileListingContainer">
+                <h2>@Messages("menu_employment")</h2>
+                @* @if(info.seltenheim.homepage.controllers.) {
+                <div class="employmentCard">
+                <h3>New Employment</h3>
+                @info.seltenheim.homepage.views.html.forms.employmentForm(new EmploymentData())
+                </div>
+                }*@
+                <div ng-repeat="employment in employments" id="{{employment.id}}" class="employmentCard" ng-class-even="'lightBackground'">
+                    <h3>{{employment.titleMap['@langKey']}}</h3>
+                    <div>
+                        <span aria-hidden="true" data-icon="o"></span>
+                        <span ng-show="employment.website === null"></span>
+                        <a ng-hide="employment.website === null" target="_blank" href="{{employment.website}}">
+                            {{employment.place}}
+                        </a><br>
+                        <span aria-hidden="true" data-icon="["></span>
+                        {{ employment.fromDate | date: 'MMM yyyy' }} -
+                        <span ng-show="employment.toDate === null">@Messages("ongoing")</span>
+                        <span ng-hide="employment.toDate === null">
+                            {{ employment.toDate | date: 'MMM yyyy' }}
+                        </span>
+                    </div>
+                    <div style="width: 300px; float: left">
+                        <h4>@Messages("profile_tasks"):</h4>
+                        <div ng-repeat="task in employment.tasks" class="fullWidth">
+                            <div class="bulletPoint" aria-hidden="true" data-icon="ñ"></div>
+                            <div class="bulletPointText">{{task}}</div>
+                        </div>
+                    </div>
 
-	    <h2> @Messages("menu_education")</h2>
-	    @if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
-	    <div class="employmentCard">
-			@educationForm(new EducationData())
-		</div>
-		}
-	   	@for(education <- educations) {
-	   		<div id="@education.getId()" class="employmentCard">
-	   		
-		   	@if(education.getId().equals(idToUpdate)) {
-		   		@educationForm(new EducationData(education))
-		   	} else {
-			
-				<h3>@education.getDegree()</h3>
-				@if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
-					<a href="@routes.ProfileController.index(lang.language,education.getId()).toString()#@education.getId()">Edit</a><br>
-				}
-				<span aria-hidden="true" data-icon="o"></span>
-				@if(education.getWebsite().isEmpty()) {
-					@education.getPlace()
-				} else {
-					<a target="_blank" href="@education.getWebsite()">@education.getPlace()</a>
-				}<br>
-				<span aria-hidden="true" data-icon="["></span> 
-				@education.getFromDate().getYear() - 
-	            @if(education.getToDate() != null) {
-	            	@education.getToDate().getYear()
-	            } else {
-	            	@Messages("ongoing")
-	            }<br>
-	            <span aria-hidden="true" data-icon="G"></span> @education.getScore()
-			
-			}
-			</div>
-		}
-	</div>
-</div> 
 
-<script type="text/javascript">
-	var eduEntryData = [
-	["undefined",new Date(2009,1,1),new Date(2009,1,1)]
-	@for(education <- educations) {
-		@if(education.getToDate() != null) {
-			,["@education.getPlace() - @education.getDegree()",new Date(@dateForJavaScript(education.getFromDate())),new Date(@dateForJavaScript(education.getToDate())),"@education.getId()"]
-		} else {
-			,["@education.getPlace() - @education.getDegree()",new Date(@dateForJavaScript(education.getFromDate())),new Date(),"@education.getId()"]
-		}
-	}
-	];
-	
-	var emplEntryData = [
-	                	["undefined",new Date(2009,1,1),new Date(2009,1,1),"idForHighlighting"]
+                    <div ng-show="employment.technologies.length > 0"style="width: 385px; float: left">
+                        <h4>@Messages("profile_technologies"):</h4>
+                        <div class="halfWidth" ng-repeat="tech in employment.technologies">
+                            <div class="bulletPoint" aria-hidden="true" data-icon="å"></div>
+                            <div class="bulletPointText">{{tech}}</div>
+                        </div>
+                    </div>
+                </div>
 
-	                	@for(employment <- employments) {
-	                		@if(employment.getToDate != null) {
-	                		,["@employment.getPlace() - @employment.getTitle()",new Date(@dateForJavaScript(employment.getFromDate())),new Date(@dateForJavaScript(employment.getToDate())),"@employment.getId()"]
-	                		} else {
-	                			,["@employment.getPlace() - @employment.getTitle()",new Date(@dateForJavaScript(employment.getFromDate())),new Date(),"@employment.getId()"]	
-	                		}
-	                	}
-	                	];
-	
-	var profileContainer = document.getElementById("profileContainer");
-	profileContainer.style.height = (profileContainer.clientHeight) +"px";
-	
-	var timeline = new Timeline(2008)
-	var visu = timeline.addVisualisation(Timeline.Visualisations.VerticalMinimal, document.getElementById("timeline"));;
-	
-	visu.config.scale.numbersMarginRight = 25;
-	visu.repaint();
-	
-	for(var index in eduEntryData) {
-		if(index == 0) {
-			continue;
-		}
-		var entryData = eduEntryData[index];
-		var timelineEntry = new TimelineEntry(entryData[0],entryData[1],entryData[2],'bfe5bf');
-		timeline.addTimelineEntry(timelineEntry);
-		timelineEntry.addHTMLElementToTriggerHover(document.getElementById(entryData[3]));
-	}
-	
-	for(var index = (emplEntryData.length-1); index > 0; index--) {
-		if(index == 0) {
-			continue;
-		}
-		var entryData = emplEntryData[index];
-		var timelineEntry = new TimelineEntry(entryData[0],entryData[1],entryData[2],'fad8c7');
-		timeline.addTimelineEntry(timelineEntry);
-		timelineEntry.addHTMLElementToTriggerHover(document.getElementById(entryData[3]));
-	}
-</script> 
 
-}
+                <h2> @Messages("menu_education")</h2>
+                @*
+                @if(info.seltenheim.homepage.controllers.UsersController.isLoggedIn()) {
+                <div class="employmentCard">
+                @educationForm(new EducationData())
+                </div>
+                }*@
+                <div ng-repeat="education in educations" id="{{education.id}}" class="employmentCard" ng-class-even="'lightBackground'">
+                    <h3>{{education.degree}}</h3>
+                    <div>
+                        <span aria-hidden="true" data-icon="o"></span>
+                        <span ng-show="education.website === null"></span>
+                        <a ng-hide="education.website === null" target="_blank" href="{{education.website}}">
+                            {{education.place}}
+                        </a><br>
+
+                        <span aria-hidden="true" data-icon="["></span>
+                        {{ education.fromDate | date: 'yyyy' }} -
+
+                        <span ng-show="education.toDate === null">@Messages("ongoing")</span>
+                        <span ng-hide="education.toDate === null">
+                            {{ education.toDate | date: 'yyyy' }}
+                        </span><br>
+
+                        <span aria-hidden="true" data-icon="G"></span>
+                        {{education.score}}
+                    </div>
+                </div>
+            </div>
+        @*
+        <script type="text/javascript">
+        var eduEntryData = [
+        ["undefined",new Date(2009,1,1),new Date(2009,1,1)]
+        @for(education <- educations) {
+        @if(education.getToDate() != null) {
+        ,["@education.getPlace() - @education.getDegree()",new Date(@dateForJavaScript(education.getFromDate())),new Date(@dateForJavaScript(education.getToDate())),"@education.getId()"]
+        } else {
+        ,["@education.getPlace() - @education.getDegree()",new Date(@dateForJavaScript(education.getFromDate())),new Date(),"@education.getId()"]
+        }
+        }
+        ];
+
+        var emplEntryData = [
+        ["undefined",new Date(2009,1,1),new Date(2009,1,1),"idForHighlighting"]
+
+        @for(employment <- employments) {
+        @if(employment.getToDate != null) {
+        ,["@employment.getPlace() - @employment.getTitle()",new Date(@dateForJavaScript(employment.getFromDate())),new Date(@dateForJavaScript(employment.getToDate())),"@employment.getId()"]
+        } else {
+        ,["@employment.getPlace() - @employment.getTitle()",new Date(@dateForJavaScript(employment.getFromDate())),new Date(),"@employment.getId()"]
+        }
+        }
+        ];
+
+        var profileContainer = document.getElementById("profileContainer");
+        profileContainer.style.height = (profileContainer.clientHeight) +"px";
+
+        var timeline = new Timeline(2008)
+        var visu = timeline.addVisualisation(Timeline.Visualisations.VerticalMinimal, document.getElementById("timeline"));
+
+        visu.config.scale.numbersMarginRight = 25;
+        visu.repaint();
+
+        for(var index in eduEntryData) {
+        if(index == 0) {
+        continue;
+        }
+        var entryData = eduEntryData[index];
+        var timelineEntry = new TimelineEntry(entryData[0],entryData[1],entryData[2],'bfe5bf');
+        timeline.addTimelineEntry(timelineEntry);
+        timelineEntry.addHTMLElementToTriggerHover(document.getElementById(entryData[3]));
+        }
+
+        for(var index = (emplEntryData.length-1); index > 0; index--) {
+        if(index == 0) {
+        continue;
+        }
+        var entryData = emplEntryData[index];
+        var timelineEntry = new TimelineEntry(entryData[0],entryData[1],entryData[2],'fad8c7');
+        timeline.addTimelineEntry(timelineEntry);
+        timelineEntry.addHTMLElementToTriggerHover(document.getElementById(entryData[3]));
+        }
+        </script>
+        *@
+    }
 }

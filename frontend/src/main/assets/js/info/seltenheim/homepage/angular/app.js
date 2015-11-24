@@ -2,11 +2,12 @@
 
 define(['angular', //
         'ngRoute', //
-        'info/seltenheim/homepage/angular/controllers/skillPageController'], //
-    function (angular, ngRoute, skillPageController) {
+        'info/seltenheim/homepage/angular/controllers/skillPageController',//
+        'info/seltenheim/homepage/angular/controllers/ProfileController' ], //
+    function (angular, ngRoute, skillPageController, ProfileController) {
         var homepageApp = angular.module('jsHomepageApp', ['ngResource', 'ngRoute']);
         skillPageController.attach(homepageApp);
-
+        ProfileController.attach(homepageApp);
 
         homepageApp.directive('focusOnShow', function($timeout) {
             return {

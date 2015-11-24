@@ -12,13 +12,11 @@ import org.joda.time.format.DateTimeFormatter;
 
 import play.mvc.Controller;
 
-public abstract class Position implements PersistentModel, DateRangeModel {
-    public static final DateTimeFormatter POSITION_DATETIME_FORMAT = DateTimeFormat.forPattern("yyyy-MM");
-
+public abstract class Position implements PersistentModel {
     private String id;
 
-    private DateTime fromDate;
-    private DateTime toDate;
+    private String fromDate;
+    private String toDate;
     private String place;
     private Map<String, String> titleMap;
     private String website;
@@ -27,7 +25,7 @@ public abstract class Position implements PersistentModel, DateRangeModel {
         titleMap = new HashMap<String, String>();
     }
 
-    public Position(DateTime fromDate, DateTime toDate, String place, Map<String, String> titleMap, String website) {
+    public Position(String fromDate, String toDate, String place, Map<String, String> titleMap, String website) {
         super();
         this.fromDate = fromDate;
         this.toDate = toDate;
@@ -44,19 +42,19 @@ public abstract class Position implements PersistentModel, DateRangeModel {
         this.id = id;
     }
 
-    public DateTime getFromDate() {
+    public String getFromDate() {
         return fromDate;
     }
 
-    public void setFromDate(DateTime fromDate) {
+    public void setFromDate(String fromDate) {
         this.fromDate = fromDate;
     }
 
-    public DateTime getToDate() {
+    public String getToDate() {
         return toDate;
     }
 
-    public void setToDate(DateTime toDate) {
+    public void setToDate(String toDate) {
         this.toDate = toDate;
     }
 
@@ -68,25 +66,12 @@ public abstract class Position implements PersistentModel, DateRangeModel {
         this.place = place;
     }
 
-    public String getTitle() {
-        final String lang = Controller.lang().language();
-        if (lang.equals("de")) {
-            return titleMap.get("de");
-        } else {
-            return titleMap.get("en");
-        }
-    }
-
-    public String getTitle(String langKey) {
-        return titleMap.get(langKey);
-    }
-
-    public void setTitle(String lang, String title) {
-        this.titleMap.put(lang, title);
-    }
-
-    Map<String, String> getTitleMap() {
+    public Map<String, String> getTitleMap() {
         return titleMap;
+    }
+
+    public void setTitleMap(Map<String, String> titleMap) {
+        this.titleMap = titleMap;
     }
 
     public String getWebsite() {

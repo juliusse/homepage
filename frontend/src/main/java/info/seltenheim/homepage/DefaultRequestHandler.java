@@ -33,7 +33,7 @@ public class DefaultRequestHandler extends DefaultHttpRequestHandler {
                 }
 
                 // TrackAsAction.call(ctx, controller, action);
-                return delegate.call(ctx);
+                return delegate.call(ctx); 
             }
         };
     }
