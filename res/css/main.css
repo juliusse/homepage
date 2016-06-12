@@ -1,0 +1,74 @@
+
+card {
+    display: block;
+    margin: 200px auto;
+    width: 79mm;
+    height: 49mm;
+    box-shadow: gray 5px 5px 2px;
+    background: #f7f7f7;
+    padding: 3mm;
+}
+
+logo {
+    position: relative;
+    display: block;
+    background: url('../img/julius_seltenheim_logo.png') no-repeat ;
+    background-size: contain;
+    height: 30%;
+    margin-bottom: 5%;
+}
+
+entries {
+    height:65%;
+    display: block;
+}
+
+entry {
+    float: left;
+    height: 28%;
+    width: 45%;
+    margin-right: 5%;
+    margin-bottom: 2%;
+}
+
+entry.full {
+    width: 100%;
+}
+
+entry * {
+    float: left;
+    height: 100%;
+}
+
+entry icon {
+    width: 12mm;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+icon.github {
+    background-image: url('../img/github.png');
+}
+
+icon.linkedin {
+    background-image: url('../img/linkedin.png');
+}
+
+icon.xing {
+    background-image: url('../img/xing.png');
+}
+
+icon.email {
+    background-image: url('../img/mail.png');
+}
+
+entry span, entry a {
+    font-size: 13pt;
+    line-height: 34px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+entry a {
+    text-decoration: none;
+    color: #9acb42;
+}
