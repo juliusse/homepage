@@ -3,6 +3,7 @@
         -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
         filter: grayscale(100%);
     }
+
     .link {
         color: #333;
     }
@@ -28,32 +29,6 @@
     }
 }
 
-
-header {
-    height: 100px;
-    justify-content: space-between;
-    margin-bottom: 40px;
-}
-
-header .logo {
-    height: 90px;
-    padding: 10px 0;
-    font-weight: bold;
-    color: #333;
-    text-transform: uppercase;
-    margin: 0;
-}
-
-main {
-    margin-top: 40px;
-    margin-bottom: 100px;
-}
-
-main h1 {
-    margin-bottom: 20px;
-    line-height: 90%;
-}
-
 @media (min-width: 1200px) {
     .portrait {
         height: 300px;
@@ -66,7 +41,7 @@ main h1 {
 
 @media (max-width: 1200px) {
     .portrait {
-        height: calc(300* 0.1vw);
+        height: calc(300 * 0.1vw);
     }
 
     main h1 small.subtitle {
@@ -78,9 +53,20 @@ main h1 {
     .portrait {
         display: flex;
         justify-content: center;
-        height: calc(300* 0.17vw);
+        height: calc(300 * 0.17vw);
         margin-top: 20px;
     }
+}
+
+
+main {
+    margin-top: 40px;
+    margin-bottom: 100px;
+}
+
+main h1 {
+    margin-bottom: 20px;
+    line-height: 90%;
 }
 
 footer {
@@ -89,10 +75,11 @@ footer {
     border-top: solid 2px #bbb;
 }
 
-.icon-gray {
+.links a {
+    text-decoration: none;
     height: 20px;
 }
 
-a {
-    text-decoration: none;
+.links a img {
+    height: 20px;
 }
