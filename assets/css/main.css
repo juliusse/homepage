@@ -15,7 +15,7 @@
         color: #ccc;
     }
 
-    main h1 small.subtitle {
+    p.subtitle {
         color: #eee !important;
     }
 
@@ -34,7 +34,7 @@
         height: 300px;
     }
 
-    main h1 small.subtitle {
+    p.subtitle {
         font-size: 2rem;
     }
 }
@@ -44,7 +44,7 @@
         height: calc(300 * 0.1vw);
     }
 
-    main h1 small.subtitle {
+    p.subtitle {
         font-size: calc(0.75rem + 1.5vw);
     }
 }
@@ -65,7 +65,7 @@ main {
 }
 
 main h1 {
-    margin-bottom: 20px;
+    margin-bottom: 0;
     line-height: 90%;
 }
 
