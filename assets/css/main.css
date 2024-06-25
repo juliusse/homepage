@@ -58,6 +58,9 @@
     }
 }
 
+nav img {
+    height: 80px;
+}
 
 main {
     margin-top: 40px;
