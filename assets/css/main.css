@@ -7,6 +7,10 @@
     .link {
         color: #333;
     }
+
+    div.card, div.card-footer {
+        background-color: #fff;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -17,6 +21,25 @@
 
     p.subtitle {
         color: #eee !important;
+    }
+
+    p.card-text {
+        color: #ccc !important;
+    }
+
+    div.card, div.card-footer {
+        background-color: #000;
+    }
+    div.card {
+        border: 1px solid #aaa !important;
+    }
+
+    .text-muted {
+        color: #ccc !important;
+    }
+
+    .text-secondary {
+        color: #ccc !important;
     }
 
     .icon-gray {
@@ -63,13 +86,16 @@ nav img {
 }
 
 main {
-    margin-top: 40px;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
 }
 
-main h1 {
-    margin-bottom: 0;
-    line-height: 90%;
+main h2 {
+    color: #77b900;
+}
+
+.recommendation h3 {
+    color: black;
+    font-size: 1.5em;
 }
 
 footer {
