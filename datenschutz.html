@@ -20,7 +20,10 @@
             <a class="navbar-brand" href="/" aria-label="Homepage">
                 <img src="assets/img/julius-seltenheim_logo.png" alt="Julius Seltenheim logo" width="400" height="133"/>
             </a>
-            <ul class="nav top-nav-links ms-auto">
+            <button class="top-nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav-links" aria-label="Toggle menu">
+                <span class="top-nav-toggle-icon" aria-hidden="true"></span>
+            </button>
+            <ul class="nav top-nav-links ms-auto" id="primary-nav-links">
                 <li class="nav-item"><a class="nav-link" href="/#about">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="/#services">Services</a></li>
                 <li class="nav-item"><a class="nav-link" href="/#testimonials">Testimonials</a></li>
@@ -239,5 +242,6 @@
         </div>
     </footer>
 </div>
+<script src="assets/js/navigation.js" defer></script>
 </body>
 </html>
