@@ -154,6 +154,38 @@ body {
     text-decoration: none;
 }
 
+.navbar-brand img {
+    display: block;
+}
+
+@supports ((-webkit-mask-image: url("")) or (mask-image: url(""))) {
+    .navbar-brand {
+        position: relative;
+    }
+
+    .navbar-brand::before {
+        content: "";
+        display: block;
+        height: 56px;
+        aspect-ratio: 400 / 133;
+        background: var(--ink-2);
+        transition: background-color 0.22s ease;
+        -webkit-mask: url("../img/julius-seltenheim_logo.png") center / contain no-repeat;
+        mask: url("../img/julius-seltenheim_logo.png") center / contain no-repeat;
+    }
+
+    .top-nav .navbar-brand:hover::before,
+    .top-nav .navbar-brand:focus::before {
+        background: var(--brand-3);
+    }
+
+    .navbar-brand img {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
 .nav {
     display: flex;
     list-style: none;
@@ -676,6 +708,11 @@ footer {
 .legal-links {
     gap: 16px;
     align-items: center;
+    flex-wrap: nowrap;
+}
+
+.legal-links .link {
+    white-space: nowrap;
 }
 
 .legal-main {
@@ -813,12 +850,17 @@ footer {
     }
 
     .legal-links {
-        justify-content: flex-start !important;
-        margin-top: 16px;
+        justify-content: flex-end !important;
+        margin-top: 0;
     }
 }
 
 @media (min-width: 768px) {
+    .col-sm {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
     .col-md-4 {
         flex: 0 0 33.3333%;
         max-width: 33.3333%;
@@ -876,6 +918,12 @@ footer {
         height: 44px;
     }
 
+    @supports ((-webkit-mask-image: url("")) or (mask-image: url(""))) {
+        .navbar-brand::before {
+            height: 44px;
+        }
+    }
+
     .portrait {
         justify-content: center;
     }
@@ -922,6 +970,12 @@ footer {
         opacity: 1;
         pointer-events: auto;
         padding-top: 6px;
+    }
+
+    .legal-links {
+        justify-content: flex-start !important;
+        margin-top: 16px;
+        flex-wrap: wrap;
     }
 
     main {
