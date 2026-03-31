@@ -261,6 +261,14 @@ nav img {
     cursor: pointer;
 }
 
+.top-nav-state {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
 .top-nav-toggle:hover,
 .top-nav-toggle:focus {
     border-color: var(--brand-2);
@@ -274,6 +282,7 @@ nav img {
     border-radius: 2px;
     background: var(--ink-1);
     vertical-align: middle;
+    transition: background-color 0.22s ease;
 }
 
 .top-nav-toggle-icon::before,
@@ -285,6 +294,7 @@ nav img {
     height: 2px;
     border-radius: 2px;
     background: var(--ink-1);
+    transition: transform 0.22s ease, top 0.22s ease;
 }
 
 .top-nav-toggle-icon::before {
@@ -295,6 +305,20 @@ nav img {
     top: 5px;
 }
 
+.top-nav-state:checked + .top-nav-toggle .top-nav-toggle-icon {
+    background: transparent;
+}
+
+.top-nav-state:checked + .top-nav-toggle .top-nav-toggle-icon::before {
+    top: 0;
+    transform: rotate(45deg);
+}
+
+.top-nav-state:checked + .top-nav-toggle .top-nav-toggle-icon::after {
+    top: 0;
+    transform: rotate(-45deg);
+}
+
 .top-nav-links .nav-link {
     color: var(--ink-2);
     font-family: var(--font-heading);
@@ -303,6 +327,7 @@ nav img {
     letter-spacing: 0.02em;
     padding: 9px 12px;
     border-radius: 999px;
+    text-decoration: none;
     transition: color 0.22s ease, background-color 0.22s ease;
 }
 
@@ -310,6 +335,18 @@ nav img {
 .top-nav-links .nav-link:focus {
     color: var(--brand-3);
     background: color-mix(in srgb, var(--surface-3) 70%, white);
+    text-decoration: none;
+}
+
+.top-nav-links .lang-link {
+    padding: 6px 10px;
+    font-size: 0.82rem;
+    letter-spacing: 0.01em;
+}
+
+.top-nav-links .lang-link[aria-current="page"] {
+    color: var(--surface-1);
+    background: var(--brand-1);
 }
 
 main {
@@ -358,7 +395,6 @@ main h2 {
     margin-top: 10px;
     margin-bottom: 0;
     color: var(--ink-3);
-    max-width: 65ch;
 }
 
 p,
@@ -965,11 +1001,16 @@ footer {
         transition: max-height 0.28s ease, opacity 0.2s ease;
     }
 
-    .top-nav.is-open .top-nav-links {
+    .top-nav-state:checked ~ .top-nav-links {
         max-height: 420px;
         opacity: 1;
         pointer-events: auto;
         padding-top: 6px;
+    }
+
+
+    .top-nav-links .lang-link {
+        text-align: left;
     }
 
     .legal-links {
