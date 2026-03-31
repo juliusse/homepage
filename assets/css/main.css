@@ -1050,6 +1050,95 @@ footer {
 
 }
 
+@media (prefers-color-scheme: dark) {
+    :root {
+        --surface-0: #08120f;
+        --surface-1: #0f1d18;
+        --surface-2: #142620;
+        --surface-3: #1d352c;
+        --ink-1: #edf7f1;
+        --ink-2: #d0e2d8;
+        --ink-3: #9ab3a6;
+        --line-1: #2b483b;
+        --line-2: #3d6755;
+        --brand-1: #2f8f67;
+        --brand-2: #47af83;
+        --brand-3: #89d7b3;
+        --accent: #76ca9f;
+        --elev-1: 0 14px 28px rgba(0, 0, 0, 0.35);
+        --elev-2: 0 24px 42px rgba(0, 0, 0, 0.45);
+    }
+
+    html {
+        color-scheme: dark;
+    }
+
+    body {
+        background:
+            radial-gradient(circle at 8% 10%, rgba(71, 175, 131, 0.2), transparent 34%),
+            radial-gradient(circle at 92% 3%, rgba(47, 143, 103, 0.16), transparent 28%),
+            linear-gradient(170deg, var(--surface-0), #0a1712 44%, #0d1d16 100%);
+    }
+
+    .top-nav {
+        border-color: color-mix(in srgb, var(--line-2) 72%, #0a1511);
+        background: color-mix(in srgb, var(--surface-1) 88%, #050b08);
+    }
+
+    .top-nav .navbar-brand:hover::before,
+    .top-nav .navbar-brand:focus::before {
+        background: var(--brand-2);
+    }
+
+    .top-nav-toggle {
+        background: color-mix(in srgb, var(--surface-2) 80%, #030705);
+    }
+
+    .top-nav-links .nav-link:hover,
+    .top-nav-links .nav-link:focus {
+        background: color-mix(in srgb, var(--surface-3) 78%, #0b1612);
+    }
+
+    .top-nav-links .lang-link[aria-current="page"] {
+        color: #f4fff8;
+    }
+
+    .hero-kicker,
+    .proof-strip li {
+        background: color-mix(in srgb, var(--surface-2) 82%, #070e0b);
+    }
+
+    div.card,
+    div.card-footer,
+    article.card,
+    article.card-footer,
+    .legal-main {
+        background: color-mix(in srgb, var(--surface-1) 90%, #060c09);
+    }
+
+    .contact-panel {
+        background:
+            radial-gradient(circle at 88% 18%, rgba(31, 111, 85, 0.2), transparent 34%),
+            radial-gradient(circle at 10% 88%, rgba(71, 175, 131, 0.26), transparent 38%),
+            color-mix(in srgb, var(--surface-1) 88%, #050a08);
+    }
+
+    .social-links a {
+        background: var(--surface-2);
+    }
+
+    .icon-gray {
+        -webkit-filter: grayscale(100%) invert(92%) brightness(1.1);
+        filter: grayscale(100%) invert(92%) brightness(1.1);
+    }
+
+    @media (max-width: 768px) {
+        .top-nav-links .nav-link {
+            background: color-mix(in srgb, var(--surface-2) 84%, #050a08);
+        }
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
