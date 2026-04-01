@@ -14,10 +14,13 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.html -f
 RewriteRule ^(.+?)/?$ $1.html [NC,L]
 
-# Redirect unresolved routes to the main page.
+# Redirect root to /en/
+RewriteRule ^/?$ /en/ [R=301,L]
+
+# Redirect unresolved routes to /en/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ / [R=302,L]
+RewriteRule ^ /en/ [R=302,L]
 
 <IfModule mod_headers.c>
 	# Always fetch latest stylesheet/script files.
